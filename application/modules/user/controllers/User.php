@@ -39,7 +39,7 @@ class User extends CI_Controller
 				else{
 					$this->session->set_userdata('admid',$userid);
 				}
-				redirect('user/dashboard');
+				redirect('dashboard');
 			}
 			else{
 				
