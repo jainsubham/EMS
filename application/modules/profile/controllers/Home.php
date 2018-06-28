@@ -4,7 +4,13 @@ class Home extends CI_Controller
 {
 	
 	public function index() {
-		print_r("Hello");
+		$x = 2;
+		if($x == 2) {
+			print_r("true");
+		}
+		else {
+			print_r("false");
+		}
 	}
 }
 ?>
