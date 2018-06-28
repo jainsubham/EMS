@@ -3,7 +3,12 @@
 <head>
 	<title>Login</title>
 
-
+<style type="text/css">
+	body{
+		background: 
+		linear-gradient(rgba(196, 102, 0, 0.6), rgba(155, 89, 182, 0.6));
+	}
+</style>
 <? include "header.php"; ?>
 <div class="">
 <div class="container ">
@@ -18,6 +23,7 @@
                     <fieldset>
 			    	  	<div class="form-group">
 			    		    
+
 			    		    <? $emailfield = array(
 			    		    		'type'			=> 'email',
 							        'name'          => 'emailfield',
