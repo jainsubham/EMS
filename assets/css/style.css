@@ -64,7 +64,7 @@ body {
 	position:relative;
 }
 /*--icons--*/
-.icon1,.icon2,.icon3,.icon4,.icon5,.icon6{
+.icon1,.icon2,.icon3,.icon4,.icon5,.icon6,.icon7,.icon8{
 	position: absolute;
     left: 10px;
     font-size: 20px;
@@ -91,6 +91,13 @@ body {
 }
 .icon6 {
   top: 327px;
+}
+
+.icon7 {
+  top: 420px;
+}
+.icon8 {
+  top: 475px;
 }
 /*--//icons--*/
 
@@ -262,7 +269,7 @@ body {
 	.main-agileits {
 		width: 92%;
 	}
-	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 {
+	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6,.icon7,.icon8 {
 		left: 38px;
 	}
 	.header-w3l h1 {
@@ -283,7 +290,7 @@ body {
 	.main-agileits {
 		width: 95%;
 	}
-	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 {
+	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 ,.icon7,.icon8{
 		left: 31px;
 	}
 	.header-w3l h1 {
@@ -302,7 +309,7 @@ body {
 	}
 }
 @media (max-width: 375px){
-	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 {
+	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6,.icon7,.icon8 {
 		left: 26px;
 	}
 	.header-w3l h1 {
@@ -320,7 +327,7 @@ body {
 	.sub-head {
 		font-size: 28px;
 	}
-	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 {
+	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6,.icon7,.icon8 {
 		left: 25px;
 	}
 	.footer-w3 {
@@ -342,7 +349,7 @@ body {
 	.sub-head {
 		font-size: 28px;
 	}
-	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6 {
+	.icon1, .icon2, .icon3, .icon4, .icon5, .icon6,.icon7,.icon8 {
 		left: 18px;
 	}
 	.sub-main input[type="submit"] {
