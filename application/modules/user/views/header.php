@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
+
 <?= link_tag('assets/css/layout.css'); ?>
 <?= link_tag('assets/css/fontawesome-4.6.3.min.css'); ?>
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
