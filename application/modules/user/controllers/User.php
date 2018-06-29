@@ -48,5 +48,9 @@ class User extends CI_Controller
 
 	}	
 
+	public function comp_reg(){
+		echo "Data submitted";
+	}
+
 }
 ?>

@@ -37,19 +37,20 @@ body {
 	margin: 2% auto;
 }
 .header-w3l h1 {
-    font-size: 3em;
-    letter-spacing: 6px;
+    font-size: 2em;
+    
     color: black;
     font-weight: 400;
-    text-transform: uppercase;
+    text-transform: none;
 }
 /*--//header--*/
 
 /*--main--*/
 .main-agileits {
     margin: 2% auto;
-   	background: rgba(125, 63, 152, 0.52);
+   	background: #e9e9e9;
     width: 32%;
+    border-radius: 2;
 	font-family: 'Lato', sans-serif;
 }
 .sub-head {
@@ -65,32 +66,35 @@ body {
 /*--icons--*/
 .icon1,.icon2,.icon3,.icon4,.icon5,.icon6{
 	position: absolute;
-    left: 51px;
-    font-size: 18px;
+    left: 10px;
+    font-size: 20px;
     color: rgba(0, 0, 0, 0.83);
     width: 22px;
 }
 .icon1{
-	top: 12px;
+	top: 60px;
 }
 .icon2 {
-    top: 75px;
+    top: 118px;
+    font-size: 24px;
 }
 .icon3 {
-	 top: 138px; 
+	 top: 179px; 
+	 font-size: 23px;
 }
 .icon4 {
-    top: 201px;
+    top: 240px;
 }
 .icon5 {
-	top: 264px;
+	top: 298px;
+	font-size: 23px;
 }
 .icon6 {
   top: 327px;
 }
 /*--//icons--*/
 
-.sub-main input[type="text"],.sub-main input[type="password"]  {
+.sub-main input[type="text"],.sub-main input[type="password"],.sub-main input[type="email"], .sub-main select{
     outline: none;
     font-size: 1.1em;
     margin: 4px 0px 18px 1px;
@@ -98,17 +102,17 @@ body {
     padding: 10px 38px;
     border: none;
     border-radius: 2px;
-    width: 68%;
+    width: 100%;
     font-family: 'Lato', sans-serif;
 }
-.sub-main input[type="submit"] {
+.sub-main input[type="submit"],.subBtn {
     color: white;
-    background: #d52685;
+    background: #21447c;
     border: none;
-    padding: 14px 50px;
     font-size: 22px;
     border-radius: 2px;
     margin: 17px;
+    max-width: 180px ;
 	font-family: 'Lato', sans-serif;
 	cursor:pointer;
 	text-transform:uppercase;
@@ -118,9 +122,41 @@ body {
 	-moz-transition:0.5s all;
 	-ms-transition:0.5s all;
 }
-.sub-main input[type="submit"]:hover {
-    background: #d9edf7;
+.PrevBtn {
+    color: white;
+    background: #1d4c24;
+    border: none;
+    font-size: 18px;
+    border-radius: 2px;
+    margin: 8px;
+    max-width: 150px ;
+	font-family: 'Lato', sans-serif;
+	cursor:pointer;
+	text-transform:uppercase;
+	transition:0.5s all;
+	-webkit-transition:0.5s all;
+	-o-transition:0.5s all;
+	-moz-transition:0.5s all;
+	-ms-transition:0.5s all;
+}
+.PrevBtn:hover {
+    background: #aee5af;
     color: black;
+    border: solid;
+    border-size :1px;
+    border-color: black;
+	transition:0.5s all;
+	-webkit-transition:0.5s all;
+	-o-transition:0.5s all;
+	-moz-transition:0.5s all;
+	-ms-transition:0.5s all;
+}
+.sub-main input[type="submit"]:hover ,.subBtn:hover {
+    background: #b2eadd;
+    color: black;
+    border: solid;
+    border-size :2px;
+    border-color: black;
 	transition:0.5s all;
 	-webkit-transition:0.5s all;
 	-o-transition:0.5s all;
@@ -317,3 +353,80 @@ body {
 	}
 }
 /*--//Responsive--*/
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f1f1f1;
+}
+
+#regForm {
+
+  
+  font-family: Raleway;
+  padding: 40px;
+  width: 100%;
+  min-width: 300px;
+}
+
+h1 {
+  text-align: center;  
+}
+
+input {
+  padding: 10px;
+  width: 100%;
+  font-size: 17px;
+  font-family: Raleway;
+  border: 1px solid #aaaaaa;
+}
+
+/* Mark input boxes that gets an error on validation: */
+input.invalid {
+  background-color: #ffdddd;
+}
+
+/* Hide all steps by default: */
+.tab {
+  display: none;
+}
+
+button {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+#prevBtn {
+  background-color: #bbbbbb;
+}
+
+/* Make circles that indicate the steps of the form: */
+.step {
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbbbbb;
+  border: none;  
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.5;
+}
+
+.step.active {
+  opacity: 1;
+}
+
+/* Mark the steps that are finished and valid: */
+.step.finish {
+  background-color: #4CAF50;
+}
