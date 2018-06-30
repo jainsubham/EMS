@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 28, 2018 at 04:22 PM
+-- Generation Time: Jun 30, 2018 at 08:36 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -156,6 +156,19 @@ CREATE TABLE `EmploymentDetails` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Invites`
+--
+
+CREATE TABLE `Invites` (
+  `inviteid` int(11) NOT NULL,
+  `emailid` varchar(50) NOT NULL,
+  `companyid` int(11) NOT NULL,
+  `invitetime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Leave`
 --
 
@@ -285,15 +298,16 @@ CREATE TABLE `Usertbl` (
   `accountstatus` int(11) NOT NULL DEFAULT '0',
   `Email` varchar(50) NOT NULL,
   `accountlevel` int(11) NOT NULL DEFAULT '0',
-  `companyId` int(11) NOT NULL
+  `companyId` int(11) NOT NULL,
+  `emailverified` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `Usertbl`
 --
 
-INSERT INTO `Usertbl` (`UserId`, `password`, `accountstatus`, `Email`, `accountlevel`, `companyId`) VALUES
-(3, 'nd', 1, '123@g.c', 1, 1);
+INSERT INTO `Usertbl` (`UserId`, `password`, `accountstatus`, `Email`, `accountlevel`, `companyId`, `emailverified`) VALUES
+(3, 'a69913f66f2cfd4bd3f8ea75954ac476', 1, '123@g.c', 1, 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -355,6 +369,13 @@ ALTER TABLE `EmploymentDetails`
   ADD PRIMARY KEY (`RelationId`),
   ADD KEY `UserId` (`UserId`),
   ADD KEY `Designation` (`Designation`);
+
+--
+-- Indexes for table `Invites`
+--
+ALTER TABLE `Invites`
+  ADD PRIMARY KEY (`inviteid`),
+  ADD KEY `companyid` (`companyid`);
 
 --
 -- Indexes for table `Leave`
@@ -458,6 +479,12 @@ ALTER TABLE `EmploymentDetails`
   MODIFY `RelationId` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `Invites`
+--
+ALTER TABLE `Invites`
+  MODIFY `inviteid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `Leave`
 --
 ALTER TABLE `Leave`
@@ -530,6 +557,12 @@ ALTER TABLE `Documents`
 ALTER TABLE `EmploymentDetails`
   ADD CONSTRAINT `EmploymentDetails_ibfk_1` FOREIGN KEY (`UserId`) REFERENCES `Usertbl` (`UserId`),
   ADD CONSTRAINT `EmploymentDetails_ibfk_2` FOREIGN KEY (`Designation`) REFERENCES `Designations` (`DesgnId`);
+
+--
+-- Constraints for table `Invites`
+--
+ALTER TABLE `Invites`
+  ADD CONSTRAINT `Invites_ibfk_1` FOREIGN KEY (`companyid`) REFERENCES `CompTbl` (`id`);
 
 --
 -- Constraints for table `Leave`
