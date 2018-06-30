@@ -2,7 +2,6 @@
 	class Loginmodel extends CI_Model {
 
 		public function validate_login( $emailfield, $password ){
-			$this->load->database();
 
 			$q = $this->db->where(['Email'=>$emailfield,'password'=>$password ,'accountstatus'=>'1'])
 							->get('Usertbl');
@@ -14,6 +13,10 @@
 				return False;
 			}
 		}
+		public function comp_reg($post) {
+			return $this->db->insert('CompTbl',$post);
+		}	
+
 	}
 
 ?>

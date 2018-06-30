@@ -29,16 +29,11 @@
   <!-- One "tab" for each step in the form: -->
 <div class="sub-main " align="center">  
   <div class="tab"><? echo form_fieldset('Company Information :'); ?>  
-    
-
-        
-       
                 <?php $name = array(
                        'class'=>"name",
                        'type'=>"text" ,
                        'name'=>"companyname" ,
-                       'placeholder'=>"Company Name",
-                       'required' => 'required'
+                       'placeholder'=>"Company Name"
                  );
         echo form_input($name); ?>
                 <span class="icon1"><i class="fa fa-university" aria-hidden="true"></i></span>
@@ -56,7 +51,7 @@
                    <?php $web = array(
                     'class' => 'name',
                     'type' => 'text',
-                    'name' => 'website',
+                    'name' => ' website',
                     'placeholder'=>"Link to your Website"
                     );
         echo form_input($web);?>
@@ -77,7 +72,7 @@
                    <?php $contact = array(
                         'class' =>'name',
                        'type'=>"text",
-                       'name'=>"number",
+                       'name'=>"phoneno",
                        'placeholder'=>'Phone'    
                     );
         echo form_input($contact); ?>
