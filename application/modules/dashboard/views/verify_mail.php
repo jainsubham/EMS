@@ -4,9 +4,8 @@
 	<title>Dashbaoard</title>
 </head>
 <body>
-This is admin Dashboard
-<br>
-<a href="<?= base_url('dashboard/invite'); ?>">Invite Employees</a> 
+Please verify your email by clicking the verification link sent to you on your email
+
 <br>
 
 <a href="<?= base_url('user/logout'); ?>">Log Out</a> 

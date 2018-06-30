@@ -9,11 +9,19 @@ class Dashboard extends CI_Controller
 		}
 
 	public function index() {
+		if(null==($this->session->userdata('logid')) and null==($this->session->userdata('adminid'))){
+
+				redirect('user/login');
+			}
 		$this->load->view('dashboard');
 	}
 
-	public function verify_email(){
-		echo "Please verify your email";
+	public function verify_mail(){
+		$this->load->view('verify_mail');
+	}
+
+	public function invite(){
+		$this->load->view('email_invite');
 	}
 
 }

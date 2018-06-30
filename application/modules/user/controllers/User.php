@@ -41,13 +41,13 @@ class User extends CI_Controller
 					$this->session->set_userdata('logid',$userid);
 				}
 				if($accountlevel==1){
-					$this->session->set_userdata('admind',$userid);
+					$this->session->set_userdata('adminid',$userid);
 				}
 				if($emailverified==0){
 					$this->session->set_userdata('emailunverified','1');
 					redirect('dashboard/verify_mail');
 				}
-				else{
+				else{	
 					redirect('dashboard');
 				}
 			}
@@ -66,6 +66,13 @@ class User extends CI_Controller
 	public function reg_user() {
 		print_r("hello");
 	}
+
+	public function logout(){
+			$this->session->sess_destroy();
+
+			redirect('user/login');
+
+		}
 
 }
 ?>

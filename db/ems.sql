@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 30, 2018 at 08:36 AM
+-- Generation Time: Jun 30, 2018 at 01:52 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -162,6 +162,7 @@ CREATE TABLE `EmploymentDetails` (
 CREATE TABLE `Invites` (
   `inviteid` int(11) NOT NULL,
   `emailid` varchar(50) NOT NULL,
+  `hash` varchar(50) NOT NULL,
   `companyid` int(11) NOT NULL,
   `invitetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -309,6 +310,19 @@ CREATE TABLE `Usertbl` (
 INSERT INTO `Usertbl` (`UserId`, `password`, `accountstatus`, `Email`, `accountlevel`, `companyId`, `emailverified`) VALUES
 (3, 'a69913f66f2cfd4bd3f8ea75954ac476', 1, '123@g.c', 1, 1, 1);
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Verifyhash`
+--
+
+CREATE TABLE `Verifyhash` (
+  `hashid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `hash` varchar(50) NOT NULL,
+  `active` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
 --
 -- Indexes for dumped tables
 --
@@ -346,7 +360,8 @@ ALTER TABLE `BankDetails`
 -- Indexes for table `CompTbl`
 --
 ALTER TABLE `CompTbl`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `name` (`name`);
 
 --
 -- Indexes for table `Designations`
@@ -436,7 +451,15 @@ ALTER TABLE `UsersDetails`
 --
 ALTER TABLE `Usertbl`
   ADD PRIMARY KEY (`UserId`),
+  ADD UNIQUE KEY `Email` (`Email`),
   ADD KEY `companyId` (`companyId`);
+
+--
+-- Indexes for table `Verifyhash`
+--
+ALTER TABLE `Verifyhash`
+  ADD PRIMARY KEY (`hashid`),
+  ADD KEY `userid` (`userid`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -507,6 +530,12 @@ ALTER TABLE `Team`
 --
 ALTER TABLE `Usertbl`
   MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `Verifyhash`
+--
+ALTER TABLE `Verifyhash`
+  MODIFY `hashid` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -620,6 +649,12 @@ ALTER TABLE `UsersDetails`
 --
 ALTER TABLE `Usertbl`
   ADD CONSTRAINT `Usertbl_ibfk_1` FOREIGN KEY (`companyId`) REFERENCES `CompTbl` (`id`);
+
+--
+-- Constraints for table `Verifyhash`
+--
+ALTER TABLE `Verifyhash`
+  ADD CONSTRAINT `Verifyhash_ibfk_1` FOREIGN KEY (`userid`) REFERENCES `Usertbl` (`UserId`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
