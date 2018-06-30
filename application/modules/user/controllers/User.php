@@ -100,6 +100,11 @@ class User extends CI_Controller
 		}
 	}
 
+	public function userprofile(){
+		$this->load->view('userprofile');
+	}
+	
+
 	public function reg_user() {
 		print_r("hello");
 	}
