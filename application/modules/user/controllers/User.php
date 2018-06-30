@@ -66,7 +66,9 @@ class User extends CI_Controller
 
 	public function comp_reg(){
 		$post = $this->input->post();
-		//	print_r($post['pass1']);die();
+		if(!isset($post['pass1'])){
+			redirect('user/company_reg');
+		}else{
 		if($post['pass1'] == $post['pass2']) {
 				 	$this->form_validation->set_rules('companyname', 'Companyname', 'required');
 				 	$this->form_validation->set_rules('address','Address','required');
@@ -74,12 +76,15 @@ class User extends CI_Controller
 				 	$this->form_validation->set_rules('mail','Email','required');
 				 	$this->form_validation->set_rules('phoneno','Phone Number','required');
 				 	$this->form_validation->set_rules('fname','First Name','required');
-				 	$this->form_validation->set_rules('lname','Lirst Name','required');
+				 	$this->form_validation->set_rules('lname','Last Name','required');
+				 	$this->form_validation->set_rules('contactno','Phone Number','required');
+				 	$this->form_validation->set_rules('maill','Email','required');
 				 	$this->form_validation->set_rules('gender', 'Gender','required');
 					$this->form_validation->set_rules('pass1', 'Password', 'required');
 					$this->form_validation->set_rules('pass2', 'Password Confirmation', 'required');
 					if($this->form_validation->run()) {
-							if($this->loginmodel->comp_reg($post)) {
+						$encpass = md5($post['pass1']);
+							if($this->loginmodel->comp_reg($post,$encpass)) {
 									print_r("successfully");
 							}
 
@@ -91,6 +96,7 @@ class User extends CI_Controller
 		else {
 			
 			$this->load->view('user/companyreg');
+		}
 		}
 	}
 

@@ -103,7 +103,7 @@
                    <?php $phoneno = array(
                     'class' => 'name',
                     'type' => 'text',
-                    'name' => 'phoneno',
+                    'name' => 'contactno',
                     'placeholder'=>"Contact No"
                     );
         echo form_input($phoneno);?>
