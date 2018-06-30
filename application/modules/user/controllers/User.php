@@ -3,7 +3,9 @@ class User extends CI_Controller
 {
 	function __construct() {
 			parent::__construct();
-			$this->load->helper(array('form','url'));
+
+			$this->load->helper('form');
+			$this->load->library('session');
 			$this->load->model('loginmodel');
 			$this->load->database();
 			$this->load->library('form_validation');
@@ -18,6 +20,9 @@ class User extends CI_Controller
 	}
 
 	public function login(){
+		if($this->session->userdata('logid') or $this->session->userdata('adminid')){
+			redirect('dashboard');
+		}
 		$this->load->view('login');
 	}
 
@@ -29,18 +34,27 @@ class User extends CI_Controller
 		}
 
 
-		$userdata = $this->loginmodel->validate_login($emailfield,$password);
+		$this->load->model('loginmodel');
+		$passwordenc = md5($password);
+		$userdata = $this->loginmodel->validate_login($emailfield,$passwordenc);
 			$userid = $userdata->UserId;
 			$accountlevel = $userdata->accountlevel;
+			$emailverified = $userdata->emailverified;
 			if($userid){
-				$this->load->library('session');
+				
 				if($accountlevel==0){
 					$this->session->set_userdata('logid',$userid);
 				}
-				else{
-					$this->session->set_userdata('admid',$userid);
+				if($accountlevel==1){
+					$this->session->set_userdata('admind',$userid);
 				}
-				redirect('dashboard');
+				if($emailverified==0){
+					$this->session->set_userdata('emailunverified','1');
+					redirect('dashboard/verify_mail');
+				}
+				else{
+					redirect('dashboard');
+				}
 			}
 			else{
 				
@@ -79,9 +93,7 @@ class User extends CI_Controller
 			$this->load->view('user/companyreg');
 		}
 	}
-	public function userprofile() {
-		$this->load->view('userprofile');
-	}
+
 	public function reg_user() {
 		print_r("hello");
 	}
