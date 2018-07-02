@@ -139,20 +139,27 @@ class User extends CI_Controller
 			'FirstName' => $post['fname'],
 			'LastName' => $post['lname'],
 			'ContactNo' => $post['phone'],
-			'BloodGroup' => $post['fname'],
-			'Disability' => $post['fname'],
-			'Dob' => $post['fname'],
-			'FirstName' => $post['fname'],
-			'FirstName' => $post['fname'],
-			'FirstName' => $post['fname'],
-			'FirstName' => $post['fname'],
-			'FirstName' => $post['fname'],
-
-
-
-
-			'' => , );
-		if($this->loginmodel->user_reg($post)) {
+			'BloodGroup' => $post['blood'],
+			'Disability' => $post['Disability'],
+			'Dob' => $post['dob'],
+			'MartailStatus' => $post['MartailStatus'],
+			'Gender' => $post['gender'],
+			'Address1' => $post['address1'],
+			'Address2' => $post['address2'],
+			'City' => $post['city'],
+			'State' => $post['state'],
+			'PinCode' => $post['pin'],
+			'PAN' => $post['pan'],
+			'AadharNO' => $post['aadhar'],
+			'FatherName' => $post['pname'],
+			'ParentsSeniority' => $post['parents'],
+			'ParentsDisability' => $post['PDisability'],
+			'children' => $post['Children'],
+			'Hostelerchildren' => $post['Hchildren'],
+			 );
+			$Email = $post['email'];
+			$password = $post['password'];
+		if($this->loginmodel->user_reg($data,$Email,$password)) {
 
 			print_r('okk');
 		}

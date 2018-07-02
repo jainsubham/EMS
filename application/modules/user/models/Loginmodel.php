@@ -37,9 +37,12 @@
 
 
 		}	
-		public function user_reg($post) {
+		public function user_reg($data,$Email,$password) {
 
-			return $this->db->insert('UsersDetails','');
+			 $this->db->insert('Usertbl',array('Email' => $Email,'password' =>$password,'companyId' =>1));
+			  $data['UserId']=$this->db->where(['Email' =>$Email])
+			 			->get('Usertbl')->row()->UserId;
+			 return $this->db->insert('UsersDetails',$data);
 
 
 
@@ -47,4 +50,4 @@
 
 	}
 
-?>
+?> 
