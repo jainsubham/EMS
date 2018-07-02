@@ -84,8 +84,29 @@ class User extends CI_Controller
 					$this->form_validation->set_rules('pass2', 'Password Confirmation', 'required');
 					if($this->form_validation->run()) {
 						$encpass = md5($post['pass1']);
-							if($this->loginmodel->comp_reg($post,$encpass)) {
-									print_r("successfully");
+							if($data = $this->loginmodel->comp_reg($post,$encpass)) {
+									$emailid = $post['maill'];
+									$config = array(
+											'protocol' => 'smtp',
+											'smtp_host'=> 'ssl://smtp.googlemail.com',
+											'smtp_port'=> '465',
+											'smtp_user'=> 'subham3996@gmail.com',
+											'smtp_pass'=> 'subham@@3996',
+											'mailtype' => 'html',
+											'charset'  => 'iso-8859-1',
+											'wordwrap' => true
+									);
+									$this->load->library('email',$config);
+									$this->email->to($emailid);
+        							$this->email->from('your@example.com');
+								    $this->email->subject('Most Welcome in my '.$data[0]);
+								    $this->email->message('plz click on confimation mail'.$data[1]);
+								    if($this->email->send()) {
+								    	echo 'Email Send';
+								    }
+								    else {
+								    	show_error($this->email->print_debugger());
+								    }
 							}
 
 					}
@@ -100,14 +121,7 @@ class User extends CI_Controller
 		}
 	}
 
-	public function userprofile(){
-		$this->load->view('userprofile');
-	}
-	
 
-	public function reg_user() {
-		print_r("hello");
-	}
 
 	public function logout(){
 			$this->session->sess_destroy();
@@ -115,6 +129,43 @@ class User extends CI_Controller
 			redirect('user/login');
 
 		}
+	public function reg() {
+
+		$this->load->view('user/userreg');
+	}
+	public function reg_user() {
+		$post = $this->input->post();
+		$data = array(
+			'FirstName' => $post['fname'],
+			'LastName' => $post['lname'],
+			'ContactNo' => $post['phone'],
+			'BloodGroup' => $post['blood'],
+			'Disability' => $post['Disability'],
+			'Dob' => $post['dob'],
+			'MartailStatus' => $post['MartailStatus'],
+			'Gender' => $post['gender'],
+			'Address1' => $post['address1'],
+			'Address2' => $post['address2'],
+			'City' => $post['city'],
+			'State' => $post['state'],
+			'PinCode' => $post['pin'],
+			'PAN' => $post['pan'],
+			'AadharNO' => $post['aadhar'],
+			'FatherName' => $post['pname'],
+			'ParentsSeniority' => $post['parents'],
+			'ParentsDisability' => $post['PDisability'],
+			'children' => $post['Children'],
+			'Hostelerchildren' => $post['Hchildren'],
+			 );
+			$Email = $post['email'];
+			$password = $post['password'];
+		if($this->loginmodel->user_reg($data,$Email,$password)) {
+
+			print_r('okk');
+		}
+
+
+	}
 
 }
 ?>

@@ -101,7 +101,7 @@ body {
 }
 /*--//icons--*/
 
-.sub-main input[type="text"],.sub-main input[type="password"],.sub-main input[type="email"], .sub-main select{
+.sub-main input[type="text"],.sub-main input[type="password"],.sub-main input[type="email"],.sub-main input[type="number"], .sub-main select {
     outline: none;
     font-size: 1.1em;
     margin: 4px 0px 18px 1px;

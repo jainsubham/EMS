@@ -45,15 +45,14 @@
           );
           echo form_input($phone); ?>
                <span class="icon3"><i class="fa fa-phone" aria-hidden="true"></i></span>   
-			
-			 <?php  $dis = array(
-                       'class' => 'name',
-			           'placeholder'=> "Disability...",
-			           'name'=> "disable",
-			           'type'=> "text"
-          );
-     	  echo form_input($dis); ?>
-
+            <?php $dis = array(
+                   'select' => 'Disability',
+                       'yes' =>'Yes',
+                       'no'=>"No",   
+                    );
+                  
+          echo form_dropdown('Disability',$dis,'select'); ?>
+         
      	  <?php  $blood = array(
                        'class' => 'name',
 			            'placeholder'=> "Blood Group...",  
@@ -71,7 +70,7 @@
       	  echo form_input($dob); ?>
 
       	  <?php $gender = array(
-      	  			   'select' => '---Select---',
+      	  			   'select' => 'Gender',
                        'male' =>'Male',
                        'female'=>"Female",
                        'other'=>"Other"    
@@ -81,25 +80,34 @@
         	  <span class="icon7"><i class="fa fa-male" aria-hidden="true"></i></span>
 
         	<?php $martailstatus = array(
-      	  			   'select' => '---Select---',
+      	  			   'select' => 'Martail Status',
                        'married' =>'Married',
                        'unmarried'=>"Unmarried",    
                     );
-          echo form_dropdown('Martail Status',$martailstatus,'select'); ?>
+          echo form_dropdown('MartailStatus',$martailstatus,'select'); ?>
         	  <span class="icon8"><i class="fa fa-male" aria-hidden="true"></i></span>
 
     </div>
 
   <div class="tab"><? echo form_fieldset('Adress Information :'); ?>  
 
-            <?php $add = array(
+            <?php $add1 = array(
                        'class' => 'name',
                        'type' => 'text',
-                       'name' => 'address',
-                       'placeholder'=>"Address"
+                       'name' => 'address1',
+                       'placeholder'=>"Address1"
 
                 );
-            echo form_input($add);?>
+            echo form_input($add1);?>
+                <span class="icon1"><i class="fa fa-home" aria-hidden="true"></i></span>
+            <?php $add2 = array(
+                       'class' => 'name',
+                       'type' => 'text',
+                       'name' => 'address2',
+                       'placeholder'=>"Address2"
+
+                );
+            echo form_input($add2);?>
                 <span class="icon1"><i class="fa fa-home" aria-hidden="true"></i></span>
         
 			<?php  $city = array(
@@ -154,7 +162,7 @@
 						'class' => 'name',
 			            'placeholder'=>"Father Name...",
 			            'type' => 'text',
-			            'name'=>"fname"
+			            'name'=>"pname"
           			);
          echo form_input($pname); ?>
                 <span class="icon1"><i class="fa fa-university" aria-hidden="true"></i></span>
@@ -166,32 +174,47 @@
 			            'name'=>"parents"
           			);
           echo form_input($parent); ?>
+          <?php $parentdis = array(
+                   'select' => 'ParentsDisability',
+                    '1' => 'Yes',
+                    '0' => 'No'
+                    );
+                  
+          echo form_dropdown('PDisability',$parentdis,'select'); ?>
+          <?php $children = array(
+                   'select' => 'Children???',
+                    '1' => '1',
+                    '2' => '2',
+                    '3' => '3',
 
-          <?php  $prntdis = array(
-          				'class' => 'name',
-			            'placeholder'=>"ParentsDisability...",
-			            'type' => 'text',
-			            'name'=>"disable"
-          			);
-          echo form_input($prntdis); ?>
-
-          <?php  $children = array(
-          				'class' => 'name',
-			            'placeholder'=>"Children...",
-			            'type' => 'text',
-			            'name'=>"children"
-          );
-          echo form_input($children); ?>
+                    );
+                  
+          echo form_dropdown('Children',$children,'select'); ?>
 			<span class="icon4"><i class="fa fa-child" aria-hidden="true"></i></span>
-          <?php  $Hchildren = array(
-          		'class' => 'name',
-	            'placeholder'=>"HostelerChildren...",
-	            'type' => 'text',
-	            'name'=>"Hchildren"
-          );
-          echo form_input($Hchildren); ?>
+         <?php $Hchildren = array(
+                   'select' => 'Hosteler Children???',
+                    '1' => 'yes',
+                    '0' => 'no'
+                    );
+                  
+          echo form_dropdown('Hchildren',$Hchildren,'select'); ?>
 	</div>
-
+  <div class="tab"><? echo form_fieldset('Create an account :'); ?> 
+      <?php  $email = array(
+                   'class' => 'name',
+                   'placeholder'=> "Enter email...",
+                   'name'=> "email",
+                   'type'=> "text"
+          );
+          echo form_input($email); ?>
+          <?php  $password= array(
+                   'class' => 'name',
+                   'placeholder'=> "Password...",
+                   'name'=> "password",
+                   'type'=> "password"
+          );
+          echo form_input($password); ?>
+  </div>
   <div style="overflow:auto;">
     <div >
       <button type="button" class="PrevBtn" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
@@ -204,7 +227,8 @@
     <span class="step"></span>
     <span class="step"></span>
     <span class="step"></span>
-      </div>
+    <span class="step"></span>
+ </div>
 
     </div>
 </div>
