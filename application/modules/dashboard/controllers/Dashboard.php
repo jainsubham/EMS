@@ -74,6 +74,11 @@ class Dashboard extends CI_Controller
 	}
 
 	public function verify_mail(){
+		/*if(null==($this->session->userdata('emailunverified'))){
+
+				redirect('user/login');
+			}*/
+
 		$this->load->view('verify_mail');
 	}
 
