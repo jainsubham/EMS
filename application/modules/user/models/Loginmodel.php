@@ -26,13 +26,12 @@
 			 					->get('Usertbl')->row()->UserId;
 
 			 $this->db->insert('UsersDetails',array('FirstName' =>$post['fname'],'LastName' =>$post['lname'],'ContactNo' =>$post['contactno'],'UserId' =>$uid));
-			 $userid = $this->db->where(['FirstName' =>$post['fname']])
-			 				->get('UsersDetails')->row()->UserId;
+			 
 			 		$mail_hash = md5(time());
 			 		
 
-			 $this->db->insert('Verifyhash',array('userid' =>$userid,'hash' =>$mail_hash));
-			 $this->db->insert('AdminTbl',array('companyId' =>$id,'UserId'=>$userid,'Date' =>date('Y-m-d H:i:s',time())));	
+			 $this->db->insert('Verifyhash',array('userid' =>$uid,'hash' =>$mail_hash));
+			 $this->db->insert('AdminTbl',array('companyId' =>$id,'UserId'=>$uid,'Date' =>date('Y-m-d H:i:s',time())));	
 			 return $mail_hash;
 
 
@@ -63,7 +62,7 @@
 
 		public function account_email_verify($hash){
 			if($this->db->where(['hash' =>$hash,'active'=>1])
-			 			->get('Verifyhash')->num_rows==1){
+			 			->get('Verifyhash')->num_rows()!=0){
 
 				$q = $this->db->where(['hash' =>$hash,'active'=>1])
 			 			->get('Verifyhash')->row()->userid;

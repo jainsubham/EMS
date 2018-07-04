@@ -271,7 +271,7 @@ class User extends CI_Controller
         	$hash = $this->uri->segment(3);
 		}
 		if($hash!=NULL){
-			if($this->loginmodel->account_email_verify($hash)){
+					if($this->loginmodel->account_email_verify($hash)){
 				$this->session->sess_destroy();
 				$this->load->view('email_verified');
 			}
