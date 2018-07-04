@@ -158,7 +158,7 @@ class User extends CI_Controller
 			'Hostelerchildren' => $post['Hchildren'],
 			 );
 			$Email = $post['email'];
-			$password = $post['password'];
+			$password = md5($post['password']);
 		if($this->loginmodel->user_reg($data,$Email,$password)) {
 
 			print_r('okk');

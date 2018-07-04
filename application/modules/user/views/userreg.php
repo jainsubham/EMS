@@ -204,7 +204,7 @@
                    'class' => 'name',
                    'placeholder'=> "Enter email...",
                    'name'=> "email",
-                   'type'=> "text"
+                   'type'=> "email"
           );
           echo form_input($email); ?>
           <?php  $password= array(

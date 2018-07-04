@@ -3,11 +3,15 @@
 class Profilemodel extends CI_Model
 {
 	
-	public function select() {
-		$q = $this->db->select(['companyId','name'])
-					->get('compTbl');
-			print_r($q);
-			die();
+	public function select($q) {
+
+		return  $this->db->where(['UserId' =>$q] )
+					->get('UsersDetails')->row();
+
+	}
+	public function update($post) {
+
+
 
 	}
 }
