@@ -256,6 +256,7 @@ class User extends CI_Controller
 		$this->load->view('invalid_email');
 	}
 
+
 	public function invalid_verification(){
 		$this->load->view('invalid_verification_link');
 	}

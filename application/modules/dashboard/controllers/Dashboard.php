@@ -140,7 +140,22 @@ class Dashboard extends CI_Controller
 		}
 
 	}
-
+	public function admindashboard() {
+		$this->load->view('dashboard/admindashboard');
+	}
+	
+	public function attendance() {
+		$this->load->view('dashboard/attendance');
+	}
+	public function announcement() {
+		$this->load->view('dashboard/announcement');
+	}
+	public function invite_emp() {
+		$this->load->view('dashboard/invite_emp');
+	}
+	public function organization() {
+		$this->load->view('dashboard/organization');
+	}
 
 }
 ?>
