@@ -19,7 +19,7 @@
 			    	<h3 class="panel-title"><b>Please sign in</b></h3>
 			 	</div>
 			  	<div class="panel-body">
-			    	<? echo form_open('user/verify'); ?>
+			    	<? echo form_open('user/verify_login'); ?>
                     <fieldset>
 			    	  	<div class="form-group">
 			    		    

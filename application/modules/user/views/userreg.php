@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Company Registration</title>
+  <title>Employee Registration</title>
 <?=  link_tag('assets/css/font-awesome.min.css'); ?>
 
 <?= link_tag('assets/css/style.css'); ?>
@@ -13,7 +13,8 @@
 </div>
      <?php
      $attr = array('id' => 'regForm');
-      echo form_open_multipart('user/reg_user',$attr); 
+     $hidden = array('hidemail' => $emailid,'hidcompid' => $companyid,'hidhash' => $hash);
+      echo form_open_multipart('user/reg_user',$attr,$hidden); 
       ?>
       
   <!-- One "tab" for each step in the form: -->
@@ -44,11 +45,14 @@
 			           'type'=> "text"
           );
           echo form_input($phone); ?>
+
+
+
                <span class="icon3"><i class="fa fa-phone" aria-hidden="true"></i></span>   
             <?php $dis = array(
                    'select' => 'Disability',
-                       'yes' =>'Yes',
-                       'no'=>"No",   
+                       '1' =>'Yes',
+                       '0'=>"No",   
                     );
                   
           echo form_dropdown('Disability',$dis,'select'); ?>
@@ -165,17 +169,18 @@
 			            'name'=>"pname"
           			);
          echo form_input($pname); ?>
-                <span class="icon1"><i class="fa fa-university" aria-hidden="true"></i></span>
-				
-          <?php  $parent = array(
-          				'class' => 'name',
-			            'placeholder'=>"ParentsSeniority ...",
-			            'type' => 'text',
-			            'name'=>"parents"
-          			);
-          echo form_input($parent); ?>
+                <span class="icon1"><i class="fa fa-male" aria-hidden="true"></i></span>
+          
+          <?php $parentsen = array(
+                   'select' => 'Parents Seniority ...',
+                    '1' => 'Yes',
+                    '0' => 'No'
+                    );
+                  
+          echo form_dropdown('parents',$parentsen,'select'); ?>
+
           <?php $parentdis = array(
-                   'select' => 'ParentsDisability',
+                   'select' => 'Parents Disability',
                     '1' => 'Yes',
                     '0' => 'No'
                     );
@@ -204,7 +209,7 @@
                    'class' => 'name',
                    'placeholder'=> "Enter email...",
                    'name'=> "email",
-                   'type'=> "text"
+                   'type'=> "email"
           );
           echo form_input($email); ?>
           <?php  $password= array(
