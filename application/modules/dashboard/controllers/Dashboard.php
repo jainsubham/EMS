@@ -6,6 +6,7 @@ class Dashboard extends CI_Controller
 			parent::__construct();
 			$this->load->helper('form');
 			$this->load->library('session');
+			$this->load->database();
 		}
 
 	public function index() {
@@ -47,7 +48,7 @@ class Dashboard extends CI_Controller
 			        </body>
 			        </html>';
 			    
-			      $this->email->from('subham3996@gmail.com'); 
+			      $this->email->from('EMS'); 
 			      $this->email->to($emailto);
 			      $this->email->subject($subject);
 			      $this->email->message($message);
@@ -73,6 +74,7 @@ class Dashboard extends CI_Controller
 	}
 
 	public function invite(){
+		
 		$this->load->view('email_invite');
 	}
 
@@ -82,19 +84,52 @@ class Dashboard extends CI_Controller
 		$config['max_size']             = 100;
 
 		$this->load->library('upload', $config);
-
+		$adminid = $this->session->userdata('adminid');
+			$this->load->model('dashboardmodel');
+			$companyid = $this->dashboardmodel->get_companyid($adminid);
+				
 		if ( $this->upload->do_upload('csvfile')){
 			$uploaddata = $this->upload->data();
 			$filename = $uploaddata['file_name'];
 			$link = base_url('assets/csv/'.$filename);
 			$data = fopen($link,"r");
-	
+			
+			$subject = "EMS Account Invitation";
+			$name = '';	
+			$companyname = $this->dashboardmodel->get_companyname($companyid);
+			$weblink = base_url('');
+			$invitelin=  base_url('user/reg_user');
 
+			$part1 = "<div> Hello ";
+			$part2 = " ,<br><br>
+			 You have been invited by ".$companyname." to create your account on EMS .<br>
+			Please create your account on EMS by clicking on the following link : <br>
+			<a href='";
+			$part3 = "'> Accept Invitation </a>.<br>
+			If you have any questions , please contact us on ".$weblink."
+			<br> Regards ,<br>EMS Team
+			</div>";		
+			
 
 			while($dataa = fgetcsv($data,"1000",",")){
-			echo "<pre>";
-				print_r($dataa);
-				echo "</pre>";
+
+			$name = $dataa['0'];
+			$emailto = $dataa['1'];
+			$tobehashed = $companyid.$emailto;
+			$hash = md5($tobehashed);
+			$invitelink = $invitelin."/".$hash;
+			
+			$msgbody = $part1.$name.$part2.$invitelink.$part3;
+			
+
+			$this->init_mail();
+			$this->sendmail($subject , $msgbody , $emailto);
+
+			if($this->dashboardmodel->send_invite($emailto,$companyid,$hash)){
+				echo $name." is invited"."<br>";
+			}
+
+
 			}
 			unlink('assets/csv/'.$filename);
 						

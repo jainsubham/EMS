@@ -26,7 +26,7 @@ class User extends CI_Controller
 		$this->load->view('login');
 	}
 
-	public function verify(){
+	public function verify_login(){
 		$emailfield = $this->input->post('emailfield');
 		$password = $this->input->post('passwordfield');
 		if(!isset($emailfield) or !isset($password)){
@@ -64,6 +64,57 @@ class User extends CI_Controller
 
 	}	
 
+	public function init_mail(){
+		$config = Array(
+		    'protocol' => 'smtp',
+		    'smtp_host' => 'ssl://smtp.googlemail.com',
+		    'smtp_port' => 465,
+		    'smtp_user' => 'subham3996@gmail.com',
+		    'smtp_pass' => 'subham@@3996',
+		    'charset'   => 'utf-8',
+		    'mailtype'  => 'html',
+		    'starttls'  => true,
+		    'newline'   => "\r\n"
+		);
+		$this->load->library('email', $config);
+	}
+
+
+	public function sendmail($subject , $msgbody , $emailto){
+		
+			        $message = '<!DOCTYPE html>
+			        <html>
+			        <head>
+			        	<title>Email</title>
+			        </head>
+			        <body>
+			        '.$msgbody.'
+			        </body>
+			        </html>';
+			    
+			      $this->email->from('EMS'); 
+			      $this->email->to($emailto);
+			      $this->email->subject($subject);
+			      $this->email->message($message);
+			      if($this->email->send())
+			     {
+			      $datareturn = 'Sent';
+			     }
+			     else
+			    {
+			    $datareturn = show_error($this->email->print_debugger());
+			    }
+			    return $datareturn;
+
+	}
+
+	public function send_verification_mail($name,$emailto,$mail_hash){
+		$subject = "Verify Your Account";
+		$msgbody = "<h2>Hi ".$name." , Welcome to EMS </h2><br> Verify your Ems account by clicking the following link : <br> <a href='".base_url('user/verify/').$mail_hash."'>Verify Your Account</a><br>Warm regards ,<br> Team EMS";
+		$this->init_mail();
+		$this->sendmail($subject,$msgbody,$emailto);
+	}
+
 	public function comp_reg(){
 		$post = $this->input->post();
 		if(!isset($post['pass1'])){
@@ -84,29 +135,13 @@ class User extends CI_Controller
 					$this->form_validation->set_rules('pass2', 'Password Confirmation', 'required');
 					if($this->form_validation->run()) {
 						$encpass = md5($post['pass1']);
-							if($data = $this->loginmodel->comp_reg($post,$encpass)) {
-									$emailid = $post['maill'];
-									$config = array(
-											'protocol' => 'smtp',
-											'smtp_host'=> 'ssl://smtp.googlemail.com',
-											'smtp_port'=> '465',
-											'smtp_user'=> 'subham3996@gmail.com',
-											'smtp_pass'=> 'subham@@3996',
-											'mailtype' => 'html',
-											'charset'  => 'iso-8859-1',
-											'wordwrap' => true
-									);
-									$this->load->library('email',$config);
-									$this->email->to($emailid);
-        							$this->email->from('your@example.com');
-								    $this->email->subject('Most Welcome in my '.$data[0]);
-								    $this->email->message('plz click on confimation mail'.$data[1]);
-								    if($this->email->send()) {
-								    	echo 'Email Send';
-								    }
-								    else {
-								    	show_error($this->email->print_debugger());
-								    }
+							if($mail_hash = $this->loginmodel->comp_reg($post,$encpass)) {
+									$name = $post['fname'];
+									$emailto = $post['maill'];
+									$this->send_verification_mail($name,$emailto,$mail_hash);
+									$this->session->set_userdata('emailunverified','1');
+									redirect('dashboard/verify_mail');
+									
 							}
 
 					}
@@ -130,11 +165,46 @@ class User extends CI_Controller
 
 		}
 	public function reg() {
+		$this->load->library('uri');
 
-		$this->load->view('user/userreg');
+		if ($this->uri->segment(1) === FALSE){
+        	$hash = 0;
+		}
+		else{
+        	$hash = $this->uri->segment(3);
+		}
+		if($hash!=NULL){
+			if($dbdata = $this->loginmodel->verify_invite_hash($hash)){
+				if($dbdata->used==0){
+				$data['emailid'] = $dbdata->emailid;
+				$data['companyid'] = $dbdata->companyid;
+				$data['hash'] = $dbdata->hash;
+				$this->load->view('user/userreg',$data);
+
+				}else{
+					redirect('user/invalid_invite');	
+				}
+
+			}else{
+				redirect('user/invalid_invite');
+			}
+		}else{
+			redirect('user/invalid_invite');
+		}
+
+		
 	}
+
+	
 	public function reg_user() {
+
 		$post = $this->input->post();
+		if(!isset($post['fname'])){
+			redirect('user/reg/');
+		}
+		if($post['hidemail']!=$post['email']){
+			redirect('user/invalid_email');
+		}
 		$data = array(
 			'FirstName' => $post['fname'],
 			'LastName' => $post['lname'],
@@ -158,13 +228,59 @@ class User extends CI_Controller
 			'Hostelerchildren' => $post['Hchildren'],
 			 );
 			$Email = $post['email'];
-			$password = md5($post['password']);
-		if($this->loginmodel->user_reg($data,$Email,$password)) {
+			$password = $post['password'];
+			$encpass = md5($password);
+			$companyid = $post['hidcompid'];
+			$hashed = $post['hidhash'];
 
-			print_r('okk');
+		if($mail_hash = $this->loginmodel->user_reg($data,$Email,$encpass,$companyid,$hashed)) {
+			$emailto = $Email;
+			$name =$post['fname'];
+			$this->send_verification_mail($name,$emailto,$mail_hash);
+			$this->session->set_userdata('emailunverified','1');
+			redirect('dashboard/verify_mail');
 		}
 
 
+	}
+
+	public function invalid_invite(){
+		$this->load->view('invalid_invite');
+	}
+
+	public function email_verified(){
+		$this->load->view('email_verified');
+	}
+
+	public function invalid_email(){
+		$this->load->view('invalid_email');
+	}
+
+
+	public function invalid_verification(){
+		$this->load->view('invalid_verification_link');
+	}
+
+	public function verify(){
+		$this->load->library('uri');
+
+		if ($this->uri->segment(1) === FALSE){
+        	$hash = 0;
+		}
+		else{
+        	$hash = $this->uri->segment(3);
+		}
+		if($hash!=NULL){
+			if($this->loginmodel->account_email_verify($hash)){
+				$this->session->sess_destroy();
+				$this->load->view('email_verified');
+			}
+
+
+		}else{
+			redirect('user/invalid_verification');
+		}
+		redirect('user/invalid_verification');
 	}
 
 }
