@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 30, 2018 at 01:52 PM
+-- Generation Time: Jul 04, 2018 at 01:14 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -34,6 +34,15 @@ CREATE TABLE `AdminTbl` (
   `companyId` int(11) NOT NULL,
   `Date` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `AdminTbl`
+--
+
+INSERT INTO `AdminTbl` (`id`, `UserId`, `companyId`, `Date`) VALUES
+(1, 3, 1, NULL),
+(2, 5, 2, '2018-07-02 16:39:25'),
+(3, 11, 3, '2018-07-04 11:46:39');
 
 -- --------------------------------------------------------
 
@@ -103,7 +112,9 @@ CREATE TABLE `CompTbl` (
 --
 
 INSERT INTO `CompTbl` (`id`, `name`, `address`, `website`, `mail`, `contactno`, `logo`, `DateofReg`) VALUES
-(1, 'nd', NULL, NULL, NULL, NULL, NULL, NULL);
+(1, 'nd', NULL, NULL, NULL, NULL, NULL, NULL),
+(2, 'wittyfeedd', 'indore', 'wittyfeed.com', 'hr@wittyfeed.com', '9898989898', NULL, '2018-07-02 16:39:25'),
+(3, 'TempMail Pvt ltd', 'newyork', 'tempmail.org', 'hucati@99pubblicita.com', '7878787878', NULL, '2018-07-04 11:46:38');
 
 -- --------------------------------------------------------
 
@@ -164,7 +175,8 @@ CREATE TABLE `Invites` (
   `emailid` varchar(50) NOT NULL,
   `hash` varchar(50) NOT NULL,
   `companyid` int(11) NOT NULL,
-  `invitetime` datetime NOT NULL
+  `invitetime` datetime NOT NULL,
+  `used` int(11) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -279,13 +291,27 @@ CREATE TABLE `UsersDetails` (
   `Gender` varchar(10) DEFAULT NULL,
   `MartailStatus` varchar(10) DEFAULT NULL,
   `Dob` date DEFAULT NULL,
-  `Disability` varchar(20) DEFAULT NULL,
+  `Disability` int(20) DEFAULT NULL,
   `FatherName` varchar(50) NOT NULL,
   `ParentsSeniority` int(11) DEFAULT NULL,
-  `ParentsDisability` varchar(20) DEFAULT NULL,
+  `ParentsDisability` int(11) DEFAULT NULL,
   `Children` int(11) DEFAULT NULL,
-  `HostelerChildren` int(11) DEFAULT NULL
+  `HostelerChildren` int(11) DEFAULT NULL,
+  `img` varchar(80) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `UsersDetails`
+--
+
+INSERT INTO `UsersDetails` (`UserId`, `FirstName`, `LastName`, `ContactNo`, `Address1`, `Address2`, `City`, `State`, `PinCode`, `BloodGroup`, `PAN`, `AadharNo`, `Gender`, `MartailStatus`, `Dob`, `Disability`, `FatherName`, `ParentsSeniority`, `ParentsDisability`, `Children`, `HostelerChildren`, `img`) VALUES
+(4, 'Narender', 'Singh', '9996990458', 'iuu', 'nmbn', 'Indore', 'MP', 121212, 'B+', '12121212', '124124124124', 'male', 'unmarried', '2020-08-03', 0, 'n', 0, 0, 0, 0, ''),
+(5, 'anubha', 'Singh', '9898989898', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, ''),
+(6, 'narender', 'singh', '999999555', 'io', 'jh', 'jjj', 'jkj', 15155, 'b+', '15551561', '1555551561516515', 'male', 'unmarried', '2020-09-04', 0, 'fytgjhjas', 0, 0, 0, 0, ''),
+(7, 'ghjbnm,', 'vbjknm', 'jvbhknm', 'jnlk,m', 'kbjkn', 'kjnjk', 'njkbkj', 56543, 'B+', '145654894', '24465456454646', 'male', 'unmarried', '2019-06-13', 0, 'bkjnkjhkj', 0, 0, 0, 0, ''),
+(9, 'nd', 'nd', '9889889898', 'Bh3 , Gjust', 'bh3', 'Hisar', 'haryana', 125001, 'B+', '989889898', '457854784578', 'male', 'unmarried', '1995-09-05', 0, 'x', 1, 0, 0, 0, ''),
+(10, 'Shubham', 'Jain', '9898989898', 'io', 'bh3', 'Indore', 'haryana', 121212, 'B+', '12121212', '1555551561516515', 'male', 'unmarried', '2019-08-05', 0, 'bkjnkjhkj', 0, 0, 0, 0, ''),
+(11, 'Admin', 'admin', '9898989898', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, '', NULL, NULL, NULL, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -308,7 +334,14 @@ CREATE TABLE `Usertbl` (
 --
 
 INSERT INTO `Usertbl` (`UserId`, `password`, `accountstatus`, `Email`, `accountlevel`, `companyId`, `emailverified`) VALUES
-(3, 'a69913f66f2cfd4bd3f8ea75954ac476', 1, '123@g.c', 1, 1, 1);
+(3, 'a69913f66f2cfd4bd3f8ea75954ac476', 1, '123@g.c', 1, 1, 1),
+(4, 'nd', 0, 'nd@d.com', 0, 1, 0),
+(5, 'a69913f66f2cfd4bd3f8ea75954ac476', 1, 'hr@wittyfeed.com', 1, 2, 1),
+(6, 'nd', 0, 'nd', 0, 1, 0),
+(7, 'a69913f66f2cfd4bd3f8ea75954ac476', 0, 'nd@gm.co', 0, 1, 0),
+(9, 'a69913f66f2cfd4bd3f8ea75954ac476', 0, 'nd@nd.com', 0, 2, 0),
+(10, '267712a0135b511f5cfdb94c8dd409bc', 0, 'shubhainpa@gmail.com', 0, 1, 0),
+(11, '6a962563e235e1789e663e356ac8d9e4', 1, 'hucati@99pubblicita.com', 1, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -322,6 +355,15 @@ CREATE TABLE `Verifyhash` (
   `hash` varchar(50) NOT NULL,
   `active` int(11) NOT NULL DEFAULT '1'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Verifyhash`
+--
+
+INSERT INTO `Verifyhash` (`hashid`, `userid`, `hash`, `active`) VALUES
+(1, 5, 'ffcefa67921ebfe82e74a2ebf338ffe5', 1),
+(2, 10, 'b891d21f6803b75700c9e762838dcf87', 1),
+(3, 11, 'a9d22362f2e56949aa2655d858017fc4', 0);
 
 --
 -- Indexes for dumped tables
@@ -469,7 +511,7 @@ ALTER TABLE `Verifyhash`
 -- AUTO_INCREMENT for table `AdminTbl`
 --
 ALTER TABLE `AdminTbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Announcements`
@@ -487,7 +529,7 @@ ALTER TABLE `Attendance`
 -- AUTO_INCREMENT for table `CompTbl`
 --
 ALTER TABLE `CompTbl`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `Designations`
@@ -529,13 +571,13 @@ ALTER TABLE `Team`
 -- AUTO_INCREMENT for table `Usertbl`
 --
 ALTER TABLE `Usertbl`
-  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `UserId` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `Verifyhash`
 --
 ALTER TABLE `Verifyhash`
-  MODIFY `hashid` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `hashid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
