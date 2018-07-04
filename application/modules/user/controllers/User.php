@@ -280,7 +280,6 @@ class User extends CI_Controller
 		}else{
 			redirect('user/invalid_verification');
 		}
-		redirect('user/invalid_verification');
 	}
 
 }

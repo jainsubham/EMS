@@ -98,7 +98,7 @@ class Dashboard extends CI_Controller
 			$name = '';	
 			$companyname = $this->dashboardmodel->get_companyname($companyid);
 			$weblink = base_url('');
-			$invitelin=  base_url('user/reg_user');
+			$invitelin=  base_url('user/reg');
 
 			$part1 = "<div> Hello ";
 			$part2 = " ,<br><br>
