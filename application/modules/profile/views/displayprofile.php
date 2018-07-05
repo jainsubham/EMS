@@ -17,15 +17,19 @@ include('adminpannel.php');?>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
           <div class="collapse navbar-collapse justify-content-end">
-             <form class="navbar-form">
+              <?php echo form_open('profile/editprofile') ?>
               <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                  <i class="material-icons">search</i>
-                  <div class="ripple-container"></div>
-                </button>
               </div>
-            </form>
+                    <?php
+                            $btn = array(
+                              'class' => "btn btn-primary pull-right",
+                               'type' => 'submit',
+                               'name' => 'submit',
+                               'value' => 'Edit Profile'
+                            );
+                    echo form_submit($btn);
+                    ?>
+            <?php echo form_close(); ?>
           </div>
         </div>
       </nav>
@@ -42,35 +46,35 @@ include('adminpannel.php');?>
                 <div class="card-body">
                   <form>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
                          <label class="bmd-label-floating">Company : </label>
-                         <?php echo  $x->name ?>
+                         <?php echo  $companyname ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ContactNo</label>
+                          <label class="bmd-label-floating">ContactNo :</label>
                           <?php echo $x->ContactNo ?>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-5">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Email address</label>
-                          <?php echo $x->Email ?>
+                          <label class="bmd-label-floating">Email address :</label>
+                          <?php echo $Email ?>
                         </div>
                       </div>
                     </div>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">First Name :  </label>
+                          <label class="bmd-label-floating">First Name :</label>
                           <?php echo $x->FirstName ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Last Name :  </label>
+                          <label class="bmd-label-floating">Last Name :</label>
                           <?php echo $x->LastName ?>
                         </div>
                       </div>
@@ -78,7 +82,7 @@ include('adminpannel.php');?>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Adress</label>
+                          <label class="bmd-label-floating">Adress:</label>
                           <?php echo $x->Address1 ?>
                         </div>
                       </div>
@@ -86,7 +90,7 @@ include('adminpannel.php');?>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Adress</label>
+                          <label class="bmd-label-floating">Adress:</label>
                           <?php echo $x->Address2 ?>
                         </div>
                       </div>
@@ -94,19 +98,19 @@ include('adminpannel.php');?>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">City</label>
+                          <label class="bmd-label-floating">City :</label>
                           <?php echo $x->City ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">State</label>
+                          <label class="bmd-label-floating">State :</label>
                           <?php echo $x->State ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Pin Code</label>
+                          <label class="bmd-label-floating">Pin Code :</label>
                           <?php echo $x->PinCode?>
                         </div>
                       </div>
@@ -114,20 +118,20 @@ include('adminpannel.php');?>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">BloddGroup</label>
-                          <?php echo $x->City ?>
+                          <label class="bmd-label-floating">BloddGroup :</label>
+                          <?php echo $x->BloodGroup ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Gender</label>
-                          <?php echo $x->State ?>
+                          <label class="bmd-label-floating">Gender :</label>
+                          <?php echo $x->Gender ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Martail Status</label>
-                          <?php echo $x->PinCode?>
+                          <label class="bmd-label-floating">Martail Status :</label>
+                          <?php echo $x->MartailStatus?>
                         </div>
                       </div>
                     </div>
@@ -141,7 +145,11 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Disability:  </label>
-                          <?php echo $x->Disability ?>
+                          <?php if($x->Disability == 1) 
+                                echo "Disable";
+                               else 
+                                echo "NOT Disable";
+                           ?>
                         </div>
                       </div>
                     </div>
@@ -169,26 +177,34 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentsSeniority:</label>
-                          <?php echo $x->ParentsSeniority ?>
+                          <?php if($x->ParentsSeniority == 1) 
+                                echo "Yes";
+                               else 
+                                echo "NO";
+                           ?>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-4">
+                      <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentDisability :</label>
-                          <?php echo $x->ParentsDisability ?>
+                          <?php if($x->ParentsDisability == 1) 
+                                echo "Disable";
+                               else 
+                                echo "NOT Disable";
+                           ?>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Children</label>
+                          <label class="bmd-label-floating">Children :</label>
                           <?php echo $x->Children ?>
                         </div>
                       </div>
-                      <div class="col-md-4">
+                      <div class="col-md-3">
                         <div class="form-group">
-                          <label class="bmd-label-floating">HostelerChildren</label>
+                          <label class="bmd-label-floating">HostelerChildren :</label>
                           <?php echo $x->HostelerChildren?>
                         </div>
                       </div>
@@ -201,12 +217,12 @@ include('adminpannel.php');?>
               <div class="card card-profile">
                 <div class="card-avatar">
                   <a href="#pablo">
-                    <img class="img" src="../assets/img/faces/marc.jpg" />
+                    <img class="img" src="<?=base_url('assets/img/user/').$x->img; ?>" />
                   </a>
                 </div>
                 <div class="card-body">
                   <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                  <h4 class="card-title">Alec Thompson</h4>
+                  <h4 class="card-title"><?php echo $x->FirstName.$x->LastName ;?></h4>
                   <p class="card-description">
                     Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
                   </p>

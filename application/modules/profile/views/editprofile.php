@@ -37,7 +37,7 @@
                   <p class="card-category">Complete your profile</p>
                 </div>
                 <div class="card-body">
-                <? echo form_open('profile/updateprofile') ?>
+                <? $hidden = array('adminid' => $x->UserId); echo form_open_multipart("profile/updateprofile",'',$hidden); ?>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
@@ -46,7 +46,7 @@
                               $comp = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->name,
+                                'value' => $companyname,
                                 'disabled' => true
                               );
                           echo form_input($comp);
@@ -74,7 +74,7 @@
                               $email = array(
                                 'class' =>'form-control',
                                 'type' => 'email',
-                                'value' => $x->Email,
+                                'value' => $Email,
                                 'name' => 'email'
                               );
                           echo form_input($email);
@@ -206,15 +206,14 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Gender</label>
-                          <?php 
-                              $gender = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'value' => $x->Gender,
-                                'name' =>'gender'
-                              );
-                          echo form_input($gender);
-                          ?>
+                         <?php $gender = array(
+                               'select' => '---select---',
+                               'male' =>'Male',
+                               'female'=>"Female",
+                               'other'=>"Other"    
+                            );
+                         echo form_dropdown('gender',$gender,$x->Gender); ?>
+                  
                         </div>
                       </div>
                       <div class="col-md-4">
@@ -225,7 +224,7 @@
                                   'married' =>'Married',
                                   'unmarried'=>"Unmarried",   
                                   );
-                          echo form_dropdown('MartailStatus',$martailstatus,'select'); ?>
+                          echo form_dropdown('MartailStatus',$martailstatus,$x->MartailStatus); ?>
                         </div>
                       </div>
                     </div>
@@ -247,15 +246,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Disability</label>
-                          <?php 
-                              $dis = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'value' => $x->Disability,
-                                'name' => 'dis'
-                              );
-                          echo form_input($dis);
-                          ?>
+                          <?php $dis = array(
+                               'select' => 'Disability',
+                                   '1' =>'Yes',
+                                   '0'=>"No",   
+                                );         
+                          echo form_dropdown('dis',$dis,$x->Disability); ?>
+                          
                         </div>
                       </div>
                     </div>
@@ -324,39 +321,46 @@
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentsDisability</label>
                           <?php $parentdis = array(
-                               'select' => '---selec---',
+                               'select' => '---select---',
                                 '1' => 'Yes',
                                 '0' => 'No'
                                 );
-                          echo form_dropdown('pd',$parentdis,'select'); ?>
+                          echo form_dropdown('pd',$parentdis,$x->ParentsDisability); ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Children</label>
-                          <?php 
-                              $children = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'value' => $x->State,
-                                'name' =>'children'
-                              );
-                          echo form_input($children);
-                          ?>
+                          <?php $children = array(
+                               'select' => '---select---',
+                                '1' => '1',
+                                '2' => '2',
+                                '3' => '3',
+
+                                );
+                        echo form_dropdown('children',$children,$x->Children); ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">HostelerChidren</label>
-                          <?php 
-                              $hc = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'value' => $x->HostelerChildren,
-                                'name' => 'hc'
-                              );
-                          echo form_input($hc);
-                          ?>
+                          <?php $HostelerChidren = array(
+                               'select' => '---select---',
+                                '1' => 'Yes',
+                                '0' => 'No'
+                                );
+                          echo form_dropdown('hc',$HostelerChidren,$x->HostelerChildren); ?>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="form-group">
+                          <label class="bmd-label-floating">Select Image</label>
+                            <? $img = array(
+                               'name' => 'img'
+                            );
+                            echo  form_upload($img); ?> 
                         </div>
                       </div>
                     </div>
@@ -378,12 +382,13 @@
               <div class="card card-profile">
                 <div class="card-avatar">
                   <a href="#pablo">
-                    <img class="img" src="../assets/img/faces/marc.jpg" />
+
+                    <img class="img" src="<?= base_url('assets/img/user/').$x->img; ?>" />
                   </a>
                 </div>
                 <div class="card-body">
                   <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                  <h4 class="card-title">Alec Thompson</h4>
+                  <h4 class="card-title"><?php echo $x->FirstName.$x->LastName; ?></h4>
                   <p class="card-description">
                     Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
                   </p>

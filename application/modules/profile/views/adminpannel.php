@@ -17,32 +17,6 @@
   <link href="../assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
-  <style>
-      
-
-      .dropdown-content {
-          display: block;
-
-          background-color: #f9f9f9;
-      }
-
-      .dropdown-content a {
-          color: black;
-          padding: 12px 16px;
-          text-decoration: none;
-          display: block;
-      }
-
-      .dropdown-content a:hover {background-color: #f1f1f1}
-
-      .ndsingh:hover .dropdown-content {
-          display: block !important;
-      }
-
-      .ndsingh:hover .dropbtn {
-          background-color: #3e8e41;
-      }
-</style>
 </head>
 
 <body class="">
@@ -66,29 +40,14 @@
               <p>Dashboard</p>
             </a>
           </li>
-      
-
-
-        <li class="ndsingh nav-item " id="ndsingh">
-            <a class="ndsingh nav-link " id="ndsingh" href="<? echo base_url('dashboard/attendance'); ?>">
-              <i class="material-icons">content_paste</i>
-              <p class="ndsingh">Admin Profile</p>
+            <li class="nav-item">
+            <a class="nav-link" href='<?= base_url('profile/displayprofile') ?>'>
+              <i class="material-icons">person</i>
+              <p>Admin Profile</p>
             </a>
-            
-          </li><div class="dropdown-content" id="dropdown-content">
-              <a href="displayprofile">DisplayProfile</a>
-              <a href="editprofile">EditProfile</a>
-            </div>
-
-
-<script type="text/javascript">
-  $("ndsingh").hover(function(){
-    $("dropdown-content").css("display", "block");
-    });
-</script>
-
-          <li class="nav-item ">
-            <a class="nav-link" href="<? echo base_url('dashboard/attendance'); ?>">
+          </li>
+           <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/attendance'); ?>">
               <i class="material-icons">content_paste</i>
               <p>Today Attendance</p>
             </a>

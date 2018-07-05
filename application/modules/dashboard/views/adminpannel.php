@@ -41,7 +41,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('profile/adminprofile'); ?>">
+            <a class="nav-link" href="<?= base_url('profile/displayprofile'); ?>">
               <i class="material-icons">person</i>
               <p>Admin Profile</p>
             </a>
@@ -69,6 +69,13 @@
               <i class="material-icons">location_ons</i>
               <p>Organization Structure</p>
             </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="EmpDetails">
+              <i class="material-icons">person</i>
+              <p>Employees</p>
+            </a>
+          </li>
         </ul>
       </div>
     </div>

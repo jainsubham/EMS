@@ -529,6 +529,7 @@ button::-moz-focus-inner,
   border-style: none; }
 
 input[type="radio"],
+input[type="file"],
 input[type="checkbox"] {
   box-sizing: border-box;
   padding: 0; }
@@ -9162,7 +9163,7 @@ textarea {
   line-height: 1.42857 !important; }
 
 .form-group input[type=file] {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   top: 0;
   right: 0;
@@ -9170,7 +9171,7 @@ textarea {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: -1; }
+ }
 
 .form-newsletter .input-group,
 .form-newsletter .form-group {
