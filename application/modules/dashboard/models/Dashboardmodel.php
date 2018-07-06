@@ -32,6 +32,24 @@
 				return True;
 			}
 		}
+		public function get_userid($compid) {
+
+			return $this->db->select('UserId')
+							->where(['companyId' => $compid])
+							->get('Usertbl')->result();					
+		}
+		public function empdetails($uid) {
+
+				  $q = $this->db->select(['FirstName','LastName','img'])
+				   				->where(['UserID'=> $uid])
+				   				->get('UsersDetails')->result();
+				  $designationid = $this->db->select('Designation')
+				 	   			->where(['UserId' =>$uid])
+				 	   			->get('EmploymentDetails')->result();
+				 	   	print_r($designationid);
+				 		
+		}
+		
 
 		public function get_designations_list($companyid){
 			$q = $this->db->where(['CompanyId'=>$companyid])

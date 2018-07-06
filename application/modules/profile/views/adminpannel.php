@@ -71,11 +71,14 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/EmpDetails'); ?>">
+
+            <a class="nav-link" href="<?= base_url('dashboard/Empdetails') ?>">
+
               <i class="material-icons">person</i>
               <p>Employees</p>
             </a>
           </li>
+
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
               <i class="material-icons">person</i>
@@ -88,6 +91,7 @@
               <p>Logout</p>
             </a>
           </li>
+
         </ul>
       </div>
       
