@@ -33,5 +33,18 @@
 			}
 		}
 
+		public function get_designations_list($companyid){
+			$q = $this->db->where(['CompanyId'=>$companyid])
+							->get('Designations')->result();
+				return $q;
+		}
+
+		public function add_designation($designation,$companyid){
+			if($this->db->insert('Designations',array('Name' =>$designation,'CompanyId' =>$companyid))){
+			
+				return True;
+			}
+		}
+
 	}
 ?> 

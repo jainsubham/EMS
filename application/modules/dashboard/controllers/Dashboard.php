@@ -7,6 +7,7 @@ class Dashboard extends CI_Controller
 			$this->load->helper('form');
 			$this->load->library('session');
 			$this->load->database();
+			$this->load->model('dashboardmodel');
 		}
 
 	public function index() {
@@ -85,7 +86,6 @@ class Dashboard extends CI_Controller
 
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
-			$this->load->model('dashboardmodel');
 			$companyid = $this->dashboardmodel->get_companyid($adminid);
 				
 		if ( $this->upload->do_upload('csvfile')){
@@ -158,6 +158,26 @@ class Dashboard extends CI_Controller
 	}
 	public function EmpDetails() {
 		$this->load->view('EmpDetails');
+	}
+	public function designations(){
+		$adminid = $this->session->userdata('adminid');
+		$companyid = $this->dashboardmodel->get_companyid($adminid);
+		if($q = $this->dashboardmodel->get_designations_list($companyid)){
+			$data['q'] = $q;
+			$data['companyid'] =$companyid;
+			$this->load->view('designations_form',$data);
+		}
+		
+	}
+	public function add_designation(){
+		$designation = $this->input->post('designation');
+		if(isset($designation)){
+			$companyid = $this->input->post('companyid');
+			$this->dashboardmodel->add_designation($designation,$companyid);
+			
+			redirect('dashboard/designations');
+		}
+		redirect('dashboard/designations');
 	}
 
 }
