@@ -7,6 +7,8 @@ class Dashboard extends CI_Controller
 			$this->load->helper('form');
 			$this->load->library('session');
 			$this->load->database();
+			$this->load->model('dashboardmodel');
+
 		}
 
 	public function index() {
@@ -85,9 +87,7 @@ class Dashboard extends CI_Controller
 
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
-			$this->load->model('dashboardmodel');
-			$companyid = $this->dashboardmodel->get_companyid($adminid);
-				
+		$companyid = $this->dashboardmodel->get_companyid($adminid);		
 		if ( $this->upload->do_upload('csvfile')){
 			$uploaddata = $this->upload->data();
 			$filename = $uploaddata['file_name'];
@@ -157,7 +157,23 @@ class Dashboard extends CI_Controller
 		$this->load->view('organization');
 	}
 	public function EmpDetails() {
-		$this->load->view('EmpDetails');
+		$userid = $this->session->userdata('adminid');
+		$compid = $this->dashboardmodel->get_companyid($userid);
+		$q		=  $this->dashboardmodel->get_userid($compid);
+		foreach ($q as $row) {
+			 $uid  = $row->UserId;
+			 $q = $this->dashboardmodel->empdetails($uid);
+				$temp = (array)($q[0]);
+				
+				//$temp['desg'] = "developer";
+
+				//$data[] =$temp;
+
+		}
+		//echo"<pre>";
+		//print_r($data);
+		//$this->dashboardmodel->empdetail();
+		//$this->load->view('EmpDetails',$q);
 	}
 
 }

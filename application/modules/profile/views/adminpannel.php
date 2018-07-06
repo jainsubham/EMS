@@ -69,6 +69,13 @@
               <i class="material-icons">location_ons</i>
               <p>Organization Structure</p>
             </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/Empdetails') ?>">
+              <i class="material-icons">person</i>
+              <p>Employees</p>
+            </a>
+          </li>
         </ul>
       </div>
       
