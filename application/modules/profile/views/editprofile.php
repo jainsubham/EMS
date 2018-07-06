@@ -41,7 +41,7 @@
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Company (disabled)</label>
+                          <label class="bmd-label-floating">Company Name</label>
                           <?php 
                               $comp = array(
                                 'class' =>'form-control',

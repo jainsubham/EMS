@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Material Dashboard by Creative Tim
+   Dashboard
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -28,14 +28,14 @@
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <a href="#" class="simple-text logo-normal">
           Admin Dashboard
         </a>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active">
-            <a class="nav-link" href='admindashboard'>
+            <a class="nav-link" href='<?= base_url('dashboard/admindashboard'); ?>'>
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -47,33 +47,45 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="attendance">
+            <a class="nav-link" href="<?= base_url('dashboard/attendance'); ?>">
               <i class="material-icons">content_paste</i>
               <p>Today Attendance</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="announcement">
+            <a class="nav-link" href="<?= base_url('dashboard/announcement'); ?>">
               <i class="material-icons">library_books</i>
               <p>Announcement</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="invite_emp">
+            <a class="nav-link" href="<?= base_url('dashboard/invite_emp'); ?>">
               <i class="material-icons">bubble_chart</i>
               <p>Invite Employees</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="organization">
+            <a class="nav-link" href="<?= base_url('dashboard/organization'); ?>">
               <i class="material-icons">location_ons</i>
               <p>Organization Structure</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="EmpDetails">
+            <a class="nav-link" href="<?= base_url('dashboard/EmpDetails'); ?>">
               <i class="material-icons">person</i>
               <p>Employees</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
+              <i class="material-icons">person</i>
+              <p>Designations</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('user/logout'); ?>">
+              <i class="material-icons">person</i>
+              <p>Logout</p>
             </a>
           </li>
         </ul>
