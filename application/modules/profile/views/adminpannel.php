@@ -35,7 +35,7 @@
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active">
-            <a class="nav-link" href='<?= base_url('dashboard/admindashboard') ?>'>
+            <a class="nav-link" href='<?= base_url('dashboard') ?>'>
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
@@ -59,7 +59,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/invite_emp'); ?>">
+            <a class="nav-link" href="<?= base_url('dashboard/invite'); ?>">
               <i class="material-icons">bubble_chart</i>
               <p>Invite Employees</p>
             </a>
@@ -69,6 +69,25 @@
               <i class="material-icons">location_ons</i>
               <p>Organization Structure</p>
             </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/EmpDetails'); ?>">
+              <i class="material-icons">person</i>
+              <p>Employees</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
+              <i class="material-icons">person</i>
+              <p>Designations</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('user/logout'); ?>">
+              <i class="material-icons">person</i>
+              <p>Logout</p>
+            </a>
+          </li>
         </ul>
       </div>
       

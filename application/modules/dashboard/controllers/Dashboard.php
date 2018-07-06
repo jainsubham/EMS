@@ -16,9 +16,9 @@ class Dashboard extends CI_Controller
 				redirect('user/login');
 			}
 			
-
-		$this->load->view('dashboard');
-
+			if(null!=($this->session->userdata('adminid'))){
+				$this->load->view('admindashboard');
+			}
 	}
 
 	public function init_mail(){
@@ -140,18 +140,12 @@ class Dashboard extends CI_Controller
 		}
 
 	}
-	public function admindashboard() {
-		$this->load->view('admindashboard');
-	}
 	
 	public function attendance() {
 		$this->load->view('attendance');
 	}
 	public function announcement() {
 		$this->load->view('announcement');
-	}
-	public function invite_emp() {
-		$this->load->view('invite_emp');
 	}
 	public function organization() {
 		$this->load->view('organization');
