@@ -60,7 +60,7 @@
                               $contact = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->ContactNo,
+                                'value' => $x->contact_no,
                                 'name' =>'contact'
                               );
                           echo form_input($contact);
@@ -74,7 +74,7 @@
                               $email = array(
                                 'class' =>'form-control',
                                 'type' => 'email',
-                                'value' => $Email,
+                                'value' => $email,
                                 'name' => 'email'
                               );
                           echo form_input($email);
@@ -90,7 +90,7 @@
                               $fname = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->FirstName,
+                                'value' => $x->first_name,
                                 'name' => 'fname'
                               );
                           echo form_input($fname);
@@ -104,7 +104,7 @@
                               $lname = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->LastName,
+                                'value' => $x->last_name,
                                 'name' => 'lname'
                               );
                           echo form_input($lname);
@@ -120,7 +120,7 @@
                               $add1 = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->Address1,
+                                'value' => $x->address_1,
                                 'name' => 'add1'
                               );
                           echo form_input($add1);
@@ -136,7 +136,7 @@
                               $add2 = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->Address2,
+                                'value' => $x->address_2,
                                 'name' => 'add2'
                               );
                           echo form_input($add2);
@@ -152,7 +152,7 @@
                               $city = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->City,
+                                'value' => $x->city,
                                 'name' => 'city'
                               );
                           echo form_input($city);
@@ -166,7 +166,7 @@
                               $state = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->State,
+                                'value' => $x->state,
                                 'name' =>'state'
                               );
                           echo form_input($state);
@@ -180,7 +180,7 @@
                               $pin = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->PinCode,
+                                'value' => $x->pin_code,
                                 'name' => 'pin'
                               );
                           echo form_input($pin);
@@ -196,7 +196,7 @@
                               $bld = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->BloodGroup,
+                                'value' => $x->blood_group,
                                 'name' => 'blood'
                               );
                           echo form_input($bld);
@@ -212,7 +212,7 @@
                                'female'=>"Female",
                                'other'=>"Other"    
                             );
-                         echo form_dropdown('gender',$gender,$x->Gender); ?>
+                         echo form_dropdown('gender',$gender,$x->gender); ?>
                   
                         </div>
                       </div>
@@ -224,7 +224,7 @@
                                   'married' =>'Married',
                                   'unmarried'=>"Unmarried",   
                                   );
-                          echo form_dropdown('MartailStatus',$martailstatus,$x->MartailStatus); ?>
+                          echo form_dropdown('MartailStatus',$martailstatus,$x->martail_status); ?>
                         </div>
                       </div>
                     </div>
@@ -236,7 +236,7 @@
                               $dob = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->Dob,
+                                'value' => $x->dob,
                                 'name' => 'dob'
                               );
                           echo form_input($dob);
@@ -251,7 +251,7 @@
                                    '1' =>'Yes',
                                    '0'=>"No",   
                                 );         
-                          echo form_dropdown('dis',$dis,$x->Disability); ?>
+                          echo form_dropdown('dis',$dis,$x->disability); ?>
                           
                         </div>
                       </div>
@@ -264,7 +264,7 @@
                               $pan = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->PAN,
+                                'value' => $x->pan_no,
                                 'name' => 'pan'
                               );
                           echo form_input($pan);
@@ -278,7 +278,7 @@
                               $aadhar = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->AadharNo,
+                                'value' => $x->aadhaar_no,
                                 'name' => 'aadhar'
                               );
                           echo form_input($aadhar);
@@ -294,7 +294,7 @@
                               $pname = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'value' => $x->FatherName,
+                                'value' => $x->father_name,
                                 'name' => 'pname'
                               );
                           echo form_input($pname);
@@ -309,7 +309,7 @@
                                 '1' => 'Yes',
                                 '0' => 'No'
                                 );
-                          echo form_dropdown('ps',$ParentsSeniority,$x->ParentsSeniority); ?>
+                          echo form_dropdown('ps',$ParentsSeniority,$x->parents_seniority); ?>
                         </div>
                       </div>
                     </div>
@@ -322,12 +322,12 @@
                                 '1' => 'Yes',
                                 '0' => 'No'
                                 );
-                          echo form_dropdown('pd',$parentdis,$x->ParentsDisability); ?>
+                          echo form_dropdown('pd',$parentdis,$x->parents_disability); ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Children</label>
+                          <label class="bmd-label-floating">children</label>
                           <?php $children = array(
                                'select' => '---select---',
                                 '1' => '1',
@@ -335,7 +335,7 @@
                                 '3' => '3',
 
                                 );
-                        echo form_dropdown('children',$children,$x->Children); ?>
+                        echo form_dropdown('children',$children,$x->children); ?>
                         </div>
                       </div>
                       <div class="col-md-4">
@@ -346,7 +346,7 @@
                                 '1' => 'Yes',
                                 '0' => 'No'
                                 );
-                          echo form_dropdown('hc',$HostelerChidren,$x->HostelerChildren); ?>
+                          echo form_dropdown('hc',$HostelerChidren,$x->hosteler_children); ?>
                         </div>
                       </div>
                     </div>

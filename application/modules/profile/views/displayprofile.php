@@ -55,13 +55,13 @@ include('adminpannel.php');?>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">ContactNo :</label>
-                          <?php echo $x->ContactNo ?>
+                          <?php echo $x->contact_no ?>
                         </div>
                       </div>
                       <div class="col-md-5">
                         <div class="form-group">
                           <label class="bmd-label-floating">Email address :</label>
-                          <?php echo $Email ?>
+                          <?php echo $email ?>
                         </div>
                       </div>
                     </div>
@@ -69,13 +69,13 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">First Name :</label>
-                          <?php echo $x->FirstName ?>
+                          <?php echo $x->first_name ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Last Name :</label>
-                          <?php echo $x->LastName ?>
+                          <?php echo $x->last_name ?>
                         </div>
                       </div>
                     </div>
@@ -83,7 +83,7 @@ include('adminpannel.php');?>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Adress:</label>
-                          <?php echo $x->Address1 ?>
+                          <?php echo $x->address_1 ?>
                         </div>
                       </div>
                     </div>
@@ -91,7 +91,7 @@ include('adminpannel.php');?>
                       <div class="col-md-12">
                         <div class="form-group">
                           <label class="bmd-label-floating">Adress:</label>
-                          <?php echo $x->Address2 ?>
+                          <?php echo $x->address_2 ?>
                         </div>
                       </div>
                     </div>
@@ -99,19 +99,19 @@ include('adminpannel.php');?>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">City :</label>
-                          <?php echo $x->City ?>
+                          <?php echo $x->city ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">State :</label>
-                          <?php echo $x->State ?>
+                          <?php echo $x->state ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Pin Code :</label>
-                          <?php echo $x->PinCode?>
+                          <?php echo $x->pin_code?>
                         </div>
                       </div>
                     </div>
@@ -119,19 +119,19 @@ include('adminpannel.php');?>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">BloddGroup :</label>
-                          <?php echo $x->BloodGroup ?>
+                          <?php echo $x->blood_group ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Gender :</label>
-                          <?php echo $x->Gender ?>
+                          <?php echo $x->gender ?>
                         </div>
                       </div>
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Martail Status :</label>
-                          <?php echo $x->MartailStatus?>
+                          <?php echo $x->martail_status?>
                         </div>
                       </div>
                     </div>
@@ -139,13 +139,13 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">DOB :  </label>
-                          <?php echo $x->Dob ?>
+                          <?php echo $x->dob ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Disability:  </label>
-                          <?php if($x->Disability == 1) 
+                          <?php if($x->disability == 1) 
                                 echo "Disable";
                                else 
                                 echo "NOT Disable";
@@ -157,13 +157,13 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">PAN :  </label>
-                          <?php echo $x->PAN ?>
+                          <?php echo $x->pan_no ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Aadhar:  </label>
-                          <?php echo $x->AadharNo ?>
+                          <?php echo $x->aadhaar_no ?>
                         </div>
                       </div>
                     </div>
@@ -171,13 +171,13 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Father Name:</label>
-                          <?php echo $x->FatherName ?>
+                          <?php echo $x->father_name ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentsSeniority:</label>
-                          <?php if($x->ParentsSeniority == 1) 
+                          <?php if($x->parents_seniority == 1) 
                                 echo "Yes";
                                else 
                                 echo "NO";
@@ -189,7 +189,7 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentDisability :</label>
-                          <?php if($x->ParentsDisability == 1) 
+                          <?php if($x->parents_disability == 1) 
                                 echo "Disable";
                                else 
                                 echo "NOT Disable";
@@ -199,13 +199,13 @@ include('adminpannel.php');?>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">Children :</label>
-                          <?php echo $x->Children ?>
+                          <?php echo $x->children ?>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
                           <label class="bmd-label-floating">HostelerChildren :</label>
-                          <?php echo $x->HostelerChildren?>
+                          <?php echo $x->hosteler_children?>
                         </div>
                       </div>
                     </div>

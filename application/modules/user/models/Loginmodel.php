@@ -3,8 +3,8 @@
 
 		public function validate_login( $emailfield, $passwordenc ){
 
-			$q = $this->db->where(['Email'=>$emailfield,'password'=>$passwordenc,'accountstatus'=>'1'])
-							->get('Usertbl');
+			$q = $this->db->where(['email'=>$emailfield,'password'=>$passwordenc,'account_status'=>'1'])
+							->get(USER);
 
 			if( $q->num_rows()==1){
 				return $q->row();
@@ -14,24 +14,24 @@
 			}
 		}
 		public function comp_reg($post ,$encpass) {
-			 $this->db->insert('CompTbl',array('name' =>$post['companyname'],'address' =>$post['address'],'website' =>$post['website'],'mail' =>$post['mail'],'contactno' =>$post['phoneno'],'DateofReg'=> date('Y-m-d H:i:s',time()) ));
+			 $this->db->insert(COMPANY,array('name' =>$post['companyname'],'address' =>$post['address'],'website' =>$post['website'],'mail' =>$post['mail'],'contact_no' =>$post['phoneno'],'date_of_reg'=> date('Y-m-d H:i:s',time()) ));
 			$q = $this->db->where(['name'=>$post['companyname']])
-								->get('CompTbl')->row();
+								->get(COMPANY)->row();
 								$id = $q->id;
 								$data[] = $q->name;
 								
 
-			 $this->db->insert('Usertbl',array('password' =>$encpass,'accountstatus' =>1,'Email' =>$post['maill'],'accountlevel' =>1,'companyId' => $id)); 
-			 $uid = $this->db->where(['Email' =>$post['maill']])
-			 					->get('Usertbl')->row()->UserId;
+			 $this->db->insert(USER,array('password' =>$encpass,'account_status' =>1,'email' =>$post['maill'],'account_level' =>1,'company_id' => $id)); 
+			 $uid = $this->db->where(['email' =>$post['maill']])
+			 					->get(USER)->row()->id;
 
-			 $this->db->insert('UsersDetails',array('FirstName' =>$post['fname'],'LastName' =>$post['lname'],'ContactNo' =>$post['contactno'],'UserId' =>$uid));
+			 $this->db->insert(USER_DETAILS,array('first_name' =>$post['fname'],'last_name' =>$post['lname'],'contact_no' =>$post['contactno'],'user_id' =>$uid));
 			 
 			 		$mail_hash = md5(time());
 			 		
 
-			 $this->db->insert('Verifyhash',array('userid' =>$uid,'hash' =>$mail_hash));
-			 $this->db->insert('AdminTbl',array('companyId' =>$id,'UserId'=>$uid,'Date' =>date('Y-m-d H:i:s',time())));	
+			 $this->db->insert(VERIFY_HASH,array('user_id' =>$uid,'hash' =>$mail_hash));
+			 $this->db->insert(ADMIN,array('company_id' =>$id,'user_id'=>$uid,'date' =>date('Y-m-d H:i:s',time())));	
 			 return $mail_hash;
 
 
@@ -39,15 +39,15 @@
 
 		public function user_reg($data,$Email,$password,$companyid,$hashed) {
 
-			 $this->db->insert('Usertbl',array('Email' => $Email,'password' =>$password,'companyId' =>$companyid));
-			 $q = $data['UserId'] = $this->db->where(['Email' =>$Email])
-			 			->get('Usertbl')->row()->UserId;
-			  $this->db->insert('UsersDetails',$data);
+			 $this->db->insert(USER,array('email' => $Email,'password' =>$password,'company_id' =>$companyid));
+			 $q = $data['UserId'] = $this->db->where(['email' =>$Email])
+			 			->get(USER)->row()->user_id;
+			  $this->db->insert(USER_DETAILS,$data);
 			  $this->db->set('used', '1')
 						->where('hash', $hashed)
-						->update('Invites');
+						->update(INVITES);
 				$mail_hash = md5(time());
-				$this->db->insert('Verifyhash',array('userid' =>$q,'hash' =>$mail_hash));
+				$this->db->insert(VERIFY_HASH,array('user_id' =>$q,'hash' =>$mail_hash));
 			  return $mail_hash;
 
 
@@ -55,24 +55,24 @@
 		}
 
 		public function verify_invite_hash($hash){
-			$sql = "SELECT * FROM Invites WHERE hash = ? AND invitetime > ? ";
+			$sql = "SELECT * FROM INVITES WHERE hash = ? AND invite_time > ? ";
 			$q = $this->db->query($sql, array($hash, 'DATE_SUB(NOW(), INTERVAL 1 WEEK)'))->row();
 			return $q;
 		}
 
 		public function account_email_verify($hash){
 			if($this->db->where(['hash' =>$hash,'active'=>1])
-			 			->get('Verifyhash')->num_rows()!=0){
+			 			->get(VERIFY_HASH)->num_rows()!=0){
 
 				$q = $this->db->where(['hash' =>$hash,'active'=>1])
-			 			->get('Verifyhash')->row()->userid;
+			 			->get(VERIFY_HASH)->row()->user_id;
 			 
 			 	$this->db->set('active', '0')
 						->where('hash', $hash)
-						->update('Verifyhash');
-				$this->db->set('emailverified', '1')
-						->where('UserId', $q)
-						->update('Usertbl');
+						->update(VERIFY_HASH);
+				$this->db->set('email_verified', '1')
+						->where('id', $q)
+						->update(USER);
 					return TRUE;
 			 }			
 		}

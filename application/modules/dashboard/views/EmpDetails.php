@@ -1,5 +1,5 @@
-<?php //include('adminpannel.php'); ?>
-<div class="main-panel ">
+<?php include('adminpannel.php'); ?>
+<div class="main-panel">
        <div style="overflow-x:auto;">
            <div class="content">
         	    <div class="container-fluid">
@@ -14,19 +14,36 @@
 										<th>Action</th>
 								</tr>
 							</thead>
+							<tbody>
+								<?php
+									$count = 0;
+									foreach ($data as $row) { ?>
+										<tr>
+										<td align="center"><?php echo ++$count; ?></td>
+										<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "80px" style="border-radius:50px;"></td>
+										<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
+										<td align="center"><?php echo $row['designationname'] ?></td>
+										<?php echo form_open('dashboard/editempdetails') ;?>			
+										<td align="center">
+											<?php
+						                            $btn = array(
+						                              'class' => "btn btn-primary pull-center",
+						                               'type' => 'submit',
+						                               'name' => 'submit',
+						                               'value' => 'Manage'
+						                            );
+						                    echo form_submit($btn); ?>   
+										</td>
+										<?php echo form_close(); ?>
+										</tr>
+									 <?php	
+									}
+								?>
+							</tbody>
+
 			            </table>
     				</div>
     			</div>
             </div>
         </div>
 </div>
-<?php 
-
-	//$count = 0;
-	//$length = count($x);
-	//print_r($length);
-	//$row1 = $x['0'];
-
- //echo $row1->FirstName;
-
-?>

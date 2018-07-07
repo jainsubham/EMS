@@ -5,17 +5,17 @@ class Profilemodel extends CI_Model
 	
 	public function select($q) {
 
-		return  $this->db->where(['UserId' =>$q] )
-					->get('UsersDetails')->row();
+		return  $this->db->where(['user_id' =>$q] )
+					->get(USER_DETAILS)->row();
 
 	}
 	public function get_companyid( $adminid ){
 
-			$q = $this->db->where(['UserId'=>$adminid])
-							->get('AdminTbl');
+			$q = $this->db->where(['user_id'=>$adminid])
+							->get(ADMIN);
 
 			if( $q->num_rows()==1){
-				return $q->row()->companyId;
+				return $q->row()->company_id;
 			}
 			else{
 				return False;
@@ -24,7 +24,7 @@ class Profilemodel extends CI_Model
 
 		public function get_companyname($companyid){
 			$q = $this->db->where(['id'=>$companyid])
-							->get('CompTbl');			
+							->get(COMPANY);			
 			if( $q->num_rows()==1){
 				return $q->row()->name;
 			}
@@ -33,10 +33,10 @@ class Profilemodel extends CI_Model
 			}
 		}
 	public function get_adminemail($adminid){
-		$q = $this->db->where(['UserId' => $adminid])
-					->get('Usertbl');
+		$q = $this->db->where(['id' => $adminid])
+					->get(USER);
 		if( $q->num_rows()==1){
-				return $q->row()->Email;
+				return $q->row()->email;
 			}
 			else{
 				return False;
@@ -45,11 +45,11 @@ class Profilemodel extends CI_Model
 	}
 	public function update($id,$data,$Email) {
 
-		$this->db->set('Email', $Email)
-						->where('UserId', $id)
-						->update('Usertbl');
-		$this->db->where(['UserId' =>$id])
-					->update('UsersDetails',$data);
+		$this->db->set('email', $Email)
+						->where('id', $id)
+						->update(USER);
+		$this->db->where(['user_id' =>$id])
+					->update(USER_DETAILS,$data);
 					return true;
 	}
 }

@@ -83,3 +83,24 @@ defined('EXIT_USER_INPUT')     OR define('EXIT_USER_INPUT', 7); // invalid user 
 defined('EXIT_DATABASE')       OR define('EXIT_DATABASE', 8); // database error
 defined('EXIT__AUTO_MIN')      OR define('EXIT__AUTO_MIN', 9); // lowest automatically-assigned error code
 defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest automatically-assigned error code
+
+
+define('COMPANY','company');
+define('ADMIN','admin');
+define('USER','user');
+define('VERIFY_HASH','verify_hash');
+define('DOCUMENTS','documents');
+define('BANK_DETAILS','bank_details');
+define('EMPLOYMENT_DETAILS','employment_details');
+define('DESIGNATIONS','designations');
+define('USER_DETAILS','user_details');
+define('SALARY','salary');
+define('REP_SUP','reporting_supervisor');
+define('INVITES','invites');
+define('ATTENDANCRE','attendance');
+define('LEAVE_REQ','leave_req');
+define('LEAVE_ALLOWANCE','leave_allowance');
+define('LEAVE_CATEGORY','leave_category');
+define('TEAM','team');
+define('TEAM_ALLOTED','team_alloted');
+define('ANNOUNCEMENT','announcement');

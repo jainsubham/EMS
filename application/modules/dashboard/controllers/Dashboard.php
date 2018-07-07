@@ -161,19 +161,12 @@ class Dashboard extends CI_Controller
 		$compid = $this->dashboardmodel->get_companyid($userid);
 		$q		=  $this->dashboardmodel->get_userid($compid);
 		foreach ($q as $row) {
-			 $uid  = $row->UserId;
+			 $uid  = $row->user_id;
 			 $q = $this->dashboardmodel->empdetails($uid);
-				$temp = (array)($q[0]);
-				
-				//$temp['desg'] = "developer";
-
-				//$data[] =$temp;
-
+			 $data[]= $q;
 		}
-		//echo"<pre>";
-		//print_r($data);
-		//$this->dashboardmodel->empdetail();
-		//$this->load->view('EmpDetails',$q);
+		$view['data'] = $data;
+		$this->load->view('EmpDetails',$view);
 	}
 	public function designations(){
 		$adminid = $this->session->userdata('adminid');
@@ -188,13 +181,17 @@ class Dashboard extends CI_Controller
 	public function add_designation(){
 		$designation = $this->input->post('designation');
 		if(isset($designation)){
-			$companyid = $this->input->post('companyid');
+			$companyid = $this->input->post('company_id');
 			$this->dashboardmodel->add_designation($designation,$companyid);
 			
 			redirect('dashboard/designations');
 		}
 		redirect('dashboard/designations');
 	}
+	public function editempdetails() {
+		$this->load->view('editempdetails');
+
+}
 
 }
 ?>

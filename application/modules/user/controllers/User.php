@@ -32,14 +32,12 @@ class User extends CI_Controller
 		if(!isset($emailfield) or !isset($password)){
 			redirect('user/login');
 		}
-
-
 		$this->load->model('loginmodel');
 		$passwordenc = md5($password);
 		$userdata = $this->loginmodel->validate_login($emailfield,$passwordenc);
-			$userid = $userdata->UserId;
-			$accountlevel = $userdata->accountlevel;
-			$emailverified = $userdata->emailverified;
+			$userid = $userdata->user_id;
+			$accountlevel = $userdata->account_level;
+			$emailverified = $userdata->email_verified;
 			if($userid){
 				
 				if($accountlevel==0){
@@ -206,26 +204,26 @@ class User extends CI_Controller
 			redirect('user/invalid_email');
 		}
 		$data = array(
-			'FirstName' => $post['fname'],
-			'LastName' => $post['lname'],
-			'ContactNo' => $post['phone'],
-			'BloodGroup' => $post['blood'],
-			'Disability' => $post['Disability'],
-			'Dob' => $post['dob'],
-			'MartailStatus' => $post['MartailStatus'],
-			'Gender' => $post['gender'],
-			'Address1' => $post['address1'],
-			'Address2' => $post['address2'],
-			'City' => $post['city'],
-			'State' => $post['state'],
-			'PinCode' => $post['pin'],
-			'PAN' => $post['pan'],
-			'AadharNO' => $post['aadhar'],
-			'FatherName' => $post['pname'],
-			'ParentsSeniority' => $post['parents'],
-			'ParentsDisability' => $post['PDisability'],
+			'first_name' => $post['fname'],
+			'last_name' => $post['lname'],
+			'contact_no' => $post['phone'],
+			'blood_group' => $post['blood'],
+			'disability' => $post['Disability'],
+			'dob' => $post['dob'],
+			'martail_status' => $post['MartailStatus'],
+			'gender' => $post['gender'],
+			'address_1' => $post['address1'],
+			'address_2' => $post['address2'],
+			'city' => $post['city'],
+			'state' => $post['state'],
+			'pin_code' => $post['pin'],
+			'pan_no' => $post['pan'],
+			'aadhaar_no' => $post['aadhar'],
+			'father_name' => $post['pname'],
+			'parents_seniority' => $post['parents'],
+			'parents_disability' => $post['PDisability'],
 			'children' => $post['Children'],
-			'Hostelerchildren' => $post['Hchildren'],
+			'hosteler_children' => $post['Hchildren'],
 			 );
 			$Email = $post['email'];
 			$password = $post['password'];
