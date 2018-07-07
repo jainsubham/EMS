@@ -50,7 +50,7 @@
 				 	   			
 				  $designationname = $this->db->select('name')
 				 	   			->where(['id' =>$designationid])
-				 	   			->get(DESIGNATION)->result();
+				 	   			->get(DESIGNATIONS)->result();
 				 	   		 $data = array('fname' =>$q[0]->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name );
 				 		return $data;
 				 		
@@ -59,7 +59,7 @@
 
 		public function get_designations_list($companyid){
 			$q = $this->db->where(['company_id'=>$companyid])
-							->get(DESIGNATION)->result();
+							->get(DESIGNATIONS)->result();
 				return $q;
 		}
 

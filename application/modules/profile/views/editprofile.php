@@ -37,7 +37,7 @@
                   <p class="card-category">Complete your profile</p>
                 </div>
                 <div class="card-body">
-                <? $hidden = array('adminid' => $x->UserId); echo form_open_multipart("profile/updateprofile",'',$hidden); ?>
+                <? $hidden = array('adminid' => $x->user_id); echo form_open_multipart("profile/updateprofile",'',$hidden); ?>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
@@ -74,7 +74,7 @@
                               $email = array(
                                 'class' =>'form-control',
                                 'type' => 'email',
-                                'value' => $email,
+                                'value' => $Email,
                                 'name' => 'email'
                               );
                           echo form_input($email);
@@ -385,7 +385,7 @@
                 </div>
                 <div class="card-body">
                   <h6 class="card-category text-gray">CEO / Co-Founder</h6>
-                  <h4 class="card-title"><?php echo $x->FirstName.' '.$x->LastName; ?></h4>
+                  <h4 class="card-title"><?php echo $x->first_name.' '.$x->last_name; ?></h4>
                   <p class="card-description">
                     Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
                   </p>

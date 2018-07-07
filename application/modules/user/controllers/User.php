@@ -12,6 +12,7 @@ class User extends CI_Controller
 		}
 	
 	public function index() {
+
 		redirect('user/login');
 	}
 
@@ -34,8 +35,10 @@ class User extends CI_Controller
 		}
 		$this->load->model('loginmodel');
 		$passwordenc = md5($password);
+		//print_r($passwordenc);
+		//die();
 		$userdata = $this->loginmodel->validate_login($emailfield,$passwordenc);
-			$userid = $userdata->user_id;
+			$userid = $userdata->id;
 			$accountlevel = $userdata->account_level;
 			$emailverified = $userdata->email_verified;
 			if($userid){
@@ -174,8 +177,8 @@ class User extends CI_Controller
 		if($hash!=NULL){
 			if($dbdata = $this->loginmodel->verify_invite_hash($hash)){
 				if($dbdata->used==0){
-				$data['emailid'] = $dbdata->emailid;
-				$data['companyid'] = $dbdata->companyid;
+				$data['emailid'] = $dbdata->email_id;
+				$data['companyid'] = $dbdata->company_id;
 				$data['hash'] = $dbdata->hash;
 				$this->load->view('user/userreg',$data);
 

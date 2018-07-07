@@ -155,7 +155,7 @@ class Dashboard extends CI_Controller
 		$compid = $this->dashboardmodel->get_companyid($userid);
 		$q		=  $this->dashboardmodel->get_userid($compid);
 		foreach ($q as $row) {
-			 $uid  = $row->user_id;
+			 $uid  = $row->id;
 			 $q = $this->dashboardmodel->empdetails($uid);
 			 $data[]= $q;
 		}

@@ -55,7 +55,7 @@
 		}
 
 		public function verify_invite_hash($hash){
-			$sql = "SELECT * FROM INVITES WHERE hash = ? AND invite_time > ? ";
+			$sql = "SELECT * FROM invites WHERE hash = ? AND invite_time > ? ";
 			$q = $this->db->query($sql, array($hash, 'DATE_SUB(NOW(), INTERVAL 1 WEEK)'))->row();
 			return $q;
 		}
