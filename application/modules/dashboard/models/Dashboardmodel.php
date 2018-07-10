@@ -41,8 +41,8 @@
 		public function empdetails($uid) {
 
 				  $q = $this->db->select(['first_name','last_name','img'])
-				   				->where(['user_iD'=> $uid])
-				   				->get(USER_DETAILS)->result();
+				   				->where(['user_id'=> $uid])
+				   				->get(USER_DETAILS)->result(); 
 				  $x = $this->db->select('designation')
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();

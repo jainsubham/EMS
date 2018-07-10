@@ -226,7 +226,7 @@ class User extends CI_Controller
 			'parents_seniority' => $post['parents'],
 			'parents_disability' => $post['PDisability'],
 			'children' => $post['Children'],
-			'hosteler_children' => $post['Hchildren'],
+			'hosteler_children' => $post['Hchildren']
 			 );
 			$Email = $post['email'];
 			$password = $post['password'];
@@ -234,12 +234,9 @@ class User extends CI_Controller
 			$companyid = $post['hidcompid'];
 			$hashed = $post['hidhash'];
 
-		if($mail_hash = $this->loginmodel->user_reg($data,$Email,$encpass,$companyid,$hashed)) {
-			$emailto = $Email;
-			$name =$post['fname'];
-			$this->send_verification_mail($name,$emailto,$mail_hash);
-			$this->session->set_userdata('emailunverified','1');
-			redirect('dashboard/verify_mail');
+		if($this->loginmodel->user_reg($data,$Email,$encpass,$companyid,$hashed)) {
+			
+			redirect('dashboard/emailverified');
 		}
 
 

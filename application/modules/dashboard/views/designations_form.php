@@ -35,7 +35,7 @@ include('adminpannel.php');?>
                             <ul>
                               <?php 
                                   foreach ($q as $row) {
-                                    echo "<li>".$row->Name."</li>";
+                                    echo "<li>".$row->name."</li>";
                                   }
                               ?>
                             </ul>
