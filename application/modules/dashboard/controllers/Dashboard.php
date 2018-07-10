@@ -184,13 +184,36 @@ class Dashboard extends CI_Controller
 		redirect('dashboard/designations');
 	}
 	public function displayempdetails() {
-		$uid  = $this->session->userdata('adminid');
-		$companyid = $this->dashboardmodel->get_companyid($uid);
-		$companyname = $this->dashboardmodel->get_companyname($companyid);
-		$q  = $this->dashboardmodel->fethchdata($uid);
-		 $data['x'] = $q;
-		 $data['companyname'] = $companyname;
-		$this->load->view('displayempdetails',$data);
+		$user_id = $this->input->post('user_id');
+		$admin_id  = $this->session->userdata('adminid');
+		$company_id = $this->dashboardmodel->get_companyid($admin_id);
+		$company_name = $this->dashboardmodel->get_companyname($company_id);
+		$q  =  $this->dashboardmodel->fetchdata($user_id);
+		if ($q) {
+			$x['joining_date'] = $q->joining_date;
+			$x['employee_id'] = $q->employee_id;
+			$x['confirmation_date'] = $q->confirmation_date;
+			$x['effective_from'] = $q->effective_from;
+			$x['effective_to'] = $q->effective_to;
+			$data['x']=$x;
+
+			$data['company_name'] = $companyname;
+			$this->load->view('displayempdetails',$data);
+		}
+		else {
+			
+				 $q['employee_id'] = 'NULL';
+				 $q['joining_date'] = 'NULL';
+				 $q['confirmation_date'] = 'NULL';
+				 $q['effective_from'] = 'NULL';
+				 $q['effective_to'] = 'NULL';
+			$data['x'] = $q;
+			$data['company_name'] = $company_name;
+			//print_r($data);
+			//die();
+			$this->load->view('displayempdetails',$data);
+
+		}	
 
 	}
 	public function display() {

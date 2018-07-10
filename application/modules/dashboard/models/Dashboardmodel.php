@@ -46,15 +46,16 @@
 				  $x = $this->db->select('designation')
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();
-				 	   		if($x){	$designationid = $x['0']->designation;
-				 	   			
-				  $designationname = $this->db->select('name')
-				 	   			->where(['id' =>$designationid])
-				 	   			->get(DESIGNATIONS)->result();
-				 	   		 $data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name );
-				 		
-				 		}else{
-				 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ' );
+				 	   		if($x) {	
+				 	   			$designationid = $x['0']->designation; 	   			
+				 				$designationname = $this->db->select('name')
+				 	   										->where(['id' =>$designationid])
+				 	   										->get(DESIGNATIONS)->result();
+				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'user_id'=>$uid);
+				 	   		 }
+				 		else {
+
+				 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','user_id'=>$uid );
 				 	}
 				 	return $data;
 		}
@@ -72,11 +73,10 @@
 				return True;
 			}
 		}
-	    public function fethchdata($uid) {
-		 	$q = $this->db->select()
+	    public function fetchdata($uid) {
+		 	return $this->db->select()
 		 				->where(['user_id' => 'uid'])
 		 				->get(EMPLOYMENT_DETAILS)->result();
-		 	print_r($q);
 		 }
 
 	}

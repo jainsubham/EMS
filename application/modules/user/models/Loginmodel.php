@@ -41,7 +41,7 @@
 
 			 $this->db->insert(USER,array('email' => $Email,'password' =>$password,'account_status'=>1,'email_verified'=>1,'company_id' =>$companyid));
 			 $q = $data['user_id'] = $this->db->where(['email' =>$Email])
-			 			->get(USER)->row()->user_id;
+			 			->get(USER)->row()->id;
 			  $this->db->insert(USER_DETAILS,$data);
 			  $this->db->set('used', '1')
 						->where('hash', $hashed)

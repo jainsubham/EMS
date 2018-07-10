@@ -236,7 +236,7 @@ class User extends CI_Controller
 
 		if($this->loginmodel->user_reg($data,$Email,$encpass,$companyid,$hashed)) {
 			
-			redirect('dashboard/emailverified');
+			redirect('dashboard/email_verified');
 		}
 
 
