@@ -182,10 +182,19 @@ class Dashboard extends CI_Controller
 		}
 		redirect('dashboard/designations');
 	}
-	public function editempdetails() {
-		$this->load->view('editempdetails');
+	public function displayempdetails() {
+		$uid  = $this->session->userdata('adminid');
+		$companyid = $this->dashboardmodel->get_companyid($uid);
+		$companyname = $this->dashboardmodel->get_companyname($companyid);
+		$q  = $this->dashboardmodel->fethchdata($uid);
+		 $data['x'] = $q;
+		 $data['companyname'] = $companyname;
+		$this->load->view('displayempdetails',$data);
 
-}
+	}
+	public function display() {
+		print_r("helllo");
+	}
 
 }
 ?>

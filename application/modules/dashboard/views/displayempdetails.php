@@ -10,7 +10,7 @@
                       <ul class="nav nav-tabs" data-tabs="tabs">
                         <li class="nav-item">
                           <a class="nav-link active" href="#profile" data-toggle="tab">
-                            <i class="material-icons">person</i>Employee Details  
+                            <i class="material-icons">person</i>Employee Details	
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -34,60 +34,32 @@
                   <div class="tab-content">
                     <div class="tab-pane active" id="profile">
                <!-- Employee Details; -->
-                   <?php echo form_open("profile/display"); ?>
+                   <?php echo form_open("profile/editempdetails"); ?>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Company Name</label>
-                          <?php 
-                              $comp = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'disabled' => true
-                              );
-                          echo form_input($comp);
-                          ?>
+                          <?php  echo $companyname ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">EmployeeId</label>
-                          <?php 
-                              $empid = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'name' =>'empid'
-                              );
-                          echo form_input($empid);
-                          ?>
+                          <?php echo $x->employee_id ?>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                    	<div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Joining Date</label>
-                          <?php 
-                              $jdate = array(
-                                'class' =>'form-control',
-                                'type' => 'date',
-                                'name' => 'jdate'
-                              );
-                          echo form_input($jdate);
-                          ?>
+                          <?php echo $x->joining_date ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Confirmation Date</label>
-                          <?php 
-                              $cdate = array(
-                                'class' =>'form-control',
-                                'type' => 'date',
-                                'name' =>'cdate'
-                              );
-                          echo form_input($cdate);
-                          ?>
+                          <?php echo $x->confirmation_date ?>
                         </div>
                       </div>
                   </div>
@@ -95,27 +67,13 @@
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Effective From</label>
-                          <?php 
-                              $efrom = array(
-                                'class' =>'form-control',
-                                'type' => 'date',
-                                'name' =>'efrom'
-                              );
-                          echo form_input($efrom);
-                          ?>
+                          <?php echo $x->effective_from ?>
                         </div>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Effective To</label>
-                          <?php 
-                              $eto = array(
-                                'class' =>'form-control',
-                                'type' => 'date',
-                                'name' => 'eto'
-                              );
-                          echo form_input($eto);
-                          ?>
+                          <?php  echo $x->effective_to ?>
                         </div>
                       </div>
                     </div>
@@ -131,9 +89,9 @@
                 <?php echo form_close(); ?>
                     </div>
                     <div class="tab-pane" id="messages">
-                      <!-- Personal Details -->
+                    	<!-- Personal Details -->
                         <div class="card-body">
-                    <?php echo form_open("profile/editinfo"); ?>
+                    <?php echo form_open("profile/editempdetails"); ?>
                     <div class="row">
                       <div class="col-md-3">
                         <div class="form-group">
@@ -310,64 +268,36 @@
                 </div>
                     </div>
                     <div class="tab-pane" id="settings">
-                          <?php echo form_open("profile/bankinfo"); ?>
+                          <?php echo form_open("profile/editempdetails"); ?>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Payment Mode</label>
-                          <?php 
-                              $pm = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'name' => 'pm'
-                               );
-                          echo form_input($pm);
-                          ?>
+                          <label class="bmd-label-floating">Payment Mode :</label>
+                          <?php //echo $payment_mode ?>
                         </div>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-12">
+                    	<div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Bank_Name</label>
-                          <?php 
-                              $bname = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'name' => 'bankname'
-                              );
-                          echo form_input($bname);
-                          ?>
+                          <label class="bmd-label-floating">Bank_Name :</label>
+                          <?php //echo $bank_name ?>
                         </div>
                       </div>
                   </div>
                   <div class="row">
-                      <div class="col-md-12">
+                    	<div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Bank_Acc_No</label>
-                          <?php 
-                              $accno = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'name' => 'bank_acc_no'
-                              );
-                          echo form_input($accno);
-                          ?>
+                          <label class="bmd-label-floating">Bank_Acc_No :</label>
+                          <?php //echo $bank_acc_no ?>
                         </div>
                       </div>
                   </div>
                   <div class="row">
-                      <div class="col-md-12">
+                    	<div class="col-md-12">
                         <div class="form-group">
-                          <label class="bmd-label-floating">Bank_IFSC_Code</label>
-                          <?php 
-                              $ifsc = array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'name' => ''
-                              );
-                          echo form_input($ifsc);
-                          ?>
+                          <label class="bmd-label-floating">Bank_IFSC_Code :</label>
+                          <?php //echo $bank_ifsc_code ?>
                         </div>
                       </div>
                   </div> 

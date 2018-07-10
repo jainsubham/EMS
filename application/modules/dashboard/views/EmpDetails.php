@@ -1,4 +1,4 @@
-<?php include('adminpannel.php'); ?>
+<?php //include('adminpannel.php'); ?>
 <div class="main-panel">
        <div style="overflow-x:auto;">
            <div class="content">
@@ -23,7 +23,7 @@
 										<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "80px" style="border-radius:50px;"></td>
 										<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
 										<td align="center"><?php echo $row['designationname'] ?></td>
-										<?php echo form_open('dashboard/editempdetails') ;?>			
+										<?php echo form_open('dashboard/displayempdetails') ;?>			
 										<td align="center">
 											<?php
 						                            $btn = array(

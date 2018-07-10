@@ -69,6 +69,12 @@
 				return True;
 			}
 		}
+	    public function fethchdata($uid) {
+		 	$q = $this->db->select()
+		 				->where(['user_id' => 'uid'])
+		 				->get(EMPLOYMENT_DETAILS)->result();
+		 	print_r($q);
+		 }
 
 	}
 ?> 

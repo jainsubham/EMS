@@ -13,3 +13,5 @@ echo form_open_multipart("profile/testimg");
                     echo form_submit($btn);
                     ?>
 <?= form_close(); ?>
+
+                   
