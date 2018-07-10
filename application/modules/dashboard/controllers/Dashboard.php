@@ -183,7 +183,11 @@ class Dashboard extends CI_Controller
 			$teams = $x;
 		}
 		$data['companyid'] =$companyid;
-		$data['teams'] = $teams;
+		if(isset($teams)){
+			$data['teams'] = $teams;
+		}else{
+			$data['msg'] = "There are not teams registered till now .<br>To add new designations , you need to add a new team/s <br><a href='".base_url('dashboard/teams')."'> Add new team </a>";
+		}
 			$this->load->view('designations_form',$data);
 		
 	}
