@@ -39,16 +39,14 @@
 
 		public function user_reg($data,$Email,$password,$companyid,$hashed) {
 
-			 $this->db->insert(USER,array('email' => $Email,'password' =>$password,'company_id' =>$companyid));
-			 $q = $data['UserId'] = $this->db->where(['email' =>$Email])
+			 $this->db->insert(USER,array('email' => $Email,'password' =>$password,'account_status'=>1,'email_verified'=>1,'company_id' =>$companyid));
+			 $q = $data['user_id'] = $this->db->where(['email' =>$Email])
 			 			->get(USER)->row()->user_id;
 			  $this->db->insert(USER_DETAILS,$data);
 			  $this->db->set('used', '1')
 						->where('hash', $hashed)
 						->update(INVITES);
-				$mail_hash = md5(time());
-				$this->db->insert(VERIFY_HASH,array('user_id' =>$q,'hash' =>$mail_hash));
-			  return $mail_hash;
+				return true;
 
 
 
