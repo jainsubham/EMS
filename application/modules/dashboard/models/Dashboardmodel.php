@@ -46,14 +46,17 @@
 				  $x = $this->db->select('designation')
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();
-				 	   			$designationid = $x['0']->designation;
+				 	   		if($x){	$designationid = $x['0']->designation;
 				 	   			
 				  $designationname = $this->db->select('name')
 				 	   			->where(['id' =>$designationid])
 				 	   			->get(DESIGNATIONS)->result();
-				 	   		 $data = array('fname' =>$q[0]->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name );
-				 		return $data;
+				 	   		 $data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name );
 				 		
+				 		}else{
+				 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ' );
+				 	}
+				 	return $data;
 		}
 		
 
