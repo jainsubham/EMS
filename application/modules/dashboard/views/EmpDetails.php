@@ -1,4 +1,4 @@
-<?php //include('adminpannel.php'); ?>
+<?php include('adminpannel.php'); ?>
 <div class="main-panel">
        <div style="overflow-x:auto;">
            <div class="content">

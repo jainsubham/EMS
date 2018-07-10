@@ -145,10 +145,15 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">Disability:  </label>
-                          <?php if($x->disability == 1) 
-                                echo "Disable";
-                               else 
-                                echo "NOT Disable";
+                          <?php $disability = $x->disability;
+                            if(null!=($disability)){
+                                  if($disability == 1) { 
+                                      echo "Disable";
+                                  }
+                                  if($disability == 0 ) {
+                                      echo "NOT Disable";
+                                 }
+                            }
                            ?>
                         </div>
                       </div>
@@ -177,10 +182,15 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentsSeniority:</label>
-                          <?php if($x->parents_seniority == 1) 
-                                echo "Yes";
-                               else 
-                                echo "NO";
+                          <?php $ps = $x->parents_seniority;
+                            if(null!=($ps)){
+                                  if($ps == 1) { 
+                                      echo "Disable";
+                                  }
+                                  if($ps == 0 ) {
+                                      echo "NOT Disable";
+                                 }
+                            }
                            ?>
                         </div>
                       </div>
@@ -189,10 +199,15 @@ include('adminpannel.php');?>
                       <div class="col-md-6">
                         <div class="form-group">
                           <label class="bmd-label-floating">ParentDisability :</label>
-                          <?php if($x->parents_disability == 1) 
-                                echo "Disable";
-                               else 
-                                echo "NOT Disable";
+                          <?php $pd = $x->parents_disability;
+                            if(null!=($pd)){
+                                  if($disability == 1) { 
+                                      echo "Disable";
+                                  }
+                                  if($disability == 0 ) {
+                                      echo "NOT Disable";
+                                 }
+                            }
                            ?>
                         </div>
                       </div>

@@ -235,7 +235,7 @@
                           <?php 
                               $dob = array(
                                 'class' =>'form-control',
-                                'type' => 'text',
+                                'type' => 'date',
                                 'value' => $x->dob,
                                 'name' => 'dob'
                               );
@@ -330,6 +330,7 @@
                           <label class="bmd-label-floating">children</label>
                           <?php $children = array(
                                'select' => '---select---',
+                                '0' => '0',
                                 '1' => '1',
                                 '2' => '2',
                                 '3' => '3',
