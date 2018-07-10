@@ -5,7 +5,7 @@ include('adminpannel.php');?>
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Desiginations of your company</a>
+            <a class="navbar-brand" href="#pablo">Teams / Departments of your organization</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -23,7 +23,7 @@ include('adminpannel.php');?>
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Designations</h4>
+                  <h4 class="card-title">Teams</h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
                 <div class="card-body">
@@ -31,7 +31,7 @@ include('adminpannel.php');?>
                    <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">All Designations in your Organization</label>
+                          <label class="bmd-label-floating">All Teams /Departments in your Organization</label>
                             <ul>
                               <?php if(isset($q)){
                                   foreach ($q as $row) {
@@ -46,27 +46,18 @@ include('adminpannel.php');?>
                         </div>
                       </div>
                        <div class="form-group">
-                        <h4>Add New Designation</h4>
+                        <h4>Add New Team/Department</h4>
                         
-                            <? $hidden = array('company_id' => $companyid); echo form_open('dashboard/add_designation','',$hidden); ?>
+                            <? $hidden = array('company_id' => $companyid); echo form_open('dashboard/add_team','',$hidden); ?>
                             <?php 
-                              $desg = array(
+                              $teamf = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'placeholder' => 'Designation Name',
-                                'name' =>'designation'
+                                'placeholder' => 'Team/Departments Name',
+                                'name' =>'team'
                               );
-                              echo form_input($desg);
-                              ?>
-                               
-                              <div class="form-group">
-                                <label >Select Team / Department</label><br>
-                               <?php
-                                     echo form_dropdown('team',$teams); 
-                                    ?>
-                              
-                            </div>
-                              <?php
+                              echo form_input($teamf);
+                         
                               $btn = array(
                                 'class' => "btn btn-primary pull-right",
                                  'type' => 'submit',

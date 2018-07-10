@@ -163,26 +163,43 @@ class Dashboard extends CI_Controller
 		$view['data'] = $data;
 		$this->load->view('EmpDetails',$view);
 	}
+
 	public function designations(){
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);
+		$companyid = $this->dashboardmodel->get_companyid($adminid);	
 		if($q = $this->dashboardmodel->get_designations_list($companyid)){
 			$data['q'] = $q;
-			$data['companyid'] =$companyid;
-			$this->load->view('designations_form',$data);
+			
+		}else{
+			$data['data'] = "No designations are registered till now . Kindly add a new designation for your organization";
 		}
+		if($q = $this->dashboardmodel->get_team_list($companyid)){
+			$x = array();
+			$x['0" disabled="disabled'] = '--------Select Team -------';
+			foreach ($q as $team) {
+				$x[$team->id] = $team->name; 
+			}
+			$teams = $x;
+		}
+		$data['companyid'] =$companyid;
+		$data['teams'] = $teams;
+			$this->load->view('designations_form',$data);
 		
 	}
+
 	public function add_designation(){
 		$designation = $this->input->post('designation');
-		if(isset($designation)){
+		$team = $this->input->post('team');
+		if(isset($designation) and $team!=0){
 			$companyid = $this->input->post('company_id');
-			$this->dashboardmodel->add_designation($designation,$companyid);
+			$this->dashboardmodel->add_designation($designation,$companyid,$team);
 			
 			redirect('dashboard/designations');
 		}
 		redirect('dashboard/designations');
 	}
+
 	public function displayempdetails() {
 		$user_id = $this->input->post('user_id');
 		$admin_id  = $this->session->userdata('adminid');
@@ -218,6 +235,31 @@ class Dashboard extends CI_Controller
 	}
 	public function display() {
 		print_r("helllo");
+
+	public function teams(){
+		$adminid = $this->session->userdata('adminid');
+		$companyid = $this->dashboardmodel->get_companyid($adminid);
+		if($q = $this->dashboardmodel->get_team_list($companyid)){
+			$data['q'] = $q;
+			
+		}else{
+			$data['data'] = "No teams/departments are registered till now . Kindly add a new team/department for your organization";
+		}
+		$data['companyid'] =$companyid;
+			$this->load->view('team_form',$data);
+		
+	}
+
+	public function add_team(){
+		$team = $this->input->post('team');
+		if(isset($team)){
+			$companyid = $this->input->post('company_id');
+			$this->dashboardmodel->add_team($team,$companyid);
+			
+			redirect('dashboard/teams');
+		}
+		redirect('dashboard/teams');
+
 	}
 
 }
