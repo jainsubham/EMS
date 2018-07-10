@@ -61,13 +61,33 @@
 		
 
 		public function get_designations_list($companyid){
-			$q = $this->db->where(['company_id'=>$companyid])
-							->get(DESIGNATIONS)->result();
+			if($q = $this->db->select('name')
+							->where(['company_id'=>$companyid])
+							->get(DESIGNATIONS)->result()){
 				return $q;
+				}else{
+					return false;
+				}
 		}
 
-		public function add_designation($designation,$companyid){
-			if($this->db->insert(DESIGNATION,array('name' =>$designation,'company_id' =>$companyid))){
+		public function add_designation($designation,$companyid,$team){
+			if($this->db->insert(DESIGNATIONS,array('name' =>$designation,'company_id' =>$companyid,'team_id'=>$team))){
+			
+				return True;
+			}
+		}
+
+		public function get_team_list($companyid){
+			if($q = $this->db->where(['company_id'=>$companyid])
+							->get(TEAM)->result()){
+				return $q;
+				}else{
+					return false;
+				}
+		}
+
+		public function add_team($team,$companyid){
+			if($this->db->insert(TEAM,array('name' =>$team,'company_id' =>$companyid))){
 			
 				return True;
 			}
