@@ -35,7 +35,7 @@
 		public function get_userid($compid) {
 
 			return $this->db->select('id')
-							->where(['company_id' => $compid])
+							->where(['company_id' => $compid,'account_status'=>1])
 							->get(USER)->result();					
 		}
 		public function empdetails($uid) {
