@@ -235,7 +235,7 @@ class Dashboard extends CI_Controller
 	}
 	public function display() {
 		print_r("helllo");
-
+	}
 	public function teams(){
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);
