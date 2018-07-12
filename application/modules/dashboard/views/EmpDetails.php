@@ -7,9 +7,9 @@
 			            <table style="margin-top: 4px;" class="table table-bordered table-striped table-hover css-serial reult"> 
 			                <thead  class="col-md-12 ">
 								<tr class="card-header card-header-primary" style="background-color: #9c27b0;box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
-										<th>SerialNo</th>
-										<th>Image</th>
-										<th>EmployeeName</th>
+										<th>Serial No</th>
+										<th>Photo</th>
+										<th>Employee Name</th>
 										<th>Designation</th>
 										<th>Action</th>
 								</tr>

@@ -46,7 +46,7 @@ class User extends CI_Controller
 				if($accountlevel==0){
 					$this->session->set_userdata('logid',$userid);
 				}
-				if($accountlevel==1){
+				if($accountlevel==1 & $emailverified==1){
 					$this->session->set_userdata('adminid',$userid);
 				}
 				if($emailverified==0){
