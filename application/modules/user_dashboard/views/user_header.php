@@ -14,6 +14,7 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
+  <?= link_tag('assets/css/custom.css') ?>
   <link href="<?php echo base_url('assets/css/material-dashboard.css?v=2.1.0'); ?>" rel="stylesheet" />
 
   <!-- CSS Just for demo purpose, don't include it in your project -->
@@ -50,32 +51,38 @@
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
               <i class="material-icons">content_paste</i>
-              <p>Today Attendance</p>
+              <p>Attendance</p>
             </a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
-              <i class="material-icons">library_books</i>
-              <p>Announcement</p>
+              <i class="material-icons">receipt</i>
+              <p>Leaves</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
+              <i class="material-icons">speaker_notes</i>
+              <p>Announcements</p>
             </a>
           </li>
           
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
-              <i class="material-icons">location_ons</i>
+              <i class="material-icons">store_mall_directory</i>
               <p>Organization Structure</p>
             </a>
           </li>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
-              <i class="material-icons">person</i>
+              <i class="material-icons">group</i>
               <p>Employees</p>
             </a>
           </li>
         
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user/logout'); ?>">
-              <i class="material-icons">person</i>
+              <i class="material-icons">power_settings_new</i>
               <p>Logout</p>
             </a>
           </li>

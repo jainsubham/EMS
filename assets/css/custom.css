@@ -1,0 +1,25 @@
+.inline-flex-nd{
+  display: inline-flex;
+}
+.self-card-small-header{
+  padding : 6px !important;
+  text-align: center;
+}
+.self-data-card-header{
+	margin-left: 5px;
+	font-size: 16px;
+	font-weight: bolder;
+}
+.self-data-card-des{
+	font-size:12px;
+	margin-top: -18px;
+	margin-left: 15px;
+}
+.self-card-body{
+	padding: 15px !important;
+}
+#container {
+	min-width: 320px;
+	max-width: 600px;
+	margin: 0 auto;
+}

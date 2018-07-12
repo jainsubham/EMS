@@ -176,14 +176,15 @@
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ParentsSeniority:</label>
+                          <label class="bmd-label-floating">Parents Seniority:</label>
                           <?php $ps = $x->parents_seniority;
                             if(null!=($ps)){
                                   if($ps == 1) { 
-                                      echo "Disable";
-                                  }
+                                  
+                                      echo "Senior Citizen";
+                                    }
                                   if($ps == 0 ) {
-                                      echo "NOT Disable";
+                                      echo "Does'nt apply";
                                  }
                             }
                            ?>
@@ -191,31 +192,41 @@
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ParentDisability :</label>
+                          <label class="bmd-label-floating">Parents Disability :</label>
                           <?php $pd = $x->parents_disability;
                             if(null!=($pd)){
                                   if($disability == 1) { 
-                                      echo "Disable";
+                                      echo "Disabled";
                                   }
                                   if($disability == 0 ) {
-                                      echo "NOT Disable";
+                                      echo "Not Disabled";
                                  }
                             }
                            ?>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Children :</label>
-                          <?php echo $x->children ?>
+                          <?php $children = $x->children;
+                          if($children==0){
+                            echo "No children";
+                          }else{
+                            echo $children;
+                          } ?>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                          <label class="bmd-label-floating">HostelerChildren :</label>
-                          <?php echo $x->hosteler_children?>
+                          <label class="bmd-label-floating">Hosteler Children :</label>
+                          <?php $hostel_children = $x->hosteler_children;
+                          if($hostel_children==0){
+                            echo "No";
+                          }else{
+                            echo $hostel_children;
+                          } ?>
                         </div>
                       </div>
                     </div>
