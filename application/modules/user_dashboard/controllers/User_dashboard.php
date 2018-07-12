@@ -12,6 +12,7 @@
 
 		public function index() {
 			if(null!=($this->session->userdata('logid'))){
+				$this->load->view('user_header');
 				$this->load->view('user_dashboard');
 			}else{
 				redirect('user/login');

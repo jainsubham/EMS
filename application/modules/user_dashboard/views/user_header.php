@@ -48,47 +48,31 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/attendance'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
               <i class="material-icons">content_paste</i>
               <p>Today Attendance</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/announcement'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
               <i class="material-icons">library_books</i>
               <p>Announcement</p>
             </a>
           </li>
+          
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/invite'); ?>">
-              <i class="material-icons">bubble_chart</i>
-              <p>Invite Employees</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/organization'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
               <i class="material-icons">location_ons</i>
               <p>Organization Structure</p>
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/EmpDetails'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
               <i class="material-icons">person</i>
               <p>Employees</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
-              <i class="material-icons">person</i>
-              <p>Designations</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/teams'); ?>">
-              <i class="material-icons">person</i>
-              <p>Teams / Departments</p>
-            </a>
-          </li>
+        
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user/logout'); ?>">
               <i class="material-icons">person</i>
