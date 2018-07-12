@@ -75,7 +75,9 @@ class Profile extends CI_Controller
 					if($this->form_validation->run()) {
 						//$x = $post['img'];
 						//die();
-						   $img  = $this->img_upload();
+						   if($this->img_upload()){
+						   		$img = $this->img_upload();
+						   }
 						$data = array(
 								'first_name' => $post['fname'],
 								'last_name' => $post['lname'],
@@ -96,13 +98,14 @@ class Profile extends CI_Controller
 								'parents_seniority' => $post['ps'],
 								'parents_disability' => $post['pd'],
 								'children' => $post['children'],
-								'hosteler_children' => $post['hc'],
-								'img' => $img
+								'hosteler_children' => $post['hc']
 			 					);
+						if($img){
+							$data['img'] = $img;
+						}
 
 						if($this->profile->update($id,$data,$Email)) {
-
-							print_r("okkkkkkkk");
+							redirect('profile/displayprofile');
 						}
 					}
 					else {
