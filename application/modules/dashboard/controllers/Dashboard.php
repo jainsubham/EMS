@@ -11,13 +11,10 @@ class Dashboard extends CI_Controller
 		}
 
 	public function index() {
-		if(null==($this->session->userdata('logid')) and null==($this->session->userdata('adminid'))){
-
-				redirect('user/login');
-			}
-			
 			if(null!=($this->session->userdata('adminid'))){
 				$this->load->view('admindashboard');
+			}else{
+				redirect('user/login');
 			}
 	}
 

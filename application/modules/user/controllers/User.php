@@ -21,8 +21,11 @@ class User extends CI_Controller
 	}
 
 	public function login(){
-		if($this->session->userdata('logid') or $this->session->userdata('adminid')){
+		if($this->session->userdata('adminid')){
 			redirect('dashboard');
+		}
+		if($this->session->userdata('logid')){
+			redirect('user_dashboard');
 		}
 		$this->load->view('login');
 	}
@@ -45,6 +48,7 @@ class User extends CI_Controller
 				
 				if($accountlevel==0 & $emailverified==1){
 					$this->session->set_userdata('logid',$userid);
+					redirect('user_dashboard');
 				}
 				if($accountlevel==1 & $emailverified==1){
 					$this->session->set_userdata('adminid',$userid);

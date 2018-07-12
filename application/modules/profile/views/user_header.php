@@ -7,7 +7,7 @@
   <link rel="icon" type="image/png" href="../assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-      Dashboard
+    Dashboard
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -29,7 +29,7 @@
     -->
       <div class="logo">
         <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-          Admin Dashboard
+          User Dashboard
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -58,12 +58,7 @@
               <p>Announcement</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/invite'); ?>">
-              <i class="material-icons">bubble_chart</i>
-              <p>Invite Employees</p>
-            </a>
-          </li>
+       
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/organization'); ?>">
               <i class="material-icons">location_ons</i>
@@ -79,18 +74,6 @@
             </a>
           </li>
 
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
-              <i class="material-icons">person</i>
-              <p>Designations</p>
-            </a>
-          </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/teams'); ?>">
-              <i class="material-icons">person</i>
-              <p>Teams / Departments</p>
-            </a>
-          </li>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user/logout'); ?>">
               <i class="material-icons">person</i>
