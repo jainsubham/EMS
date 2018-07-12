@@ -43,7 +43,7 @@ class User extends CI_Controller
 			$emailverified = $userdata->email_verified;
 			if($userid){
 				
-				if($accountlevel==0){
+				if($accountlevel==0 & $emailverified==1){
 					$this->session->set_userdata('logid',$userid);
 				}
 				if($accountlevel==1 & $emailverified==1){
