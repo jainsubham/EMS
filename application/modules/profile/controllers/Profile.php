@@ -22,8 +22,14 @@ class Profile extends CI_Controller
 			$this->load->view('user_header');
 		}
 		$companyid = $this->profile->get_companyid($uid);
+		if($designation_id = $this->profile->get_designation_id($uid)){
+			$designation = $this->profile->get_designation_name($designation_id);
+			$data['designation'] = $designation;
+		}else{
+			$data['designation'] = "Works ";
+		}
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['Email'] = $this->profile->get_adminemail($uid);
+		$data['email'] = $this->profile->get_adminemail($uid);
 		$data['x']  = $this->profile->select($uid);
 
 		$this->load->view('display_profile',$data);
@@ -104,7 +110,7 @@ class Profile extends CI_Controller
 							$data['img'] = $img;
 						}
 
-						if($this->profile->update($id,$data,$Email)) {
+						if($this->profile->update_profile($id,$data,$Email)) {
 							redirect('profile');
 						}
 					}
