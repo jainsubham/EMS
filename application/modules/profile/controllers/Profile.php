@@ -13,19 +13,34 @@ class Profile extends CI_Controller
 
 	}
 	public function displayprofile() {
-		$adminid = $this->session->userdata('adminid');
-		$companyid = $this->profile->get_companyid($adminid);
+		if($this->session->userdata('adminid')){
+			$uid = $this->session->userdata('adminid');
+			$this->load->view('adminpannel');
+		}
+		if($this->session->userdata('logid')){
+			$uid = $this->session->userdata('logid');
+			$this->load->view('user_header');
+		}
+		$companyid = $this->profile->get_companyid($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['Email'] = $this->profile->get_adminemail($adminid);
-		$data['x']  = $this->profile->select($adminid);
+		$data['Email'] = $this->profile->get_adminemail($uid);
+		$data['x']  = $this->profile->select($uid);
+
 		$this->load->view('displayprofile',$data);
 	}
 	public function editprofile() {
-		$adminid = $this->session->userdata('adminid');
-		$companyid = $this->profile->get_companyid($adminid);
+		if($this->session->userdata('adminid')){
+			$uid = $this->session->userdata('adminid');
+			$this->load->view('adminpannel');
+		}
+		if($this->session->userdata('logid')){
+			$uid = $this->session->userdata('logid');
+			$this->load->view('user_header');
+		}
+		$companyid = $this->profile->get_companyid($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['Email'] = $this->profile->get_adminemail($adminid);
-		$data['x']  = $this->profile->select($adminid);
+		$data['Email'] = $this->profile->get_adminemail($uid);
+		$data['x']  = $this->profile->select($uid);
 		$this->load->view('editprofile',$data);
 	}
 	public function updateprofile() {
@@ -60,7 +75,9 @@ class Profile extends CI_Controller
 					if($this->form_validation->run()) {
 						//$x = $post['img'];
 						//die();
-						   $img  = $this->img_upload();
+						   if($this->img_upload()){
+						   		$img = $this->img_upload();
+						   }
 						$data = array(
 								'first_name' => $post['fname'],
 								'last_name' => $post['lname'],
@@ -81,13 +98,14 @@ class Profile extends CI_Controller
 								'parents_seniority' => $post['ps'],
 								'parents_disability' => $post['pd'],
 								'children' => $post['children'],
-								'hosteler_children' => $post['hc'],
-								'img' => $img
+								'hosteler_children' => $post['hc']
 			 					);
+						if($img){
+							$data['img'] = $img;
+						}
 
 						if($this->profile->update($id,$data,$Email)) {
-
-							print_r("okkkkkkkk");
+							redirect('profile/displayprofile');
 						}
 					}
 					else {

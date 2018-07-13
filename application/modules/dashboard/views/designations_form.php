@@ -57,16 +57,22 @@ include('adminpannel.php');?>
                                 'name' =>'designation'
                               );
                               echo form_input($desg);
+                              
                               ?>
                                
                               <div class="form-group">
-                                <label >Select Team / Department</label><br>
+                              <? if(isset($teams)){ ?>  <label >Select Team / Department</label><br>
                                <?php
                                      echo form_dropdown('team',$teams); 
-                                    ?>
+                                   } else {
+                                    if(isset($msg)){
+                                      echo $msg;
+                                    }
+                                   } ?>
                               
                             </div>
                               <?php
+
                               $btn = array(
                                 'class' => "btn btn-primary pull-right",
                                  'type' => 'submit',

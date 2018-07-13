@@ -11,13 +11,10 @@ class Dashboard extends CI_Controller
 		}
 
 	public function index() {
-		if(null==($this->session->userdata('logid')) and null==($this->session->userdata('adminid'))){
-
-				redirect('user/login');
-			}
-			
 			if(null!=($this->session->userdata('adminid'))){
 				$this->load->view('admindashboard');
+			}else{
+				redirect('user/login');
 			}
 	}
 
@@ -66,12 +63,14 @@ class Dashboard extends CI_Controller
 	}
 
 	public function verify_mail(){
-		if(null==($this->session->userdata('emailunverified'))){
+		if($this->session->userdata('emailunverified')==1){
 
+				$this->load->view('verify_mail');
+			}else{
 				redirect('user/login');
 			}
 
-		$this->load->view('verify_mail');
+		
 	}
 
 	public function invite(){
@@ -221,7 +220,11 @@ class Dashboard extends CI_Controller
 			$teams = $x;
 		}
 		$data['companyid'] =$companyid;
-		$data['teams'] = $teams;
+		if(isset($teams)){
+			$data['teams'] = $teams;
+		}else{
+			$data['msg'] = "There are not teams registered till now .<br>To add new designations , you need to add a new team/s <br><a href='".base_url('dashboard/teams')."'> Add new team </a>";
+		}
 			$this->load->view('designations_form',$data);
 		
 	}

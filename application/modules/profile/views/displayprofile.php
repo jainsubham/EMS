@@ -1,14 +1,9 @@
-<?php 
-//echo"<pre>";
-//print_r($x);
-//die();
-include('adminpannel.php');?>
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Admin Profile</a>
+            <a class="navbar-brand" href="#pablo">Your Profile</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -181,14 +176,15 @@ include('adminpannel.php');?>
                       </div>
                       <div class="col-md-6">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ParentsSeniority:</label>
+                          <label class="bmd-label-floating">Parents Seniority:</label>
                           <?php $ps = $x->parents_seniority;
                             if(null!=($ps)){
                                   if($ps == 1) { 
+                                  
                                       echo "Senior Citizen";
-                                  }
+                                    }
                                   if($ps == 0 ) {
-                                      echo "NO";
+                                      echo "Does'nt apply";
                                  }
                             }
                            ?>
@@ -196,31 +192,41 @@ include('adminpannel.php');?>
                       </div>
                     </div>
                     <div class="row">
-                      <div class="col-md-6">
+                      <div class="col-md-5">
                         <div class="form-group">
-                          <label class="bmd-label-floating">ParentDisability :</label>
+                          <label class="bmd-label-floating">Parents Disability :</label>
                           <?php $pd = $x->parents_disability;
                             if(null!=($pd)){
                                   if($disability == 1) { 
-                                      echo "Disable";
+                                      echo "Disabled";
                                   }
                                   if($disability == 0 ) {
-                                      echo "NOT Disable";
+                                      echo "Not Disabled";
                                  }
                             }
                            ?>
                         </div>
                       </div>
-                      <div class="col-md-3">
+                      <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Children :</label>
-                          <?php echo $x->children ?>
+                          <?php $children = $x->children;
+                          if($children==0){
+                            echo "No children";
+                          }else{
+                            echo $children;
+                          } ?>
                         </div>
                       </div>
                       <div class="col-md-3">
                         <div class="form-group">
-                          <label class="bmd-label-floating">HostelerChildren :</label>
-                          <?php echo $x->hosteler_children?>
+                          <label class="bmd-label-floating">Hosteler Children :</label>
+                          <?php $hostel_children = $x->hosteler_children;
+                          if($hostel_children==0){
+                            echo "No";
+                          }else{
+                            echo $hostel_children;
+                          } ?>
                         </div>
                       </div>
                     </div>
