@@ -19,25 +19,29 @@ include('adminpannel.php');?>
       <!-- End Navbar -->
       <div class="content">
         <div class="container-fluid">
+          
+            <div class="col-lg-12">
           <div class="row">
-            <div class="col-md-12">
+            <div class="col-lg-7">
               <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Invite</h4>
+                <div class="card-header card-header-success">
+                  <h4 class="card-title">Invite multiple Employee's</h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
                 <div class="card-body">
-                  
-                   <div class="row">
-                      <div class="col-md-6">
+
                       	<h4>Select CSV file to upload</h4>	
+                  <p class="card-description">Upload  the CSV file in the predefined format : <br>
+                    -> Employee1 Name , Employee1 Email<br>
+                    -> Employee2 Name , Employee2 Email
+                  </p>
                         <div class="form-group">
                           <br>
                           
                         <?= form_open_multipart('dashboard/do_upload'); ?>
                    
                         <?= form_upload('csvfile'); ?>
-                    <?
+                            <?
                               $btn = array(
                                 'class' => "btn btn-primary pull-right",
                                  'type' => 'submit',
@@ -50,30 +54,70 @@ include('adminpannel.php');?>
                         </div>
                       </div>  
                     </div>
+                </div>
+              
+            <div class="col-lg-5">
+              <div class="card">
+                <div class="card-header card-header-info">
+                  <h4 class="card-title">Invite a Single Employee</h4>
 
-
-
-
+                  <!-- <p class="card-category">Complete your profile</p> -->
+                </div>
+                <div class="card-body">
+                        <?php echo form_open('dashboard/single_invite'); ?>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Enter Name</label>
+                              <?php 
+                                $name = array(
+                                    'class' => 'form-control',
+                                    'type' => 'text',
+                                    'name' => 'name'
+                                ); 
+                              echo form_input($name); ?>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="form-group">
+                              <label class="bmd-label-floating">Enter Email</label>
+                              <?php 
+                                $email = array(
+                                    'class' => 'form-control',
+                                    'type' => 'email',
+                                    'name' => 'email'
+                              ); 
+                             echo form_input($email) ?>
+                           </div>
+                          </div>
+                        </div>
+                        <?php
+                            $btn = array(
+                                'class' => "btn btn-primary pull-right",
+                                 'type' => 'submit',
+                                 'name' => 'submit',
+                                 'value' => 'Invite'
+                              );
+                        echo form_submit($btn); ?>
+                        <?= form_close(); ?>
+                        </div>
+                      </div>  
+                    </div>
                 </div>
               </div>
             </div>    
-  <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
-  <script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
-  <script src="../assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.jquery.min.js');?>"></script>
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chartist JS -->
-  <script src="../assets/js/plugins/chartist.min.js"></script>
+  <script src="<?= base_url('assets/js/plugins/chartist.min.js') ?>"></script>
   <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+  <script src="<?= base_url('assets/js/plugins/bootstrap-notify.js'); ?>"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
-  <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
-</body>
-
-</html>
-
-
+  <script src="<?= base_url('assets/js/material-dashboard.min.js?v=2.1.0'); ?>" type="text/javascript"></script>
 	

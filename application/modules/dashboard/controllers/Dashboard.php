@@ -4,8 +4,8 @@ class Dashboard extends CI_Controller
 {
 	function __construct() {
 			parent::__construct();
-			$this->load->helper('form');
-			$this->load->library('session');
+			$this->load->helper(array('form','url'));
+			$this->load->library(array('session','form_validation','uri'));
 			$this->load->database();
 			$this->load->model('dashboardmodel');
 		}
@@ -85,7 +85,6 @@ class Dashboard extends CI_Controller
 
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
-
 		$companyid = $this->dashboardmodel->get_companyid($adminid);		
 		if ( $this->upload->do_upload('csvfile')){
 			$uploaddata = $this->upload->data();
@@ -138,6 +137,45 @@ class Dashboard extends CI_Controller
 			print_r($error);	
 		}
 
+	}
+	public function single_invite() {
+			$full_name = $this->input->post('name');
+			$email = $this->input->post('email');
+			$admin_id = $this->session->userdata('adminid');
+			$company_id = $this->dashboardmodel->get_companyid($admin_id);
+			$subject = "EMS Account Invitation";
+			$name = '';	
+			$company_name = $this->dashboardmodel->get_companyname($company_id);
+			$web_link = base_url('');
+			$invite_link=  base_url('user/reg');
+
+			$part1 = "<div> Hello ";
+			$part2 = " ,<br><br>
+			 You have been invited by ".$company_name." to create your account on EMS .<br>
+			Please create your account on EMS by clicking on the following link : <br>
+			<a href='";
+			$part3 = "'> Accept Invitation </a>.<br>
+			If you have any questions , please contact us on ".$web_link."
+			<br> Regards ,<br>EMS Team
+			</div>";
+			$name = $full_name;
+			$email_to = $email;
+			$tobehashed = $company_id.$email_to;
+			$hash = md5($tobehashed);
+			$invite_link = $invite_link."/".$hash;
+			
+			$msg_body = $part1.$name.$part2.$invite_link.$part3;
+			
+
+			$this->init_mail();
+			$this->sendmail($subject , $msg_body , $email_to);	
+			if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
+				echo $name." is invited"."<br>";
+			}
+			else {
+				$error = array('error' => $this->upload->display_errors());
+				print_r($error);
+			}
 	}
 	
 	public function attendance() {
@@ -204,41 +242,212 @@ class Dashboard extends CI_Controller
 	}
 
 	public function displayempdetails() {
-		$user_id = $this->input->post('user_id');
-		$admin_id  = $this->session->userdata('adminid');
-		$company_id = $this->dashboardmodel->get_companyid($admin_id);
-		$company_name = $this->dashboardmodel->get_companyname($company_id);
-		$q  =  $this->dashboardmodel->fetchdata($user_id);
-		if ($q) {
-			$x['joining_date'] = $q->joining_date;
-			$x['employee_id'] = $q->employee_id;
-			$x['confirmation_date'] = $q->confirmation_date;
-			$x['effective_from'] = $q->effective_from;
-			$x['effective_to'] = $q->effective_to;
-			$data['x']=$x;
-
-			$data['company_name'] = $companyname;
+		if ($this->uri->segment(1) === FALSE){
+        	$user_id = 0;
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+		if($user_id!=NULL) {
+				$admin_id  = $this->session->userdata('adminid');
+				$company_id = $this->dashboardmodel->get_companyid($admin_id);
+				$company_name = $this->dashboardmodel->get_companyname($company_id);
+				$q  =  $this->dashboardmodel->fetchdata($user_id);
+				if ($q) {
+					$x['joining_date'] = $q[0]->joining_date;
+					$x['employee_id'] = $q[0]->employee_id;
+					$x['confirmation_date'] = $q[0]->confirmation_date;
+					$x['effective_from'] = $q[0]->effective_from;
+					$x['effective_to'] = $q[0]->effective_to;
+					$x['designation'] = $q[0]->designation;
+					$x['name']   = $this->dashboardmodel->get_designationname($x['designation']);
+					$data['x']= $x;
+					
+				}
+				else {
+					
+						 $q['employee_id'] = 'NULL';
+						 $q['joining_date'] = 'NULL';
+						 $q['confirmation_date'] = 'NULL';
+						 $q['effective_from'] = 'NULL';
+						 $q['effective_to'] = 'NULL';
+						 $q['name'] = 'NULL';
+						$data['x'] = $q;
+				}	
+				
+					$data['x']['user_id'] = $user_id;
+					$data['company_name'] = $company_name;
+					//$this->load->view('displayempdetails',$data);
+			// DISPLAY PERSNOAL INFORMATION	
+			$data['Email'] = $this->dashboardmodel->get_adminemail($user_id);
+			$data['x']['p']  = $this->dashboardmodel->select($user_id);
+			// echo "<pre>";
+			// print_r($data);
+			// die();
 			$this->load->view('displayempdetails',$data);
 		}
-		else {
+
+
 			
-				 $q['employee_id'] = 'NULL';
-				 $q['joining_date'] = 'NULL';
-				 $q['confirmation_date'] = 'NULL';
-				 $q['effective_from'] = 'NULL';
-				 $q['effective_to'] = 'NULL';
-			$data['x'] = $q;
-			$data['company_name'] = $company_name;
-			//print_r($data);
-			//die();
-			$this->load->view('displayempdetails',$data);
+		    
+		}
+	public function editempdetails() {
 
+		if ($this->uri->segment(1) === FALSE){
+        	$user_id = 0;
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+		if($user_id!=NULL) {
+
+				$admin_id  = $this->session->userdata('adminid');
+				$company_id = $this->dashboardmodel->get_companyid($admin_id);
+				$company_name = $this->dashboardmodel->get_companyname($company_id);
+				$q  =  $this->dashboardmodel->fetchdata($user_id);
+				
+				if ($q) {
+					$x['joining_date'] = $q[0]->joining_date;
+					$x['employee_id'] = $q[0]->employee_id;
+					$x['confirmation_date'] = $q[0]->confirmation_date;
+					$x['effective_from'] = $q[0]->effective_from;
+					$x['effective_to'] = $q[0]->effective_to;
+					$x['designation'] = $q[0]->designation;
+					$data['x']= $x;
+				}
+				else {
+					
+						 $q['employee_id'] = 'NULL';
+						 $q['joining_date'] = 'NULL';
+						 $q['confirmation_date'] = 'NULL';
+						 $q['effective_from'] = 'NULL';
+						 $q['effective_to'] = 'NULL';
+						 $q['designation'] = 'NULL';
+						 $data['x'] = $q;
+				}
+				if($m = $this->dashboardmodel->get_designations_list($company_id)){
+						$y = array();
+						$y['0" disabled="disabled'] = '--------Select Designation -------';
+						foreach ($m as $des) {
+								$y[$des->id] = $des->name; 
+							}
+						$designation = $y;
+				}
+					$data['designations'] = $designation;
+					$data['x']['user_id']=$user_id;
+					$data['company_name'] = $company_name;
+					$data['Email'] = $this->dashboardmodel->get_adminemail($user_id);
+					$data['x']['p']  = $this->dashboardmodel->select($user_id);
+					$this->load->view('editempdetails',$data);
 		}	
+	}
+	public function editdata() {
+		if ($this->uri->segment(1) === FALSE){
+        	$user_id = 0;
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+		if($user_id!=NULL) {
+				$post = $this->input->post();
 
+						$this->form_validation->set_rules('empid','employee_id','required');
+						$this->form_validation->set_rules('jdate','joining_date','required');
+						$this->form_validation->set_rules('cdate','confirmation_date','required');
+						$this->form_validation->set_rules('efrom','effective_from','required');
+						$this->form_validation->set_rules('eto','effective_to','required');
+						$this->form_validation->set_rules('designations','designation','required');
+						if($this->form_validation->run()) {
+							$data = array(
+								 'employee_id' => $post['empid'],
+								 'joining_date' => $post['jdate'],
+								 'confirmation_date' => $post['cdate'],
+								 'effective_from' => $post['efrom'],
+								 'effective_to' => $post['eto'],
+								 'designation' => $post['designations']
+							);
+							
+							$data['user_id'] = $user_id;
+							if($this->dashboardmodel->updatedata($data)) {
+								//print_r("update successfully");
+								redirect('dashboard/displayempdetails/'.$user_id);
+							}
+
+						}
+						else {
+							redirect('dashboard/editempdetails/'.$user_id);
+						}
+		}
 	}
-	public function display() {
-		print_r("helllo");
+	public function update_personal_info() {
+		if ($this->uri->segment(1) === FALSE){
+        	$user_id = 0;
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+		if($user_id!=NULL) {
+				$post = $this->input->post();
+
+				$this->form_validation->set_rules('contact','Address','required');
+				$this->form_validation->set_rules('email','Email','required');
+				$this->form_validation->set_rules('fname','First Name','required');
+				$this->form_validation->set_rules('lname','Last Name','required');
+				$this->form_validation->set_rules('add1','Address','required');
+				$this->form_validation->set_rules('add2','Address','required');
+				$this->form_validation->set_rules('city','City','required');
+				$this->form_validation->set_rules('state', 'State','required');
+				$this->form_validation->set_rules('pin', 'PinCode', 'required');
+				$this->form_validation->set_rules('blood', 'BloodGroup', 'required');
+				$this->form_validation->set_rules('gender','Gender','required');
+				$this->form_validation->set_rules('MartailStatus','MartailStatus','required');
+				$this->form_validation->set_rules('dob','DOB','required');
+				$this->form_validation->set_rules('dis','Disability','required');
+				$this->form_validation->set_rules('pan','PanNumber','required');
+				$this->form_validation->set_rules('aadhar','AadharNumber','required');
+				$this->form_validation->set_rules('pname','FatherName','required');
+				$this->form_validation->set_rules('ps','ParentsSeniority','required');
+				$this->form_validation->set_rules('pd','ParentsDisability','required');
+				$this->form_validation->set_rules('children','Children','required');
+				$this->form_validation->set_rules('hc','HostelerChildren','required');
+				$this->form_validation->set_rules('submit','Submit','required');
+				if($this->form_validation->run()) {
+				 			$data = array(
+								'first_name' => $post['fname'],
+								'last_name' => $post['lname'],
+								'contact_no' => $post['contact'],
+								'blood_group' => $post['blood'],
+								'disability' => $post['dis'],
+								'dob' => $post['dob'],
+								'martail_status' => $post['MartailStatus'],
+								'gender' => $post['gender'],
+								'address_1' => $post['add1'],
+								'address_2' => $post['add2'],
+								'city' => $post['city'],
+								'state' => $post['state'],
+								'pin_code' => $post['pin'],
+								'pan_no' => $post['pan'],
+								'aadhaar_nO' => $post['aadhar'],
+								'father_name' => $post['pname'],
+								'parents_seniority' => $post['ps'],
+								'parents_disability' => $post['pd'],
+								'children' => $post['children'],
+								'hosteler_children' => $post['hc']
+			 					);
+				 			$data['user_id'] = $user_id;
+				 			$email = $post['email'];
+				 			if($this->dashboardmodel->update_personal_info($data,$email)) {
+				 				redirect('dashboard/displayempdetails/'.$user_id);
+				 			}
+				 			else {
+				 				redirect('dashboard/editempdetails/'.$user_id);
+				 			}
+				}
+		}
 	}
+				 			
+				
+		
 	public function teams(){
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);
@@ -263,6 +472,37 @@ class Dashboard extends CI_Controller
 		}
 		redirect('dashboard/teams');
 
+	}
+	public function img_upload(){
+		//print_r($img);
+		//die();
+		$config['upload_path']          = './assets/img/user/';
+		$config['allowed_types']        = 'jpg|png|gif|jpeg';
+		$config['max_size']             = 10000;
+		//print_r($config['upload_path']);
+		//die();
+		$this->load->library('upload', $config);
+		if($this->upload->do_upload('img')){
+			$uploaddata = $this->upload->data();
+			$filename = $uploaddata['file_name'];
+			return  $filename;
+			}
+			else{
+			$error = array('error' => $this->upload->display_errors());
+			
+			print_r($error);	
+		}
+	}
+	public function img_update(){
+			$user_id = $this->input->post('user_id');
+			$img = $this->img_upload();
+			if($this->dashboardmodel->img_update($user_id,$img)) {
+				redirect('dashboard/displayempdetails/'.$user_id);
+			}
+			else {
+				redirect('dashboard/editempdetails/'.$user_id);
+			}
+		
 	}
 
 }

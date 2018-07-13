@@ -24,7 +24,24 @@
 				return False;
 			}
 		}
+		public function get_adminemail($adminid){
+		$q = $this->db->where(['id' => $adminid])
+					->get(USER);
+		if( $q->num_rows()==1){
+				return $q->row()->email;
+			}
+			else{
+				return False;
+			}
 
+		}
+		public function select($q) {
+
+		return  $this->db->where(['user_id' =>$q] )
+					->get(USER_DETAILS)->row();
+					
+
+		}
 		public function send_invite($emailid,$companyid,$hash){
 
 			if($this->db->insert(INVITES,array('email_id' =>$emailid,'hash' =>$hash,'company_id' =>$companyid,'invite_time'=> date('Y-m-d H:i:s',time()) )) ){
@@ -62,7 +79,7 @@
 		
 
 		public function get_designations_list($companyid){
-			if($q = $this->db->select('name')
+			if($q = $this->db->select(['name','id'])
 							->where(['company_id'=>$companyid])
 							->get(DESIGNATIONS)->result()){
 				return $q;
@@ -95,9 +112,47 @@
 		}
 	    public function fetchdata($uid) {
 		 	return $this->db->select()
-		 				->where(['user_id' => 'uid'])
+		 				->where(['user_id' => $uid])
 		 				->get(EMPLOYMENT_DETAILS)->result();
 		 }
+		public function updatedata($data) {
+		 		
+		 	 $q  = $this->db->select('user_id')
+		 	  			->where(['user_id' => $data['user_id']])
+		 	  			->get(EMPLOYMENT_DETAILS)->row();
+		 	  			
+		 	  if($q) {
+		 	  		$this->db->where(['user_id' =>$q->user_id])
+								->update(EMPLOYMENT_DETAILS,$data);
+					return true;
+		 	  }
+		 	  else {
+
+		 	  	$this->db->insert(EMPLOYMENT_DETAILS,$data);
+		 	  	 return true;
+
+		 	  }
+		}
+		public function get_designationname($x) {
+		 	return $this->db->select('name')
+		 			 ->where(['id' => $x])
+		 			 ->get(DESIGNATIONS)->row()->name;
+
+		}
+		public function update_personal_info($data,$email) {
+			$this->db->set('email', $email)
+							->where(['id' => $data['user_id']])
+							->update(USER);
+			$this->db->where(['user_id' =>$data['user_id']])
+						->update(USER_DETAILS,$data);
+						return true;
+		}
+		 public function img_update($user_id,$img) {
+		 	return $this->db->set('img',$img)
+		 				->where(['user_id' => $user_id])
+		 				->update(USER_DETAILS);
+		 }
+
 
 	}
 ?> 

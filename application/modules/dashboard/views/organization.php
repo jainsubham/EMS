@@ -1,3 +1,1 @@
-<?php 
-include('adminpannel.php');
-?>
+<?php include('adminpannel.php') ;?>

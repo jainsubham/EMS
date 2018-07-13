@@ -23,7 +23,7 @@
 										<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "80px" style="border-radius:50px;"></td>
 										<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
 										<td align="center"><?php echo $row['designationname'] ?></td>
-										<? $hidden = array('user_id' => $row['user_id']); echo form_open('dashboard/displayempdetails','',$hidden) ;?>			
+										<?= form_open('dashboard/displayempdetails/'.$row['user_id']) ;?>			
 										<td align="center">
 											<?php
 						                            $btn = array(
