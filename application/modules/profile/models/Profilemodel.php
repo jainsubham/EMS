@@ -9,10 +9,10 @@ class Profilemodel extends CI_Model
 					->get(USER_DETAILS)->row();
 
 	}
-	public function get_companyid( $adminid ){
+	public function get_companyid( $uid ){
 
-			$q = $this->db->where(['user_id'=>$adminid])
-							->get(ADMIN);
+			$q = $this->db->where(['id'=>$uid])
+							->get(USER);
 
 			if( $q->num_rows()==1){
 				return $q->row()->company_id;

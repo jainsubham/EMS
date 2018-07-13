@@ -14,7 +14,8 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
-  <link href="../assets/css/material-dashboard.css?v=2.1.0" rel="stylesheet" />
+ <?= link_tag('assets/css/material-dashboard.css?v=2.1.0') ?>
+  <?= link_tag('assets/css/custom.css') ?>
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
@@ -41,7 +42,7 @@
             </a>
           </li>
             <li class="nav-item">
-            <a class="nav-link" href='<?= base_url('profile/displayprofile') ?>'>
+            <a class="nav-link" href='<?= base_url('profile') ?>'>
               <i class="material-icons">person</i>
               <p>Profile</p>
             </a>
