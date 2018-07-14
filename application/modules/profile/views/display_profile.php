@@ -140,8 +140,26 @@
  &nbsp<?= $x->gender ?></div>
                      <div class="col-md-6 inline-flex-nd"><i class="material-icons">event</i> Born on : &nbsp<?= $x->dob ?></div>
                     </div>
+                    
                   </p>
-                  
+                  <div class="self-div-more-details">
+                      <button class="self-button-more-details" id="headingFour1"  onclick="showdetails();" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   viewBox="0 0 49.656 49.656" height="24px" style="enable-background:new 0 0 49.656 49.656;" xml:space="preserve">
+<g>
+  <polygon style="fill:#00AD97;" points="1.414,14.535 4.242,11.707 24.828,32.292 45.414,11.707 48.242,14.535 24.828,37.95   "/>
+  <path style="fill:#00AD97;" d="M24.828,39.364L0,14.536l4.242-4.242l20.586,20.585l20.586-20.586l4.242,4.242L24.828,39.364z
+     M2.828,14.536l22,22l22-22.001l-1.414-1.414L24.828,33.707L4.242,13.122L2.828,14.536z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg></button>
+                    </div>
+                    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                      <div class="self-more-details-profile">
+                       FourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFour
+                      </div>
+                    </div>
+                    <div class="self-div-more-details">
+                      <button class="self-button-more-details" style="display: none;" id="headingFour2" onclick="hidedetails();" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"  viewBox="0 0 49.656 49.656" height="24px" style="enable-background:new 0 0 49.656 49.656;" xml:space="preserve"><g>  <polygon style="fill:#00AD97;" points="48.242,35.122 45.414,37.95 24.828,17.364 4.242,37.95 1.414,35.122 24.828,11.707  "/>
+  <path style="fill:#00AD97;" d="M45.414,39.363L24.828,18.778L4.242,39.363L0,35.121l24.828-24.828l24.828,24.828L45.414,39.363z
+     M24.828,15.95l20.586,20.585l1.414-1.414l-22-22l-22,22l1.414,1.414L24.828,15.95z"/></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg></button>
+                    </div>
                 </div>
               </div>
             </div>
@@ -160,6 +178,19 @@
   <script src="<?= base_url('assets/js/plugins/bootstrap-notify.js')?>"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
   <script src="<?= base_url('assets/js/material-dashboard.min.js?v=2.1.0')?>" type="text/javascript"></script>
+  <script type="text/javascript">
+    function showdetails(){
+      document.getElementById('headingFour1').style.display="none"; 
+      document.getElementById('headingFour2').style.display="inline-block"; 
+
+    };
+    function hidedetails(){
+      document.getElementById('headingFour2').style.display="none"; 
+      document.getElementById('headingFour1').style.display="inline-block"; 
+      
+
+    };
+  </script>
 </body>
 
 </html>

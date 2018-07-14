@@ -36,3 +36,19 @@
 	margin-right: 0 !important;
 	margin-left: 0 !important;
 }
+.self-button-more-details{
+	border-radius: 100%; 
+	border: none;
+	color: #00AD97; 
+	background-color: #FFFFFF4D;
+	padding-top: 5px;
+	box-shadow: 0 16px 38px -12px rgba(29, 24, 24, 0.6), 0 4px 25px 0px rgba(98, 83, 83, 0.68), 0 8px 10px -5px rgba(8, 1, 1, 0.29);
+		
+}
+.self-div-more-details{
+
+	margin-bottom: -24px;
+}
+.self-more-details-profile{
+	margin-top: 24px;
+}
