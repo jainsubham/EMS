@@ -133,9 +133,9 @@
 
 		 	  }
 		}
-		public function get_designationname($x) {
+		public function get_designationname($designation_id) {
 		 	return $this->db->select('name')
-		 			 ->where(['id' => $x])
+		 			 ->where(['id' => $designation_id])
 		 			 ->get(DESIGNATIONS)->row()->name;
 
 		}

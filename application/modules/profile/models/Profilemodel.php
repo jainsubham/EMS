@@ -9,10 +9,10 @@ class Profilemodel extends CI_Model
 					->get(USER_DETAILS)->row();
 
 	}
-	public function get_companyid( $adminid ){
+	public function get_companyid( $uid ){
 
-			$q = $this->db->where(['user_id'=>$adminid])
-							->get(ADMIN);
+			$q = $this->db->where(['id'=>$uid])
+							->get(USER);
 
 			if( $q->num_rows()==1){
 				return $q->row()->company_id;
@@ -43,7 +43,7 @@ class Profilemodel extends CI_Model
 			}
 
 	}
-	public function update($id,$data,$Email) {
+	public function update_profile($id,$data,$Email) {
 
 		$this->db->set('email', $Email)
 						->where('id', $id)
@@ -51,6 +51,23 @@ class Profilemodel extends CI_Model
 		$this->db->where(['user_id' =>$id])
 					->update(USER_DETAILS,$data);
 					return true;
+	}
+	public function get_designation_name($designation_id) {
+		 	return $this->db->select('name')
+		 			 ->where(['id' => $designation_id])
+		 			 ->get(DESIGNATIONS)->row()->name;
+
+		}
+
+	public function get_designation_id($user_id){
+		if($q = $this->db->select('designation')
+		 			 ->where(['user_id' => $user_id])
+		 			 ->get(EMPLOYMENT_DETAILS)->row()){
+
+		 	return $q->designation;
+		 }else{
+		 	return false;
+		 }
 	}
 }
 ?>

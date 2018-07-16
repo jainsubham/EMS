@@ -12,7 +12,7 @@ class Profile extends CI_Controller
 		$this->load->helper(array('form','url'));
 
 	}
-	public function displayprofile() {
+	public function index() {
 		if($this->session->userdata('adminid')){
 			$uid = $this->session->userdata('adminid');
 			$this->load->view('adminpannel');
@@ -22,11 +22,17 @@ class Profile extends CI_Controller
 			$this->load->view('user_header');
 		}
 		$companyid = $this->profile->get_companyid($uid);
+		if($designation_id = $this->profile->get_designation_id($uid)){
+			$designation = $this->profile->get_designation_name($designation_id);
+			$data['designation'] = $designation;
+		}else{
+			$data['designation'] = "Works ";
+		}
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['Email'] = $this->profile->get_adminemail($uid);
+		$data['email'] = $this->profile->get_adminemail($uid);
 		$data['x']  = $this->profile->select($uid);
 
-		$this->load->view('displayprofile',$data);
+		$this->load->view('display_profile',$data);
 	}
 	public function editprofile() {
 		if($this->session->userdata('adminid')){
@@ -104,8 +110,8 @@ class Profile extends CI_Controller
 							$data['img'] = $img;
 						}
 
-						if($this->profile->update($id,$data,$Email)) {
-							redirect('profile/displayprofile');
+						if($this->profile->update_profile($id,$data,$Email)) {
+							redirect('profile');
 						}
 					}
 					else {

@@ -43,7 +43,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('profile/displayprofile'); ?>">
+            <a class="nav-link" href="<?= base_url('profile'); ?>">
               <i class="material-icons">person</i>
               <p>Profile</p>
             </a>
