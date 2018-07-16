@@ -22,7 +22,20 @@
 			}else{
 				redirect('user/login');
 			}
-	}
+		}
+		public function switch_admin() {
+			if (null!=($this->session->userdata('logid'))) {
+				$user_id = $this->session->userdata('logid');
+				$this->session->set_userdata('adminid',$user_id);
+				$this->session->unset_userdata('switched');
+				$this->session->unset_userdata('logid');
+				redirect('dashboard');
+			}
+			else {
+				redirect('user/login');
+			}
+		}
+
 
 	}
 ?>

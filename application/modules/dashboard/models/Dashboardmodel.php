@@ -169,8 +169,20 @@
 		public function get_employee_attendance($employee_id) {
 			return	$this->db->select('employee_id')
 								->where(['employee_id' =>$employee_id[0]->employee_id])
-								->get(ATTENDANCE)->result();
-								
+								->get(ATTENDANCE)->result();						
+		}
+		public function count_employees($company_id) {
+				
+			return  $this->db->where(['company_id' => $company_id])
+					   		->count_all_results(USER);
+		}
+		public function get_leave_category($company_id) {
+			return $this->db->select(['category_name','company_id'])
+						->where(['company_id'=>$company_id])
+						->get(LEAVE_CATEGORY)->result();
+		} 
+		public function add_category($category,$company_id) {
+			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id));
 		}
 
 	}

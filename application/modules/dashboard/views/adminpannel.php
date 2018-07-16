@@ -53,10 +53,16 @@
               <p>Attendance</p>
             </a>
           </li>
-          <li class="nav-item ">
+           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/announcement'); ?>">
               <i class="material-icons">library_books</i>
               <p>Announcement</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/leave'); ?>">
+              <i class="material-icons">library_books</i>
+              <p>Leaves</p>
             </a>
           </li>
           <li class="nav-item ">
@@ -87,6 +93,12 @@
             <a class="nav-link" href="<?= base_url('dashboard/teams'); ?>">
               <i class="material-icons">person</i>
               <p>Teams / Departments</p>
+            </a>
+          </li>
+           <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/switch_user'); ?>">
+              <i class="material-icons">person</i>
+              <p>switch as user</p>
             </a>
           </li>
           <li class="nav-item ">

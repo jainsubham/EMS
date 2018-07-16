@@ -12,7 +12,11 @@ class Dashboard extends CI_Controller
 
 	public function index() {
 			if(null!=($this->session->userdata('adminid'))){
-				$this->load->view('admindashboard');
+				$admin_id = $this->session->userdata('adminid');
+				$company_id = $this->dashboardmodel->get_companyid($admin_id);	
+				$q = $this->dashboardmodel->count_employees($company_id);
+				$data['x'] = $q;
+				$this->load->view('admindashboard',$data);
 			}else{
 				redirect('user/login');
 			}
@@ -85,7 +89,7 @@ class Dashboard extends CI_Controller
 
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
-		$companyid = $this->dashboardmodel->get_companyid($adminid);		
+		$companyid = $this->dashboardmodel->get_companyid($adminid);	
 		if ( $this->upload->do_upload('csvfile')){
 			$uploaddata = $this->upload->data();
 			$filename = $uploaddata['file_name'];
@@ -180,9 +184,6 @@ class Dashboard extends CI_Controller
 			$admin_id   = $this->session->userdata('adminid');
 			$company_id = $this->dashboardmodel->get_companyid($admin_id);
 			$user_id    = $this->dashboardmodel->get_userid($company_id);
-			$date = date("Y-m-d");
-			$date = strtotime("-7 day", strtotime($date));
-			echo date("Y-m-d", $date);
 			$i = 0;
 			foreach ($user_id as $row) {
 				$uid = $row->id;
@@ -270,7 +271,6 @@ class Dashboard extends CI_Controller
 	public function designations(){
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);
-		$companyid = $this->dashboardmodel->get_companyid($adminid);	
 		if($q = $this->dashboardmodel->get_designations_list($companyid)){
 			$data['q'] = $q;
 			
@@ -570,6 +570,42 @@ class Dashboard extends CI_Controller
 			}
 		
 	}
+	public function switch_user() {
+		if(null!=($this->session->userdata('adminid'))){
+				$user_id = $this->session->userdata('adminid');
+				$this->session->set_userdata('logid',$user_id);
+				$this->session->set_userdata('switched','1');
+				$this->session->unset_userdata('adminid');
+				redirect('user_dashboard');
+			}
+			else {
+				redirect('user/login');
+			}
+	}
+	public function leave() {
+		 $admin_id = $this->session->userdata('adminid');
+		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
+		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
+		 	$data['q'] = $q;
+		 	// echo "<pre>"
+		 	// print_r($data);
+		 	// die();
+			
+		 }else {
+		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
+		 }
 
+		$this->load->view('leave',$data);
+	}
+	public function add_category() {
+		$category = $this->input->post('category');
+		$company_id = $this->input->post('company_id');
+		if($this->dashboardmodel->add_category($category,$company_id)) {
+			redirect('dashboard/leave');
+		}
+		else {
+			redirect('dashboard/leave');
+		}
+	}
 }
 ?>
