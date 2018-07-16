@@ -108,14 +108,24 @@
             text: 'Showing record of 1 week'
         },
 
+        yAxis:{
+           title: {
+                text: 'Hours'
+            },
+            min: 0,
+            max: 12,
+            tickInterval: 1
+        },
+
         xAxis: {
-            categories: ['Monday', 'Tuesday', 'Wednesday', 'Thrusday', 'Friday', 'Saturday', 'Sunday']
+            categories: ['<?= $attendance_record['6']['day']." ".$attendance_record['6']['display_date'] ?>', '<?= $attendance_record['5']['day']." ".$attendance_record['5']['display_date'] ?>', '<?= $attendance_record['4']['day']." ".$attendance_record['4']['display_date'] ?>', '<?= $attendance_record['3']['day']." ".$attendance_record['3']['display_date'] ?>', '<?= $attendance_record['2']['day']." ".$attendance_record['2']['display_date'] ?>', '<?= $attendance_record['1']['day']." ".$attendance_record['1']['display_date'] ?>', '<?= $attendance_record['0']['day']." ".$attendance_record['0']['display_date'] ?>']
         },
 
         series: [{
             type: 'column',
+            name: "Hours",
             colorByPoint: true,
-            data: [12,10,09,14,11,07,00],
+            data: [<?= $attendance_record['6']['time'] ?>,<?= $attendance_record['5']['time'] ?>,<?= $attendance_record['4']['time'] ?>,<?= $attendance_record['3']['time'] ?>,<?= $attendance_record['2']['time'] ?>,<?= $attendance_record['1']['time'] ?>,<?= $attendance_record['0']['time'] ?>],
             showInLegend: false
         }]
 
