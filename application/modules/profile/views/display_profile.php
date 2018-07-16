@@ -101,8 +101,8 @@
                   <p class="self-card-designation text-gray inline-flex-nd"><i class="material-icons">work</i> &nbsp <?= $designation ?>  at &nbsp<b><?= $companyname ?></b></p>
                   <h4 class="card-title"><?php echo $x->first_name.' '.$x->last_name ;?></h4>
                   <p class="card-description ">
-                    <div class="row">
-                    <div class="col-md-5 inline-flex-nd"><i class="material-icons">call</i> &nbsp <?= $x->contact_no ?></div>
+                    <div class="row text-gray">
+                    <div class="col-md-5 inline-flex-nd "><i class="material-icons">call</i> &nbsp <?= $x->contact_no ?></div>
                     <div class="col-md-7 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
    width="18.211px" height="24.211px" viewBox="0 0 485.211 485.211" style="enable-background:new 0 0 485.211 485.211;"
    xml:space="preserve">
