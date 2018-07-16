@@ -147,12 +147,31 @@
 						->update(USER_DETAILS,$data);
 						return true;
 		}
-		 public function img_update($user_id,$img) {
+		public function img_update($user_id,$img) {
 		 	return $this->db->set('img',$img)
 		 				->where(['user_id' => $user_id])
 		 				->update(USER_DETAILS);
-		 }
+		}
+		public function attendance($attendance) {
+			return $this->db->insert(ATTENDANCE,$attendance);
+		}
+		public function get_user_name($user_id) {
+			return $this->db->select(['first_name','last_name'])
+						->where(['user_id'=>$user_id])
+						->get(USER_DETAILS)->result();
+		}
+		public function get_employee_id($user_id) {
+			return $this->db->select('employee_id')
+								->where(['user_id'=>$user_id])
+								->get(EMPLOYMENT_DETAILS)->result();
+		}
 
+		public function get_employee_attendance($employee_id) {
+			return	$this->db->select('employee_id')
+								->where(['employee_id' =>$employee_id[0]->employee_id])
+								->get(ATTENDANCE)->result();
+								
+		}
 
 	}
 ?> 

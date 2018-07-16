@@ -97,7 +97,7 @@ define('USER_DETAILS','user_details');
 define('SALARY','salary');
 define('REP_SUP','reporting_supervisor');
 define('INVITES','invites');
-define('ATTENDANCRE','attendance');
+define('ATTENDANCE','attendance');
 define('LEAVE_REQ','leave_req');
 define('LEAVE_ALLOWANCE','leave_allowance');
 define('LEAVE_CATEGORY','leave_category');
