@@ -46,14 +46,52 @@
       <i class="material-icons">account_balance</i>&nbsp
       Bank Account Details
       <i class="material-icons self-icon-down-arrow">keyboard_arrow_down</i>
-      
      </span>
     </div>
 
     <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
-      <div class="card-body">
-        div1
+      <div class="card-body col-md-12 self-card-body-grey">
+        <div class="row">
+          <div class="col-md-6 self-text-labeling-right">
+           Bank Account No :
+        </div>
+        <div class="col-md-6">
+            <?= $bank_details->bank_acc_no ?>
+        </div>
       </div>
+      <div class="row">
+          <div class="col-md-6 self-text-labeling-right">
+           Bank IFSC Code :
+        </div>
+        <div class="col-md-6">
+            <?= $bank_details->bank_ifsc_code ?>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6 self-text-labeling-right">
+           Bank Name :
+        </div>
+        <div class="col-md-6">
+            <?= $bank_details->bank_name ?>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6 self-text-labeling-right">
+           Bank Address :
+        </div>
+        <div class="col-md-6">
+            <?= $bank_details->bank_address ?>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-6 self-text-labeling-right">
+           Payment mode :
+        </div>
+        <div class="col-md-6">
+            <?= $bank_details->payment_mode ?>
+        </div>
+      </div>
+    </div>
     </div>
   </div>
   <div class="card">
@@ -80,9 +118,67 @@
       <i class="material-icons self-icon-down-arrow">keyboard_arrow_down</i>
      </span>
     </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+    <div id="collapseThree" class="collapse " aria-labelledby="headingThree" data-parent="#accordion">
       <div class="card-body">
-       div 3
+       <div class="card-body col-md-12 self-card-body-grey">
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Company Name : 
+            </div>
+            <div class="col-md-6">
+                <?= $companyname ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Employee Identity : 
+            </div>
+            <div class="col-md-6">
+                <?= $employement_details->employee_id ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Designation : 
+            </div>
+            <div class="col-md-6">
+                <?= $designation ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Joining Date : 
+            </div>
+            <div class="col-md-6">
+                <?= $employement_details->joining_date ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+                Confirmation Date : 
+            </div>
+            <div class="col-md-6">
+                <?= $employement_details->confirmation_date ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Effective from : 
+            </div>
+            <div class="col-md-6">
+                <?= $employement_details->effective_from ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
+               Effective to : 
+            </div>
+            <div class="col-md-6">
+                <?= $employement_details->effective_to ?>
+            </div>
+          </div>
+
+       </div>
       </div>
     </div>
   </div>
@@ -104,7 +200,7 @@
                     <div class="row text-gray">
                     <div class="col-md-5 inline-flex-nd "><i class="material-icons">call</i> &nbsp <?= $x->contact_no ?></div>
                     <div class="col-md-7 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-   width="18.211px" height="24.211px" viewBox="0 0 485.211 485.211" style="enable-background:new 0 0 485.211 485.211;"
+   width="18.211px" height="24.211px" viewBox="0 0 485.211 485.211" style="enable-background:new 0 0 485.211 485.211; fill: #999999;"
    xml:space="preserve">
 <g>
   <path d="M485.211,363.906c0,10.637-2.992,20.498-7.785,29.174L324.225,221.67l151.54-132.584
@@ -116,12 +212,12 @@
 </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
  &nbsp<?= $email ?></div>
                     </div>
-                    <div class="row">
-                    <div class="col-md-3 inline-flex-nd"><svg style="width:24px;height:24px" viewBox="0 0 24 24">
-    <path fill="#000000" d="M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20Z" />
+                    <div class="row text-gray self-div-row-padding">
+                    <div class="col-md-3 inline-flex-nd"><svg style="width:24px;height:24px; fill: #999999;" viewBox="0 0 24 24">
+    <path  d="M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20Z" />
 </svg> &nbsp <?= $x->blood_group ?></div>
                     <div class="col-md-3 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px;" height="20px"
-   viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve">
+   viewBox="0 0 512 512" style="enable-background:new 0 0 512 512; fill: #999999;"  xml:space="preserve">
 <g>
   <g>
     <path d="M476.722,0.159L366.323,0l-0.043,30.059l59.203,0.085l-82.618,82.618c-37.951-29.78-89.316-34.444-131.471-13.993
@@ -138,7 +234,18 @@
       c24.243,0,48.488,9.228,66.944,27.684c17.881,17.882,27.729,41.656,27.729,66.944C360.608,236.232,350.761,260.008,332.88,277.89z
       "/> </g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
  &nbsp<?= $x->gender ?></div>
-                     <div class="col-md-6 inline-flex-nd"><i class="material-icons">event</i> Born on : &nbsp<?= $x->dob ?></div>
+                     <div class="col-md-6 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+   viewBox="0 0 469.333 469.333" style="enable-background:new 0 0 469.333 469.333; fill: #999999;"  width="24px;" height="20px" xml:space="preserve">
+<g> <g>   <g>     <path d="M234.56,128c23.573,0,42.667-19.093,42.667-42.667c0-8-2.24-15.573-6.08-21.973L234.56,0l-36.587,63.36
+        c-3.84,6.4-6.08,13.973-6.08,21.973C191.893,108.907,210.987,128,234.56,128z"/>
+      <path d="M362.56,192L362.56,192H255.893v-42.667h-42.667V192H106.56c-35.307,0-64,28.693-64,64v32.853
+        c0,23.04,18.773,41.813,41.813,41.813c11.2,0,21.653-4.373,29.547-12.267l45.653-45.547l45.547,45.44
+        c15.787,15.787,43.307,15.787,59.093,0l45.653-45.44l45.547,45.44c7.893,7.893,18.347,12.267,29.547,12.267
+        c23.04,0,41.813-18.773,41.813-41.813V256C426.56,220.693,397.867,192,362.56,192z"/>
+      <path d="M332.587,341.013L332.587,341.013l-22.933-22.933l-23.04,22.933c-27.84,27.84-76.48,27.84-104.32,0L159.36,318.08
+        l-23.04,22.933c-13.76,13.973-32.213,21.653-51.947,21.653c-15.467,0-29.867-4.907-41.813-13.12V448
+        c0,11.733,9.6,21.333,21.333,21.333h341.333c11.733,0,21.333-9.6,21.333-21.333v-98.453c-11.947,8.213-26.24,13.12-41.813,13.12
+        C365.013,362.667,346.56,354.987,332.587,341.013z"/>   </g>  </g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg><?= $x->dob ?></div>
                     </div>
                     
                   </p>
@@ -152,7 +259,9 @@
                     </div>
                     <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
                       <div class="self-more-details-profile">
-                       FourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFourFour
+                         <div class="col-md-12 inline-flex-nd text-gray">
+                         <i class="material-icons">place</i> <?= $x->address_1 ?> , <?= $x->address_2 ?> , <?= $x->city ?> , <?= $x->state ?> , <?= $x->pin_code ?>
+                         </div>
                       </div>
                     </div>
                     <div class="self-div-more-details">
