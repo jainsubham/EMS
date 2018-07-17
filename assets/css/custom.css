@@ -51,7 +51,18 @@
 }
 .self-more-details-profile{
 	margin-top: 24px;
+	padding: 12px;
+	padding-left: 0px;
 }
 .highcharts-credits{
 	display: none;
+}
+.self-div-row-padding{
+	padding-top: 7px;
+}
+.self-text-labeling-right{
+	text-align: right;
+}
+.self-card-body-grey{
+	color:#707070 !important;
 }

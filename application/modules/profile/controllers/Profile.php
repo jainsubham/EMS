@@ -22,16 +22,23 @@ class Profile extends CI_Controller
 			$this->load->view('user_header');
 		}
 		$companyid = $this->profile->get_companyid($uid);
-		if($designation_id = $this->profile->get_designation_id($uid)){
+		if($employement_data = $this->profile->get_employement_details($uid)){
+			$designation_id = $employement_data->designation;
 			$designation = $this->profile->get_designation_name($designation_id);
 			$data['designation'] = $designation;
 		}else{
 			$data['designation'] = "Works ";
 		}
+		$data['bank_details'] = $this->profile->get_bank_details($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
 		$data['email'] = $this->profile->get_adminemail($uid);
 		$data['x']  = $this->profile->select($uid);
-
+		$data['x']->dob = date('d M Y',strtotime($data['x']->dob));
+		$data['employement_details'] = $employement_data;
+		$data['employement_details']->joining_date = date('d M Y',strtotime($data['employement_details']->joining_date));
+		$data['employement_details']->confirmation_date =  date('d M Y',strtotime($data['employement_details']->confirmation_date));
+		$data['employement_details']->effective_from =  date('d M Y',strtotime($data['employement_details']->effective_from));
+		$data['employement_details']->effective_to =  date('d M Y',strtotime($data['employement_details']->effective_to));
 		$this->load->view('display_profile',$data);
 	}
 	public function editprofile() {

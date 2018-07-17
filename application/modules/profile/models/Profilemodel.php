@@ -59,15 +59,25 @@ class Profilemodel extends CI_Model
 
 		}
 
-	public function get_designation_id($user_id){
-		if($q = $this->db->select('designation')
-		 			 ->where(['user_id' => $user_id])
+	public function get_employement_details($user_id){
+		if($q = $this->db->where(['user_id' => $user_id])
 		 			 ->get(EMPLOYMENT_DETAILS)->row()){
 
-		 	return $q->designation;
+		 	return $q;
 		 }else{
 		 	return false;
 		 }
 	}
+
+	public function get_bank_details($user_id){
+		if($q = $this->db->where(['user_id' => $user_id])
+		 			 ->get(BANK_DETAILS)->row()){
+
+		 	return $q;
+		 }else{
+		 	return false;
+		 }	
+	}
+
 }
 ?>

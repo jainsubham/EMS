@@ -51,7 +51,7 @@
               <div >
                 <div class="card">
               <div class="card-header card-header-warning self-card-small-header" >
-                    <h4 class="card-title">Leaves Remaining</h4>
+                    <h4 class="card-title">Leaves Balance</h4>
                   </div>
                   <div class="card-body self-card-body">
                     <div>
