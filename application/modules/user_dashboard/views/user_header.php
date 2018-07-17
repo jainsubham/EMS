@@ -78,8 +78,15 @@
               <i class="material-icons">group</i>
               <p>Employees</p>
             </a>
+          </li> 
+          <?php if($this->session->userdata('switched')) {?>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('user_dashboard/switch_admin'); ?>">
+              <i class="material-icons">group</i>
+              <p>Switch As Admin</p>
+            </a>
           </li>
-        
+        <?php } ?>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('user/logout'); ?>">
               <i class="material-icons">power_settings_new</i>

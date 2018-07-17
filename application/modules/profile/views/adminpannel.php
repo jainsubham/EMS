@@ -50,7 +50,7 @@
            <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/attendance'); ?>">
               <i class="material-icons">content_paste</i>
-              <p>Today Attendance</p>
+              <p>Attendance</p>
             </a>
           </li>
           <li class="nav-item ">
@@ -90,6 +90,12 @@
             <a class="nav-link" href="<?= base_url('dashboard/teams'); ?>">
               <i class="material-icons">person</i>
               <p>Teams / Departments</p>
+            </a>
+          </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/switch_user'); ?>">
+              <i class="material-icons">person</i>
+              <p>Switch as user</p>
             </a>
           </li>
           <li class="nav-item ">

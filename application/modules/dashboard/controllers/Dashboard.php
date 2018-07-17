@@ -12,7 +12,11 @@ class Dashboard extends CI_Controller
 
 	public function index() {
 			if(null!=($this->session->userdata('adminid'))){
-				$this->load->view('admindashboard');
+				$admin_id = $this->session->userdata('adminid');
+				$company_id = $this->dashboardmodel->get_companyid($admin_id);	
+				$q = $this->dashboardmodel->count_employees($company_id);
+				$data['x'] = $q;
+				$this->load->view('admindashboard',$data);
 			}else{
 				redirect('user/login');
 			}
@@ -81,11 +85,11 @@ class Dashboard extends CI_Controller
 	public function do_upload(){
 		$config['upload_path']          = './assets/csv/';
 		$config['allowed_types']        = 'csv';
-		$config['max_size']             = 100;
+		$config['max_size']             = 10000;
 
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
-		$companyid = $this->dashboardmodel->get_companyid($adminid);		
+		$companyid = $this->dashboardmodel->get_companyid($adminid);	
 		if ( $this->upload->do_upload('csvfile')){
 			$uploaddata = $this->upload->data();
 			$filename = $uploaddata['file_name'];
@@ -106,9 +110,7 @@ class Dashboard extends CI_Controller
 			$part3 = "'> Accept Invitation </a>.<br>
 			If you have any questions , please contact us on ".$weblink."
 			<br> Regards ,<br>EMS Team
-			</div>";		
-			
-
+			</div>";
 			while($dataa = fgetcsv($data,"1000",",")){
 
 			$name = $dataa['0'];
@@ -179,7 +181,72 @@ class Dashboard extends CI_Controller
 	}
 	
 	public function attendance() {
-		$this->load->view('attendance');
+			$admin_id   = $this->session->userdata('adminid');
+			$company_id = $this->dashboardmodel->get_companyid($admin_id);
+			$user_id    = $this->dashboardmodel->get_userid($company_id);
+			$i = 0;
+			foreach ($user_id as $row) {
+				$uid = $row->id;
+				$temp_data = $this->dashboardmodel->get_user_name($uid);
+				$employee_id = $this->dashboardmodel->get_employee_id($uid);
+				$attendance = $this->dashboardmodel->get_employee_attendance($employee_id);
+				$single_row['employee_id'] = $attendance['0']->employee_id;
+				$single_row['first_name'] = $temp_data['0']->first_name;
+				$single_row['last_name'] = $temp_data['0']->last_name;
+				$data['x'][$i] = $single_row;
+				$i++;
+			}
+			
+			$this->load->view('attendance',$data);
+			
+	}
+	public function upload_attendance() {
+			$this->load->view('upload_attendance');
+
+	}
+	public function xls_upload() {
+			$config['upload_path'] = './assets/xls/';
+			$config['allowed_types'] = 'xls';
+			$config['max_size']  = 2500000;
+			$this->load->library('upload',$config);
+			$this->upload->initialize($config);
+			if($this->upload->do_upload('file')) {
+				$data = $this->upload->data();
+				@chmod($data['full_path'], 0777);
+				$this->load->library('Spreadsheet_Excel_Reader');
+				$this->spreadsheet_excel_reader->read($data['full_path']);
+				$sheets = $this->spreadsheet_excel_reader->sheets[0];
+				error_reporting(0);
+				//error_reporting(E_ALL ^ E_NOTICE);
+				$data_excel = array();
+				$array_data = $sheets['cells'];
+				$column_field = $array_data['1']['1'];
+				unset($array_data['1']);
+				$admin_id = $this->session->userdata('adminid');
+				$company_id = $this->dashboardmodel->get_companyid($admin_id);
+				foreach ($array_data as $row) {
+						$in_datetime = $row['3'];
+						$in_time = explode(" ", $in_datetime);
+						$out_datetime = $row['4'];
+						$out_time = explode(" ", $out_datetime);
+						$dataa = array(
+
+							'date' => $in_time['0'],
+							'check_in' => $in_time['1'],
+							'check_out' => $out_time['1'],
+							'employee_id' => $column_field.$row['1'],
+							'status' => 'p',
+							'company_id' => $company_id
+						);
+					$this->dashboardmodel->attendance($dataa);
+				}
+				redirect('dashboard');
+			}
+			else {
+			// $error = array('error' => $this->upload->display_errors());
+			// print_r($error);
+				redirect('dashboard/upload_attendance');
+		}
 	}
 	public function announcement() {
 		$this->load->view('announcement');
@@ -204,7 +271,6 @@ class Dashboard extends CI_Controller
 	public function designations(){
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);
-		$companyid = $this->dashboardmodel->get_companyid($adminid);	
 		if($q = $this->dashboardmodel->get_designations_list($companyid)){
 			$data['q'] = $q;
 			
@@ -271,7 +337,7 @@ class Dashboard extends CI_Controller
 						 $q['confirmation_date'] = 'NULL';
 						 $q['effective_from'] = 'NULL';
 						 $q['effective_to'] = 'NULL';
-						 $q['name'] = 'NULL';
+						 $q['designation'] = 'NULL';
 						$data['x'] = $q;
 				}	
 				
@@ -504,6 +570,42 @@ class Dashboard extends CI_Controller
 			}
 		
 	}
+	public function switch_user() {
+		if(null!=($this->session->userdata('adminid'))){
+				$user_id = $this->session->userdata('adminid');
+				$this->session->set_userdata('logid',$user_id);
+				$this->session->set_userdata('switched','1');
+				$this->session->unset_userdata('adminid');
+				redirect('user_dashboard');
+			}
+			else {
+				redirect('user/login');
+			}
+	}
+	public function leave() {
+		 $admin_id = $this->session->userdata('adminid');
+		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
+		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
+		 	$data['q'] = $q;
+		 	// echo "<pre>"
+		 	// print_r($data);
+		 	// die();
+			
+		 }else {
+		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
+		 }
 
+		$this->load->view('leave',$data);
+	}
+	public function add_category() {
+		$category = $this->input->post('category');
+		$company_id = $this->input->post('company_id');
+		if($this->dashboardmodel->add_category($category,$company_id)) {
+			redirect('dashboard/leave');
+		}
+		else {
+			redirect('dashboard/leave');
+		}
+	}
 }
 ?>

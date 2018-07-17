@@ -5,7 +5,7 @@ include('adminpannel.php');?>
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Desiginations of your company</a>
+            <a class="navbar-brand" href="#pablo">Leave Categories</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -23,7 +23,7 @@ include('adminpannel.php');?>
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-primary">
-                  <h4 class="card-title">Designations</h4>
+                  <h4 class="card-title">Leave Categories</h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
                 <div class="card-body">
@@ -35,7 +35,7 @@ include('adminpannel.php');?>
                             <ul>
                               <?php if(isset($q)){
                                   foreach ($q as $row) {
-                                    echo "<li>".$row->name."</li>";
+                                    echo "<li>".$row->category_name."</li>";
                                   }
                                 }
                                 if(isset($data)){
@@ -46,31 +46,17 @@ include('adminpannel.php');?>
                         </div>
                       </div>
                        <div class="form-group">
-                        <h4>Add New Designation</h4>
+                        <h4>Add Leave Categories</h4>
                         
-                            <? $hidden = array('company_id' => $companyid); echo form_open('dashboard/add_designation','',$hidden); ?>
+                            <? $hidden = array('company_id' => $row->company_id); echo form_open('dashboard/add_category','',$hidden); ?>
                             <?php 
-                              $desg = array(
+                              $category= array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'placeholder' => 'Designation Name',
-                                'name' =>'designation'
+                                'placeholder' => 'Category Name',
+                                'name' =>'category'
                               );
-                              echo form_input($desg);
-                              
-                              ?>
-                               
-                              <div class="form-group">
-                              <? if(isset($teams)){ ?>  <label >Select Team / Department</label><br>
-                               <?php
-                                     echo form_dropdown('team',$teams); 
-                                   } else {
-                                    if(isset($msg)){
-                                      echo $msg;
-                                    }
-                                   } ?>
-                              
-                            </div>
+                              echo form_input($category);?>
                               <?php
 
                               $btn = array(
@@ -90,20 +76,24 @@ include('adminpannel.php');?>
                 </div>
               </div>
             </div>    
-  <script src="../assets/js/core/jquery.min.js" type="text/javascript"></script>
-  <script src="../assets/js/core/popper.min.js" type="text/javascript"></script>
-  <script src="../assets/js/core/bootstrap-material-design.min.js" type="text/javascript"></script>
-  <script src="../assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.jquery.min.js');?>"></script>
   <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  
   <!-- Chartist JS -->
-  <script src="../assets/js/plugins/chartist.min.js"></script>
+  
   <!--  Notifications Plugin    -->
-  <script src="../assets/js/plugins/bootstrap-notify.js"></script>
+  <script src="<?= base_url('assets/js/plugins/bootstrap-notify.js'); ?>"></script>
   <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="../assets/js/material-dashboard.min.js?v=2.1.0" type="text/javascript"></script>
+  <script src="<?= base_url('assets/js/material-dashboard.min.js?v=2.1.0'); ?>" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
-  <script src="../assets/demo/demo.js"></script>
-</body>
+  
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
 
-</html>
+    });
+  </script>
