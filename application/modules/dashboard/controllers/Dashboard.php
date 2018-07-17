@@ -248,8 +248,100 @@ class Dashboard extends CI_Controller
 				redirect('dashboard/upload_attendance');
 		}
 	}
+	public function add_announcement() {
+		$this->load->view('add_announcement');
+	}
+	public function announcement_data() {
+		$post  = $this->input->post();
+		$this->form_validation->set_rules('announcement','Announcement','required');
+		$this->form_validation->set_rules('display','date_till_display','required');
+		if ($this->form_validation->run()) {
+			$admin_id = $this->session->userdata('adminid');
+			$company_id = $this->dashboardmodel->get_companyid($admin_id);
+			$data = array(
+				'announcement' => $post['announcement'],
+				'creation_date' => date('Y-m-d H:i:s',time()),
+				'date_till_display' => $post['display'],
+				'company_id' =>	$company_id
+			);
+			if($this->dashboardmodel->add_announcement($data)) {
+				redirect('dashboard/announcement');
+			}
+			else {
+				redirect('dashboard/add_announcement');
+			}
+		}
+		else {
+			redirect('dashboard/add_announcement');
+		}
+
+	}
 	public function announcement() {
-		$this->load->view('announcement');
+		$admin_id = $this->session->userdata('adminid');
+		$company_id = $this->dashboardmodel->get_companyid($admin_id);
+		$data['x'] = $this->dashboardmodel->announcement($company_id);
+		// echo "<pre>";
+		// print_r($data);
+		// die();
+		$this->load->view('announcement',$data);
+	}
+	
+	public function edit_announcement() {
+		if ($this->uri->segment(1) === FALSE){
+        	$id = 0;
+		}
+		else{
+        	$id = $this->uri->segment(3);
+		}
+		if($id!=NULL) {
+			$admin_id = $this->session->userdata('adminid');
+			$company_id = $this->dashboardmodel->get_companyid($admin_id);
+			$data['x'] = $this->dashboardmodel->get_announcement($id);
+			$data['id'] = $id;
+			$this->load->view('edit_announcement',$data);
+		}
+	}
+	public function update_announcement() {
+		if ($this->uri->segment(1) === FALSE){
+        	$id = 0;
+		}
+		else{
+        	$id = $this->uri->segment(3);
+		}
+		if($id!=NULL) {
+			$post  = $this->input->post();
+			$this->form_validation->set_rules('announcement','Announcement','required');
+			$this->form_validation->set_rules('display','date_till_display','required');
+			if ($this->form_validation->run()) {
+				$data = array(
+					'announcement' => $post['announcement'],
+					'creation_date' => date('Y-m-d H:i:s',time()),
+					'date_till_display' => $post['display']	
+				);
+				if($this->dashboardmodel->update_announcement($data,$id)){
+					redirect('dashboard/announcement');
+				}
+				else {
+					redirect('dashboard/edit_announcement/'.$id);
+				}
+			}
+		}
+		else {
+			redirect('dashboard/add_announcement');
+		}
+	}
+	public function delete_announcement() {
+		if ($this->uri->segment(1) === FALSE){
+        	$id = 0;
+		}
+		else{
+        	$id = $this->uri->segment(3);
+		}
+		if($id!=NULL) {
+			if($this->dashboardmodel->delete_announcement($id)) {
+				redirect('dashboard/announcement');
+			}
+		}
 	}
 	public function organization() {
 		$this->load->view('organization');

@@ -55,3 +55,6 @@
 .highcharts-credits{
 	display: none;
 }
+.self-blue-header{
+	background: blue !important;
+}

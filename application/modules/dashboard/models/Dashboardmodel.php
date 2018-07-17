@@ -184,6 +184,29 @@
 		public function add_category($category,$company_id) {
 			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id));
 		}
+		public function announcement($company_id) {
+			return $this->db->select(['id','announcement','date_till_display'])
+								->where(['company_id' => $company_id,'deleted'=>0])
+								->get(ANNOUNCEMENT)->result();
+		}
+		public function get_announcement($id) {
+			return $this->db->select(['announcement','date_till_display'])
+								->where(['id' => $id])
+								->get(ANNOUNCEMENT)->row();
+
+		}
+		public function add_announcement($data) {
+			return $this->db->insert(ANNOUNCEMENT,$data); 
+		}
+		public function update_announcement($data,$id) {
+			return $this->db->where(['id' => $id])
+								->update(ANNOUNCEMENT,$data);
+		}
+		public function delete_announcement($id) {
+			return $this->db->set('deleted',1)
+							->where(['id' => $id])
+							->update(ANNOUNCEMENT);
+		}
 
 	}
 ?> 
