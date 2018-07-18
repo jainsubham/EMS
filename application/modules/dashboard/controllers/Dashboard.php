@@ -551,7 +551,7 @@ class Dashboard extends CI_Controller
 		}
 	}
 	public function update_personal_info() {
-		if ($this->uri->segment(1) === FALSE){
+		if ($this->uri->segment(3) === FALSE){
         	$user_id = 0;
 		}
 		else{
@@ -666,7 +666,11 @@ class Dashboard extends CI_Controller
 	}
 	public function img_update(){
 			$user_id = $this->input->post('user_id');
-			$img = $this->img_upload();
+			if( $imgname = $this->img_upload()){
+				$img = $imgname;
+			}else{
+				$img = "default.png";
+			}
 			if($this->dashboardmodel->img_update($user_id,$img)) {
 				redirect('dashboard/displayempdetails/'.$user_id);
 			}

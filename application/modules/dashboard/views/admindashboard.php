@@ -51,7 +51,7 @@
     var chart = Highcharts.chart('chartcontainer', {
 
         title: {
-            text: "Employee's attendance record per day"
+            text: "Employee's presence record per day"
         },
 
         subtitle: {
