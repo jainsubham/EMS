@@ -153,7 +153,7 @@
 		 				->update(USER_DETAILS);
 		}
 		public function attendance($attendance) {
-			return $this->db->insert(ATTENDANCE,$attendance);
+			 $this->db->insert(ATTENDANCE,$attendance);
 		}
 		public function get_user_name($user_id) {
 			return $this->db->select(['first_name','last_name'])
@@ -167,13 +167,17 @@
 		}
 
 		public function get_employee_attendance($employee_id) {
-			return	$this->db->select('employee_id')
+			if($q =	$this->db->select('employee_id')
 								->where(['employee_id' =>$employee_id[0]->employee_id])
-								->get(ATTENDANCE)->result();						
+								->get(ATTENDANCE)->result()){
+				return $q;
+			}else{
+				return false;
+			}						
 		}
 		public function count_employees($company_id) {
 				
-			return  $this->db->where(['company_id' => $company_id])
+			return  $this->db->where(['company_id' => $company_id,'account_status'=>1,'email_verified'=>1])
 					   		->count_all_results(USER);
 		}
 		public function get_leave_category($company_id) {
@@ -183,6 +187,21 @@
 		} 
 		public function add_category($category,$company_id) {
 			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id));
+		}
+
+		public function validate_employee($employee_id){
+			if($q = $this->db->select(['user_id'])
+								->where(['employee_id'=>$employee_id])
+								->get(EMPLOYMENT_DETAILS)->row()){
+				return $q->user_id;
+			}else{
+				return false;
+			}
+		}
+
+		public function count_present_employees($company_id,$date){
+			return $this->db->where(['company_id'=>$company_id,'date'=>$date])
+								->count_all_results(ATTENDANCE);
 		}
 
 	}
