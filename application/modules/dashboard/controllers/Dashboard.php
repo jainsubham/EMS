@@ -193,24 +193,47 @@ class Dashboard extends CI_Controller
 	public function attendance() {
 			$admin_id   = $this->session->userdata('adminid');
 			$company_id = $this->dashboardmodel->get_companyid($admin_id);
-			$user_id    = $this->dashboardmodel->get_userid($company_id);
-			$i = 0;
-			foreach ($user_id as $row) {
-				$uid = $row->id;
-				$temp_data = $this->dashboardmodel->get_user_name($uid);
-				$employee_id = $this->dashboardmodel->get_employee_id($uid);
-				if($attendance = $this->dashboardmodel->get_employee_attendance($employee_id)){
-					$single_row['employee_id'] = $attendance['0']->employee_id;
+			$user_id_data    = $this->dashboardmodel->get_userid($company_id);
+			$temp_data = array();
+			foreach ($user_id_data as $row) {
+				$user_id = $row->id;
+				$name_data = $this->dashboardmodel->get_user_name($user_id);
+				$user_data['employee_id'] = $this->dashboardmodel->get_employee_id($user_id);
+				$user_data['name']= $name_data['0']->first_name." ".$name_data['0']->last_name; 
+				$temp_data['0']['date'] = date('Y-m-d');
+				$temp_data['0']['day'] = date('l',strtotime($temp_data['0']['date']));
+				$temp_data['0']['display_date'] = date('(d M)',strtotime($temp_data['0']['date']));
+				
+				if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data['0']['date'])){
+					$temp_data['0']['status'] = "1";
+				}else{
+					$temp_data['0']['status'] = "0";
 				}
-				$single_row['first_name'] = $temp_data['0']->first_name;
-				$single_row['last_name'] = $temp_data['0']->last_name;
-				$data['x'][$i] = $single_row;
-				$i++;
+				if($temp_data['0']['day']=="Sunday"){
+					$temp_data['0']['status'] = "2";
+				}		
+				for($i=1;$i<=6;$i++){
+						$temp_data[$i]['date'] = date('Y-m-d',strtotime("-$i days"));
+						$temp_data[$i]['day'] = date('l',strtotime($temp_data[$i]['date']));
+						$temp_data[$i]['display_date'] = date('(d M)',strtotime($temp_data[$i]['date']));
+						if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data[$i]['date'])){
+							$temp_data[$i]['status'] = "1";
+						}else{
+							$temp_data[$i]['status'] = "0";
+						}
+						if($temp_data[$i]['day']=="Sunday"){
+							$temp_data[$i]['status'] = "2";
+						}	
+				}
+				$user_data['week'] = $temp_data;
+				$data['data'][] = $user_data;
+
 			}
-			
+
 			$this->load->view('attendance',$data);
 			
 	}
+	
 	public function upload_attendance() {
 			$this->load->view('upload_attendance');
 

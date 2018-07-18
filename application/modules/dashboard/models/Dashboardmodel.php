@@ -160,21 +160,7 @@
 						->where(['user_id'=>$user_id])
 						->get(USER_DETAILS)->result();
 		}
-		public function get_employee_id($user_id) {
-			return $this->db->select('employee_id')
-								->where(['user_id'=>$user_id])
-								->get(EMPLOYMENT_DETAILS)->result();
-		}
 
-		public function get_employee_attendance($employee_id) {
-			if($q =	$this->db->select('employee_id')
-								->where(['employee_id' =>$employee_id[0]->employee_id])
-								->get(ATTENDANCE)->result()){
-				return $q;
-			}else{
-				return false;
-			}						
-		}
 		public function count_employees($company_id) {
 				
 			return  $this->db->where(['company_id' => $company_id,'account_status'=>1,'email_verified'=>1])
@@ -225,6 +211,27 @@
 		public function count_present_employees($company_id,$date){
 			return $this->db->where(['company_id'=>$company_id,'date'=>$date])
 								->count_all_results(ATTENDANCE);
+		}
+
+		public function get_attendance_status($user_id,$date){
+			if($q = $this->db->where(['user_id' => $user_id,'date'=>$date])
+		 			 ->count_all_results(ATTENDANCE)){
+  	
+		 	return $q;
+			 }else{
+			 	return false;
+			 }
+		}
+
+		public function get_employee_id($user_id){
+			if($q = $this->db->select(['employee_id'])
+								->where(['user_id'=>$user_id])
+								->get(EMPLOYMENT_DETAILS)->row()){
+  	
+		 	return $q->employee_id;
+			 }else{
+			 	return false;
+			 }
 		}
 
 	}
