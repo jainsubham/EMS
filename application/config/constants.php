@@ -103,4 +103,4 @@ define('LEAVE_ALLOWANCE','leave_allowance');
 define('LEAVE_CATEGORY','leave_category');
 define('TEAM','team');
 define('TEAM_ALLOTED','team_alloted');
-define('ANNOUNCEMENT','announcement');
+define('ANNOUNCEMENT','announcements');
