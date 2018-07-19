@@ -55,7 +55,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/apply_leave'); ?>">
               <i class="material-icons">receipt</i>
               <p>Leaves</p>
             </a>

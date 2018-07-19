@@ -9,6 +9,7 @@
 								<tr class="card-header card-header-primary" style="background-color: #9c27b0;box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
 										<th>Serial No</th>
 										<th>Photo</th>
+										<th>Employee_Id</th>
 										<th>Employee Name</th>
 										<th>Designation</th>
 										<th>Action</th>
@@ -21,6 +22,7 @@
 										<tr>
 										<td align="center"><?php echo ++$count; ?></td>
 										<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "80px" style="border-radius:50px;"></td>
+										<td><?= $row['employee_id'] ?></td>
 										<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
 										<td align="center"><?php echo $row['designationname'] ?></td>
 										<?= form_open('dashboard/displayempdetails/'.$row['user_id']) ;?>			

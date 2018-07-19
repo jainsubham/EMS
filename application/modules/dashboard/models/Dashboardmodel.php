@@ -60,7 +60,7 @@
 				  $q = $this->db->select(['first_name','last_name','img'])
 				   				->where(['user_id'=> $uid])
 				   				->get(USER_DETAILS)->result(); 
-				  $x = $this->db->select('designation')
+				  $x = $this->db->select(['designation','employee_id'])
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();
 				 	   		if($x) {	
@@ -68,7 +68,7 @@
 				 				$designationname = $this->db->select('name')
 				 	   										->where(['id' =>$designationid])
 				 	   										->get(DESIGNATIONS)->result();
-				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'user_id'=>$uid);
+				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'employee_id'=>$x['0']->employee_id,'user_id'=>$uid);
 				 	   		 }
 				 		else {
 
@@ -186,7 +186,7 @@
 		}
 		public function announcement($company_id) {
 			return $this->db->select(['id','announcement','date_till_display'])
-								->where(['company_id' => $company_id,'deleted'=>0])
+								->where(['company_id' => $company_id,'deleted'=>0,'date_till_display >=' =>date('Y-m-d')])
 								->get(ANNOUNCEMENT)->result();
 		}
 		public function get_announcement($id) {

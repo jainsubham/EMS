@@ -27,7 +27,9 @@
                     <div>
                     <span class="inline-flex-nd">
                       <i class="material-icons">chrome_reader_mode</i>
+                      <a href="<?= base_url('user_dashboard/apply_leave') ?>">
                       <p class="self-data-card-header">Request Leave</p>
+                    </a>
                       </span>
                       <p class="self-data-card-des"> Add an application for leave</p>
                     </div>

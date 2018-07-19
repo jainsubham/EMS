@@ -30,6 +30,29 @@
 			 	return false;
 			 }
 		}
+		public function get_company_id( $admin_id ){
+
+			$q = $this->db->where(['user_id'=>$admin_id])
+							->get(ADMIN);
+			if( $q->num_rows()==1){
+				return $q->row()->company_id;
+			}
+			else{
+				return False;
+			}
+		}
+		public function get_category_list($company_id) {
+			if($q = $this->db->where(['company_id' => $company_id])
+							->get(LEAVE_CATEGORY)->result()) {
+					return $q;
+			}
+			else {
+				return false;
+			}
+		}
+		public function leave_data($data) {
+			 return $this->db->insert(LEAVE_REQ,$data);
+		}
 
 	}
 ?> 
