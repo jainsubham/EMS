@@ -14,8 +14,18 @@ class Dashboard extends CI_Controller
 			if(null!=($this->session->userdata('adminid'))){
 				$admin_id = $this->session->userdata('adminid');
 				$company_id = $this->dashboardmodel->get_companyid($admin_id);	
-				$q = $this->dashboardmodel->count_employees($company_id);
-				$data['x'] = $q;
+				$data['active_employees'] = $this->dashboardmodel->count_employees($company_id);
+				$week['0']['date'] = date('Y-m-d');
+				$week['0']['day'] = date('l',strtotime($week['0']['date']));
+				$week['0']['display_date'] = date('(d M)',strtotime($week['0']['date']));
+				$week['0']['employees_present'] = $this->dashboardmodel->count_present_employees($company_id,$week['0']['date']);
+				for($i=1;$i<=6;$i++){
+						$week[$i]['date'] = date('Y-m-d',strtotime("-$i days"));
+						$week[$i]['day'] = date('l',strtotime($week[$i]['date']));
+						$week[$i]['display_date'] = date('(d M)',strtotime($week[$i]['date']));
+						$week[$i]['employees_present'] = $this->dashboardmodel->count_present_employees($company_id,$week[$i]['date']);
+					}
+				$data['attendance_record'] = $week;
 				$this->load->view('admindashboard',$data);
 			}else{
 				redirect('user/login');
@@ -183,23 +193,47 @@ class Dashboard extends CI_Controller
 	public function attendance() {
 			$admin_id   = $this->session->userdata('adminid');
 			$company_id = $this->dashboardmodel->get_companyid($admin_id);
-			$user_id    = $this->dashboardmodel->get_userid($company_id);
-			$i = 0;
-			foreach ($user_id as $row) {
-				$uid = $row->id;
-				$temp_data = $this->dashboardmodel->get_user_name($uid);
-				$employee_id = $this->dashboardmodel->get_employee_id($uid);
-				$attendance = $this->dashboardmodel->get_employee_attendance($employee_id);
-				$single_row['employee_id'] = $attendance['0']->employee_id;
-				$single_row['first_name'] = $temp_data['0']->first_name;
-				$single_row['last_name'] = $temp_data['0']->last_name;
-				$data['x'][$i] = $single_row;
-				$i++;
+			$user_id_data    = $this->dashboardmodel->get_userid($company_id);
+			$temp_data = array();
+			foreach ($user_id_data as $row) {
+				$user_id = $row->id;
+				$name_data = $this->dashboardmodel->get_user_name($user_id);
+				$user_data['employee_id'] = $this->dashboardmodel->get_employee_id($user_id);
+				$user_data['name']= $name_data['0']->first_name." ".$name_data['0']->last_name; 
+				$temp_data['0']['date'] = date('Y-m-d');
+				$temp_data['0']['day'] = date('l',strtotime($temp_data['0']['date']));
+				$temp_data['0']['display_date'] = date('(d M)',strtotime($temp_data['0']['date']));
+				
+				if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data['0']['date'])){
+					$temp_data['0']['status'] = "1";
+				}else{
+					$temp_data['0']['status'] = "0";
+				}
+				if($temp_data['0']['day']=="Sunday"){
+					$temp_data['0']['status'] = "2";
+				}		
+				for($i=1;$i<=6;$i++){
+						$temp_data[$i]['date'] = date('Y-m-d',strtotime("-$i days"));
+						$temp_data[$i]['day'] = date('l',strtotime($temp_data[$i]['date']));
+						$temp_data[$i]['display_date'] = date('(d M)',strtotime($temp_data[$i]['date']));
+						if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data[$i]['date'])){
+							$temp_data[$i]['status'] = "1";
+						}else{
+							$temp_data[$i]['status'] = "0";
+						}
+						if($temp_data[$i]['day']=="Sunday"){
+							$temp_data[$i]['status'] = "2";
+						}	
+				}
+				$user_data['week'] = $temp_data;
+				$data['data'][] = $user_data;
+
 			}
-			
+
 			$this->load->view('attendance',$data);
 			
 	}
+	
 	public function upload_attendance() {
 			$this->load->view('upload_attendance');
 
@@ -229,22 +263,24 @@ class Dashboard extends CI_Controller
 						$in_time = explode(" ", $in_datetime);
 						$out_datetime = $row['4'];
 						$out_time = explode(" ", $out_datetime);
+						$temp_id =  $column_field.$row['1'];
+						if( $user_id = $this->dashboardmodel->validate_employee($temp_id)){
 						$dataa = array(
 
 							'date' => $in_time['0'],
 							'check_in' => $in_time['1'],
 							'check_out' => $out_time['1'],
-							'employee_id' => $column_field.$row['1'],
-							'status' => 'p',
+							'employee_id' => $$column_field.$row['1'],
+							'status' => 'P',
+							'user_id'=>$user_id,
 							'company_id' => $company_id
 						);
 					$this->dashboardmodel->attendance($dataa);
+					}
 				}
 				redirect('dashboard');
 			}
 			else {
-			// $error = array('error' => $this->upload->display_errors());
-			// print_r($error);
 				redirect('dashboard/upload_attendance');
 		}
 	}
@@ -538,7 +574,7 @@ class Dashboard extends CI_Controller
 		}
 	}
 	public function update_personal_info() {
-		if ($this->uri->segment(1) === FALSE){
+		if ($this->uri->segment(3) === FALSE){
         	$user_id = 0;
 		}
 		else{
@@ -653,7 +689,11 @@ class Dashboard extends CI_Controller
 	}
 	public function img_update(){
 			$user_id = $this->input->post('user_id');
-			$img = $this->img_upload();
+			if( $imgname = $this->img_upload()){
+				$img = $imgname;
+			}else{
+				$img = "default.png";
+			}
 			if($this->dashboardmodel->img_update($user_id,$img)) {
 				redirect('dashboard/displayempdetails/'.$user_id);
 			}

@@ -153,27 +153,17 @@
 		 				->update(USER_DETAILS);
 		}
 		public function attendance($attendance) {
-			return $this->db->insert(ATTENDANCE,$attendance);
+			 $this->db->insert(ATTENDANCE,$attendance);
 		}
 		public function get_user_name($user_id) {
 			return $this->db->select(['first_name','last_name'])
 						->where(['user_id'=>$user_id])
 						->get(USER_DETAILS)->result();
 		}
-		public function get_employee_id($user_id) {
-			return $this->db->select('employee_id')
-								->where(['user_id'=>$user_id])
-								->get(EMPLOYMENT_DETAILS)->result();
-		}
 
-		public function get_employee_attendance($employee_id) {
-			return	$this->db->select('employee_id')
-								->where(['employee_id' =>$employee_id[0]->employee_id])
-								->get(ATTENDANCE)->result();						
-		}
 		public function count_employees($company_id) {
 				
-			return  $this->db->where(['company_id' => $company_id])
+			return  $this->db->where(['company_id' => $company_id,'account_status'=>1,'email_verified'=>1])
 					   		->count_all_results(USER);
 		}
 		public function get_leave_category($company_id) {
@@ -206,6 +196,42 @@
 			return $this->db->set('deleted',1)
 							->where(['id' => $id])
 							->update(ANNOUNCEMENT);
+		}
+
+		public function validate_employee($employee_id){
+			if($q = $this->db->select(['user_id'])
+								->where(['employee_id'=>$employee_id])
+								->get(EMPLOYMENT_DETAILS)->row()){
+				return $q->user_id;
+			}else{
+				return false;
+			}
+		}
+
+		public function count_present_employees($company_id,$date){
+			return $this->db->where(['company_id'=>$company_id,'date'=>$date])
+								->count_all_results(ATTENDANCE);
+		}
+
+		public function get_attendance_status($user_id,$date){
+			if($q = $this->db->where(['user_id' => $user_id,'date'=>$date])
+		 			 ->count_all_results(ATTENDANCE)){
+  	
+		 	return $q;
+			 }else{
+			 	return false;
+			 }
+		}
+
+		public function get_employee_id($user_id){
+			if($q = $this->db->select(['employee_id'])
+								->where(['user_id'=>$user_id])
+								->get(EMPLOYMENT_DETAILS)->row()){
+  	
+		 	return $q->employee_id;
+			 }else{
+			 	return false;
+			 }
 		}
 
 	}

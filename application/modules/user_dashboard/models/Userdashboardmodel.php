@@ -20,9 +20,9 @@
 			 }
 		}
 
-		public function get_attendance_record($employee_id,$date){
+		public function get_attendance_record($user_id,$date){
 			if($q = $this->db->select(['check_in','check_out'])
-		 			 ->where(['employee_id' => $employee_id,'date'=>$date])
+		 			 ->where(['user_id' => $user_id,'date'=>$date])
 		 			 ->get(ATTENDANCE)->row()){
   	
 		 	return $q;
