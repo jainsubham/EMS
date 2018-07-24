@@ -234,5 +234,27 @@
 			 }
 		}
 
+		public function get_employee_joining_date($user_id){
+			if($q = $this->db->select(['joining_date'])
+								->where(['user_id'=>$user_id])
+								->get(EMPLOYMENT_DETAILS)->row()){
+  	
+		 	return $q->joining_date;
+			 }else{
+			 	return false;
+			 }
+		}
+
+		public function get_attendance_record($user_id,$date){
+			if($q = $this->db->select(['id'])
+		 			 ->where(['user_id' => $user_id,'date'=>$date])
+		 			 ->get(ATTENDANCE)->row()){
+  	
+		 	return $q;
+			 }else{
+			 	return false;
+			 }
+		}
+
 	}
 ?> 

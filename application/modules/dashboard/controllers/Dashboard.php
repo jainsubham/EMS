@@ -77,6 +77,7 @@ class Dashboard extends CI_Controller
 	}
 
 	public function verify_mail(){
+
 		if($this->session->userdata('emailunverified')==1){
 
 				$this->load->view('verify_mail');
@@ -196,15 +197,15 @@ class Dashboard extends CI_Controller
 			$user_id_data    = $this->dashboardmodel->get_userid($company_id);
 			$temp_data = array();
 			foreach ($user_id_data as $row) {
-				$user_id = $row->id;
-				$name_data = $this->dashboardmodel->get_user_name($user_id);
-				$user_data['employee_id'] = $this->dashboardmodel->get_employee_id($user_id);
+				$user_data['user_id'] = $row->id;
+				$name_data = $this->dashboardmodel->get_user_name($user_data['user_id']);
+				$user_data['employee_id'] = $this->dashboardmodel->get_employee_id($user_data['user_id']);
 				$user_data['name']= $name_data['0']->first_name." ".$name_data['0']->last_name; 
 				$temp_data['0']['date'] = date('Y-m-d');
 				$temp_data['0']['day'] = date('l',strtotime($temp_data['0']['date']));
 				$temp_data['0']['display_date'] = date('(d M)',strtotime($temp_data['0']['date']));
 				
-				if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data['0']['date'])){
+				if($q = $this->dashboardmodel->get_attendance_status($user_data['user_id'],$temp_data['0']['date'])){
 					$temp_data['0']['status'] = "1";
 				}else{
 					$temp_data['0']['status'] = "0";
@@ -216,7 +217,7 @@ class Dashboard extends CI_Controller
 						$temp_data[$i]['date'] = date('Y-m-d',strtotime("-$i days"));
 						$temp_data[$i]['day'] = date('l',strtotime($temp_data[$i]['date']));
 						$temp_data[$i]['display_date'] = date('(d M)',strtotime($temp_data[$i]['date']));
-						if($q = $this->dashboardmodel->get_attendance_status($user_id,$temp_data[$i]['date'])){
+						if($q = $this->dashboardmodel->get_attendance_status($user_data['user_id'],$temp_data[$i]['date'])){
 							$temp_data[$i]['status'] = "1";
 						}else{
 							$temp_data[$i]['status'] = "0";
@@ -229,6 +230,9 @@ class Dashboard extends CI_Controller
 				$data['data'][] = $user_data;
 
 			}
+			/*echo "<pre>";
+			print_r($data);
+			die();*/
 
 			$this->load->view('attendance',$data);
 			
@@ -316,9 +320,7 @@ class Dashboard extends CI_Controller
 		$admin_id = $this->session->userdata('adminid');
 		$company_id = $this->dashboardmodel->get_companyid($admin_id);
 		$data['x'] = $this->dashboardmodel->announcement($company_id);
-		// echo "<pre>";
-		// print_r($data);
-		// die();
+
 		$this->load->view('announcement',$data);
 	}
 	
@@ -471,13 +473,9 @@ class Dashboard extends CI_Controller
 				
 					$data['x']['user_id'] = $user_id;
 					$data['company_name'] = $company_name;
-					//$this->load->view('displayempdetails',$data);
-			// DISPLAY PERSNOAL INFORMATION	
+
 			$data['Email'] = $this->dashboardmodel->get_adminemail($user_id);
 			$data['x']['p']  = $this->dashboardmodel->select($user_id);
-			// echo "<pre>";
-			// print_r($data);
-			// die();
 			$this->load->view('displayempdetails',$data);
 		}
 
@@ -563,7 +561,6 @@ class Dashboard extends CI_Controller
 							
 							$data['user_id'] = $user_id;
 							if($this->dashboardmodel->updatedata($data)) {
-								//print_r("update successfully");
 								redirect('dashboard/displayempdetails/'.$user_id);
 							}
 
@@ -668,13 +665,10 @@ class Dashboard extends CI_Controller
 
 	}
 	public function img_upload(){
-		//print_r($img);
-		//die();
+
 		$config['upload_path']          = './assets/img/user/';
 		$config['allowed_types']        = 'jpg|png|gif|jpeg';
 		$config['max_size']             = 10000;
-		//print_r($config['upload_path']);
-		//die();
 		$this->load->library('upload', $config);
 		if($this->upload->do_upload('img')){
 			$uploaddata = $this->upload->data();
@@ -738,6 +732,94 @@ class Dashboard extends CI_Controller
 		else {
 			redirect('dashboard/leave');
 		}
+	}
+	public function get_monthly_attendance(){
+		date_default_timezone_set('Asia/Kolkata');
+
+		if ($this->uri->segment(3) === FALSE){
+        	redirect('dashboard/attendance');
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+
+		if ($this->uri->segment(4) === FALSE){
+        	$ym = date('Y-m');
+		}
+		else{
+        	$ym = $this->uri->segment(4);
+		}
+
+		$timestamp = strtotime($ym,"-01");
+		if ($timestamp === false) {
+		  $timestamp = time();
+		}
+
+		$today = date('Y-m-j', time());
+		$joining_date = $this->dashboardmodel->get_employee_joining_date($user_id);
+		if(!$joining_date){
+			redirect('dashboard/attendance');
+		}
+
+		$data['html_title'] = date('M - Y', $timestamp);
+
+		$data['prev'] = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
+		$data['next'] = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
+		$data['user_id'] = $user_id;
+		$day_count = date('t', $timestamp);
+
+		$str = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
+
+		$weeks = array();
+		$week = '';
+
+		$week .= str_repeat('<td></td>', $str);
+
+		for ( $day = 1; $day <= $day_count; $day++, $str++) {
+
+		  $day = $day > 9 ? $day : "0".$day;	
+
+		  $date = $ym.'-'.$day;
+
+		  if(date('l',strtotime($date))=="Sunday"){
+		  	$daystatus = "off";
+		  }else{
+		  	if($this->dashboardmodel->get_attendance_record($user_id,$date)){
+		  		$daystatus = "present";
+		  	}else{
+		  		$daystatus = "absent";
+		  	}
+		  }
+
+
+		  if ($today == $date) {
+		    $week .= '<td class="today">'.$day;
+		  } else {
+		  	if($date>$today || $date<$joining_date){
+		  		$week .= '<td class="not-avail">'.$day;	
+		  	}else{
+		    	$week .= '<td class="'.$daystatus.'">'.$day;
+		   	}
+		  }
+		  $week .= '</td>';
+
+		  // End of the week OR End of the month
+		  if ($str % 7 == 6 || $day == $day_count) {
+
+		    if($day == $day_count) {
+		      // Add empty cell
+		      $week .= str_repeat('<td></td>', 6 - ($str % 7));
+		    }
+
+		    $weeks[] = '<tr>'.$week.'</tr>';
+
+		    $week = '';
+		  }
+		}
+		
+		$data['weeks'] = $weeks;
+
+		$this->load->view('monthly_attendance',$data);
 	}
 }
 ?>

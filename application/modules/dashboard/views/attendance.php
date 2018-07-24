@@ -37,18 +37,16 @@
             <tr>
                 <th>Employee Id</th>
                 <th>Name</th>
-                <th><?= $data['0']['week']['6']['day']."<br>".$data['0']['week']['6']['display_date'] ?></th>
-                <th><?= $data['0']['week']['5']['day']."<br>".$data['0']['week']['5']['display_date'] ?></th>
-                <th><?= $data['0']['week']['4']['day']."<br>".$data['0']['week']['4']['display_date'] ?></th>
-                <th><?= $data['0']['week']['3']['day']."<br>".$data['0']['week']['3']['display_date'] ?></th>
-                <th><?= $data['0']['week']['2']['day']."<br>".$data['0']['week']['2']['display_date'] ?></th>
-                <th><?= $data['0']['week']['1']['day']."<br>".$data['0']['week']['1']['display_date'] ?></th>
-                <th><?= $data['0']['week']['0']['day']."<br>".$data['0']['week']['0']['display_date'] ?></th>
+                <? for($i=6;$i>=0;$i--){ 
+                echo "<th>".$data['0']['week'][$i]['day']."<br>".$data['0']['week'][$i]['display_date']."</th>";
+                 }
+                 ?>
             </tr>
         </thead>
         <tbody>
             <? foreach ($data as $row) { ?>
-            <tr>
+
+            <tr class="to-target" data-href="<?= base_url('dashboard/get_monthly_attendance/'.$row['user_id'].'/'.date('Y-m')) ?>">
                 <td><?= $row['employee_id'] ?></td>
                 <td><?= $row['name'] ?></td>
                 <? 
@@ -67,9 +65,10 @@
                         if($status==2){
                             echo $off;
                         }
-                    }
-                    }
-                ?>
+                         } ?>
+                    </tr>
+               
+                    <?    }  ?>
         </tbody>
      
     </table>
@@ -106,4 +105,11 @@
     $('.mdl-grid').addClass('mdl-cell--12-col');
     $("#example_info").css("white-space", "normal");
 } );
+  </script>
+  <script >
+    $(document).ready(function() {
+    $(".to-target").click(function() {
+        window.location = $(this).data("href");
+    });
+});
   </script>
