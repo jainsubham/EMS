@@ -1,4 +1,3 @@
-
 <?php include('adminpannel.php') ;?>
     <div class="main-panel">
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -55,8 +54,8 @@
                                 <i class="material-icons">edit</i>
                         </button>
                         </a>
-                        <a href="<?= base_url('dashboard/delete_announcement/'.$row->id) ?>">
-                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
+                        <a href="<?= base_url('dashboard/delete_announcement/'.$row->id) ?>"  onclick = "delete">
+                            <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm" id="delete">
                                 <i class="material-icons">close</i>
                             </button>
                         </a>
@@ -95,4 +94,12 @@
 
     });
   </script>
-
+  <script type="text/javascript">
+    function delete(delete){
+       var r=confirm("Do you want to delete this?")
+        if (r==true)
+          window.location.reload();
+        else
+          return false;
+        } 
+</script>

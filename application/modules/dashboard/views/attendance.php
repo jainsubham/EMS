@@ -122,6 +122,7 @@
     $('.mdl-grid').addClass('mdl-cell--12-col');
     $("#example_info").css("white-space", "normal");
 } );
+
   </script>
   <script >
     $(document).ready(function() {
@@ -184,3 +185,4 @@
   </script>
 </body>
 </html>
+

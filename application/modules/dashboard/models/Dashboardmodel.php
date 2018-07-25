@@ -42,6 +42,17 @@
 					
 
 		}
+		public function get_reporting_supervisor_detail($user_id) {
+			if($q =$this->db->select('rep_sup')
+						->where(['user_id' => $user_id])
+						->get(REP_SUP)->row()) {
+				return  $q->rep_sup;
+			}
+			else {
+				return false;			}
+				
+
+		}
 		public function send_invite($emailid,$companyid,$hash){
 
 			if($this->db->insert(INVITES,array('email_id' =>$emailid,'hash' =>$hash,'company_id' =>$companyid,'invite_time'=> date('Y-m-d H:i:s',time()) )) ){
@@ -60,7 +71,7 @@
 				  $q = $this->db->select(['first_name','last_name','img'])
 				   				->where(['user_id'=> $uid])
 				   				->get(USER_DETAILS)->result(); 
-				  $x = $this->db->select('designation')
+				  $x = $this->db->select(['designation','employee_id'])
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();
 				 	   		if($x) {	
@@ -68,7 +79,7 @@
 				 				$designationname = $this->db->select('name')
 				 	   										->where(['id' =>$designationid])
 				 	   										->get(DESIGNATIONS)->result();
-				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'user_id'=>$uid);
+				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'employee_id'=>$x['0']->employee_id,'user_id'=>$uid);
 				 	   		 }
 				 		else {
 
@@ -124,11 +135,22 @@
 		 	  if($q) {
 		 	  		$this->db->where(['user_id' =>$q->user_id])
 								->update(EMPLOYMENT_DETAILS,$data);
+					$team_id = $this->db->select('team_id')
+		 	  							 ->where(['id' => $data['designation']])
+		 	  							 ->get(DESIGNATIONS)->row();
+					$this->db->set('team_id',$team_id->team_id)
+								->where(['user_id' =>$q->user_id])
+								->update(TEAM_ALLOTED);		
+
 					return true;
 		 	  }
 		 	  else {
 
 		 	  	$this->db->insert(EMPLOYMENT_DETAILS,$data);
+		 	  	$team_id = $this->db->select('team_id')
+		 	  				->where(['id' => $data['designation']])
+		 	  				->get(DESIGNATIONS)->row();
+		 	  	$this->db->insert(TEAM_ALLOTED,array('user_id'=>$data['user_id'], 'team_id' => $team_id->team_id));
 		 	  	 return true;
 
 		 	  }
@@ -176,7 +198,7 @@
 		}
 		public function announcement($company_id) {
 			return $this->db->select(['id','announcement','date_till_display'])
-								->where(['company_id' => $company_id,'deleted'=>0])
+								->where(['company_id' => $company_id,'deleted'=>0,'date_till_display >=' =>date('Y-m-d')])
 								->get(ANNOUNCEMENT)->result();
 		}
 		public function get_announcement($id) {
@@ -233,6 +255,69 @@
 			 	return false;
 			 }
 		}
+		public function get_user_id($company_id,$user_id) {
+			if($q = $this->db->select('id')
+						->where(['company_id'=>$company_id])
+						->not_like('id',$user_id)
+						->get(USER)->result()) {
+					return $q;
+			}
+			else {
+				return false;
+			}
+
+		}
+		public function insert_supervisor($user_id,$rep_sup) {
+			return $this->db->insert(REP_SUP,array('user_id' => $user_id,'rep_sup'=> $rep_sup ));
+		}
+		public function select_user($reporting_id) {
+			if($q = $this->db->select('user_id')
+						->where(['rep_sup' =>$reporting_id])
+						->get(REP_SUP)->result()) {
+				return $q;
+			}
+			else {
+				return false;
+			}
+		}
+		public function get_users($company_id) {
+			if($subquery = $this->db->select('user_id')
+									->get(REP_SUP)->result()) {
+					foreach ($subquery as $row) {
+						$data[] = $row->user_id;
+					}
+				return $this->db->select('id')
+						->where(['company_id' => $company_id])
+						->where_not_in('id',$data)
+						->get(USER)->result();
+			}
+			else {
+				return $this->db->select('id')
+						->where(['company_id' => $company_id])
+						->get(USER)->result();
+			}
+		}
+		public function check_emp_under_supervisor($rep_sup_id) {
+			  if($q =$this->db->select('user_id')
+						->where(['rep_sup' => $rep_sup_id])
+						->get(REP_SUP)->result()) {
+			  	 return $q;
+			  }
+			  else {
+			  	false;
+			  }
+		}
+		public function get_reporting_user($user_id,$data) {
+			$team_id = $this->db->select('team_id')
+						->where(['user_id'=> $user_id])
+						->get(TEAM_ALLOTED)->row();
+			return $this->db->select('user_id')
+			 				->where(['team_id' => $team_id->team_id])
+				 			->where_not_in('user_id',$data)
+				 			->get(TEAM_ALLOTED)->result();
+
+		}
+					
 
 		public function get_attendance_record($user_id,$date){
 			if($q = $this->db->select(['check_in','check_out'])

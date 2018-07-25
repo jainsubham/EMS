@@ -44,8 +44,8 @@
                 </div>
                 <div class="row">
                	  	<div class="col-md-12">
-                        <div class="form-group">
                           <label class="bmd-label-floating">Date_Till_Display</label>
+                        <div class="form-group">
                           <?php
 							             $display = array(
         						        'class'  => 'form-control',

@@ -1,5 +1,4 @@
 <?php
-
 class Dashboard extends CI_Controller
 {
 	function __construct() {
@@ -8,6 +7,8 @@ class Dashboard extends CI_Controller
 			$this->load->library(array('session','form_validation','uri'));
 			$this->load->database();
 			$this->load->model('dashboardmodel');
+			$this->x = [];
+
 		}
 
 	public function index() {
@@ -492,6 +493,18 @@ class Dashboard extends CI_Controller
 
 			$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
 			$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
+			//Supervisor Detail
+			if($rep_sup_id = $this->dashboardmodel->get_reporting_supervisor_detail($user_id)) {
+				
+					$data['x']['reporting_id'] = $this->dashboardmodel->get_employee_id($rep_sup_id);
+					$data['x']['reporting_name'] = $this->dashboardmodel->get_user_name($rep_sup_id);
+			}
+			else {
+				$data['x']['reporting_id'] = 'NULL';
+				$data['x']['reporting_name']['0']->first_name = 'NULL';
+				$data['x']['reporting_name']['0']->last_name = '';
+			}
+
 			$this->load->view('displayempdetails',$data);
 		}
 
@@ -541,11 +554,26 @@ class Dashboard extends CI_Controller
 							}
 						$designation = $y;
 				}
+				if($q = $this->dashboardmodel->get_user_id($company_id,$user_id)) {
+						$x = array();
+						
+						foreach ($q as $report) {
+							$id = $report->id;
+							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$employee_id = $this->dashboardmodel->get_employee_id($id);	
+							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
+						}
+						$report = $x;
+						$data['report'] = $report;
+				}
+
 					$data['designations'] = $designation;
 					$data['x']['user_id']=$user_id;
 					$data['company_name'] = $company_name;
+
 					$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
 					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
+
 					$this->load->view('editempdetails',$data);
 		}	
 	}
@@ -754,6 +782,97 @@ class Dashboard extends CI_Controller
 			redirect('dashboard/leave');
 		}
 	}
+
+	public function reporting_data() {
+		$user_id = $this->uri->segment(3);
+		$rep_sup = $this->input->post('report');
+		$this->form_validation->set_rules('report','Reporting Supervisor','required');
+		if($this->form_validation->run()) {
+				if($this->dashboardmodel->insert_supervisor($user_id,$rep_sup)) {
+					redirect('dashboard/displayempdetails/'.$user_id);
+				}
+
+		}
+	    else {
+	    	redirect('dashboard/editempdetails/'.$user_id);
+	    }
+	}
+	public function add_supervisor() {
+		$admin_id   = $this->session->userdata('adminid');
+		$company_id = $this->dashboardmodel->get_companyid($admin_id);
+		  if($q = $this->dashboardmodel->get_users($company_id)) {
+					$x = array();
+						foreach ($q as $report) {
+							$id = $report->id;
+							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$employee_id = $this->dashboardmodel->get_employee_id($id);	
+							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
+						}
+						$report = $x;
+						$data['report'] = $report;
+				$this->load->view('add_supervisor',$data);
+			}
+			
+	}
+
+
+	public function get_under_me($uid){
+		if($res = $this->dashboardmodel->check_emp_under_supervisor($uid)){
+
+		$this->x[$uid] = $res;
+
+			if(count($res) > 0){			
+				foreach ($res as $key => $value) {
+					$this->get_under_me($value->user_id);
+				}
+			}
+		}else{
+			$this->x[$uid] = $res;
+		}
+
+
+	}
+
+
+	public function assign_manager() {
+		$this->form_validation->set_rules('user_id','User','required');
+		if ($this->form_validation->run()) {
+		   $user_id = $this->input->post('user_id');
+		   $this->get_under_me($user_id);
+		    $data  = array_keys($this->x);
+				if($q = $this->dashboardmodel->get_reporting_user($user_id,$data)) {
+					$x = array();
+						foreach ($q as $report) {
+							$id = $report->user_id;
+							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$employee_id = $this->dashboardmodel->get_employee_id($id);	
+							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
+						}
+						$report = $x;
+						$data['report'] = $report;
+						$data['user_id'] = $user_id;
+					$this->load->view('supervisor',$data);
+				} 		
+		}
+		else {
+			$this->load->view('supervisor');
+		}
+
+	}
+
+	public function make_supervisor() {
+		$this->form_validation->set_rules('rep_sup_id','Reporting','required');
+		if ($this->form_validation->run()) {
+			$user_id = $this->uri->segment(3);
+			$rep_sup_id = $this->input->post('rep_sup_id');
+			if($this->dashboardmodel->insert_supervisor($user_id,$rep_sup_id)) {
+				redirect('dashboard/displayempdetails/'.$user_id);
+			}
+			else {
+				redirect('dashboard/add_supervisor');
+			}	
+		}
+
 
 	public function get_monthly_attendance(){
 		date_default_timezone_set('Asia/Kolkata');
