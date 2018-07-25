@@ -24,7 +24,7 @@
 				return False;
 			}
 		}
-		public function get_adminemail($adminid){
+		public function get_admin_email($adminid){
 		$q = $this->db->where(['id' => $adminid])
 					->get(USER);
 		if( $q->num_rows()==1){
@@ -35,9 +35,9 @@
 			}
 
 		}
-		public function select($q) {
+		public function select_user_details($user_id) {
 
-		return  $this->db->where(['user_id' =>$q] )
+		return  $this->db->where(['user_id' =>$user_id] )
 					->get(USER_DETAILS)->row();
 					
 
@@ -121,9 +121,9 @@
 				return True;
 			}
 		}
-	    public function fetchdata($uid) {
+	    public function fetch_employee_data($user_id) {
 		 	return $this->db->select()
-		 				->where(['user_id' => $uid])
+		 				->where(['user_id' => $user_id])
 		 				->get(EMPLOYMENT_DETAILS)->result();
 		 }
 		public function updatedata($data) {
@@ -318,6 +318,39 @@
 
 		}
 					
+
+		public function get_attendance_record($user_id,$date){
+			if($q = $this->db->select(['check_in','check_out'])
+		 			 ->where(['user_id' => $user_id,'date'=>$date])
+		 			 ->get(ATTENDANCE)->row()){
+  	
+		 	return $q;
+			 }else{
+			 	return false;
+			 }
+		}
+
+		public function get_team_id($designation_id){
+			if($q = $this->db->select(['team_id'])
+		 			 ->where(['id' => $designation_id])
+		 			 ->get(DESIGNATIONS)->row()){
+  	
+		 	return $q->team_id;
+			 }else{
+			 	return false;
+			 }	
+		}
+
+		public function get_team_name($team_id){
+			if($q = $this->db->select(['name'])
+		 			 ->where(['id' => $team_id])
+		 			 ->get(TEAM)->row()){
+  	
+		 	return $q->name;
+			 }else{
+			 	return false;
+			 }	
+		}
 
 	}
 ?> 

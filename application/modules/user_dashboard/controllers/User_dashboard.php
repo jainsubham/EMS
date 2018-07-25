@@ -145,6 +145,129 @@
 			$this->load->view('leave_balance');
 		}
 
+		public function attendance(){
+			if(null!=($this->session->userdata('logid'))){
+				$user_id = $this->session->userdata('logid');
+			}
+			date_default_timezone_set('Asia/Kolkata');
+
+			if (!$this->uri->segment(4)){
+	        	
+	        	$ym = date('Y-m',time());
+			}
+			else{
+	        	$ym = $this->uri->segment(3);
+			}
+
+			$timestamp = strtotime($ym,"-01");
+			if ($timestamp === false) {
+			  $timestamp = time();
+			}
+
+			if($user_details = $this->userdashboardmodel->select_user_details($user_id)){
+				$data['employee_name'] = $user_details->first_name." ".$user_details->last_name;
+				$data['img_link'] = $user_details->img;
+			}
+
+
+			$today = date('Y-m-j', time());
+			$employee_data = $this->userdashboardmodel->fetch_employee_data($user_id)['0'];
+			if(!$employee_data){
+				redirect('dashboard/attendance');
+			}
+			$joining_date = $employee_data->joining_date;
+			$data['employee_id'] = $employee_data->employee_id;
+			$data['designation'] =  $this->userdashboardmodel->get_designationname($employee_data->designation);
+	 		$team_id = $this->userdashboardmodel->get_team_id($employee_data->designation);
+	 		$data['team_name'] = $this->userdashboardmodel->get_team_name($team_id);
+
+			$data['html_title'] = date('M - Y', $timestamp);
+
+			$data['prev'] = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)-1, 1, date('Y', $timestamp)));
+			$data['next'] = date('Y-m', mktime(0, 0, 0, date('m', $timestamp)+1, 1, date('Y', $timestamp)));
+			$data['user_id'] = $user_id;
+			$day_count = date('t', $timestamp);
+
+			$str = date('w', mktime(0, 0, 0, date('m', $timestamp), 1, date('Y', $timestamp)));
+
+			$weeks = array();
+			$week = '';
+
+			$week .= str_repeat('<td></td>', $str);
+			$present_days = 0;
+			$sunday_count = 0;
+			$not_avail_count = 0;
+
+			for ( $day = 1; $day <= $day_count; $day++, $str++) {
+
+			  $day = $day > 9 ? $day : "0".$day;	
+
+			  $date = $ym.'-'.$day;
+
+			  $attendance_record[$day]['day'] = date('l',strtotime($date));
+			  $attendance_record[$day]['display_date'] = date('(d M)',strtotime($date));
+
+			  if(date('l',strtotime($date))=="Sunday"){
+			  	$daystatus = "btn btn-info self-calendar-btn";
+			  	$attendance_record[$day]['time'] = 0;
+			  	$sunday_count++;
+			  }else{
+			  	if($attendance_data = $this->userdashboardmodel->get_attendance_record($user_id,$date)){
+			  		$temp_check_in = strtotime($attendance_data->check_in);
+					$temp_check_out = strtotime($attendance_data->check_out);
+					$attendance_record[$day]['time'] = round(($temp_check_out-$temp_check_in)/3600);
+
+			  		$daystatus = "btn btn-success self-calendar-btn";
+			  		$present_days++;
+			  	}else{
+			  		$attendance_record[$day]['time'] = 0;
+			  		$daystatus = "btn btn-danger self-calendar-btn";
+			  	}
+			  }
+
+
+			  if ($today == $date) {
+			    $week .= '<td ><button class="btn btn-primary self-calendar-btn">'.$day.'</button>';
+			  } else {
+			  	if($date>$today || $date<$joining_date){
+			  		$week .= '<td ><button class="btn self-calendar-btn">'.$day.'</button>';
+			  		if(date('l',strtotime($date))!="Sunday"){
+			  			$not_avail_count++;	
+			  		}
+			  	}else{
+			    	$week .= '<td><button class="'.$daystatus.'">'.$day.'</button>';
+			   	}
+			  }
+			  $week .= '</td>';
+
+			  // End of the week OR End of the month
+			  if ($str % 7 == 6 || $day == $day_count) {
+
+			    if($day == $day_count) {
+			      // Add empty cell
+			      $week .= str_repeat('<td></td>', 6 - ($str % 7));
+			    }
+
+			    $weeks[] = '<tr>'.$week.'</tr>';
+
+			    $week = '';
+			  }
+			}
+
+			$data['present_days'] = $present_days;
+			$data['absent_days'] = $day_count-($present_days+$not_avail_count+$sunday_count+1);
+			$data['joining_date'] = date('d M, Y',strtotime($joining_date));
+			$data['day_count'] = date('d',time());
+			$data['weeks'] = $weeks;
+			$data['attendance_record'] = $attendance_record;
+
+		/*	echo "<pre>";
+			print_r($data);
+			die();*/
+
+				$this->load->view('attendance',$data);
+			
+			}	
 
 	}
 ?>
