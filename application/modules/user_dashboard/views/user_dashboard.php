@@ -118,14 +118,32 @@
         },
 
         xAxis: {
-            categories: ['<?= $attendance_record['6']['day']." ".$attendance_record['6']['display_date'] ?>', '<?= $attendance_record['5']['day']." ".$attendance_record['5']['display_date'] ?>', '<?= $attendance_record['4']['day']." ".$attendance_record['4']['display_date'] ?>', '<?= $attendance_record['3']['day']." ".$attendance_record['3']['display_date'] ?>', '<?= $attendance_record['2']['day']." ".$attendance_record['2']['display_date'] ?>', '<?= $attendance_record['1']['day']." ".$attendance_record['1']['display_date'] ?>', '<?= $attendance_record['0']['day']." ".$attendance_record['0']['display_date'] ?>']
+            categories: [<?
+                for($i=6;$i>=0;$i--){
+                  echo "'".$attendance_record[$i]['day']." ".$attendance_record[$i]['display_date']."'";
+                  if($i==0){
+                    break ;
+                  }else{
+                    echo ",";
+                  }
+                }
+              ?>]
         },
 
         series: [{
             type: 'column',
             name: "Hours",
             colorByPoint: true,
-            data: [<?= $attendance_record['6']['time'] ?>,<?= $attendance_record['5']['time'] ?>,<?= $attendance_record['4']['time'] ?>,<?= $attendance_record['3']['time'] ?>,<?= $attendance_record['2']['time'] ?>,<?= $attendance_record['1']['time'] ?>,<?= $attendance_record['0']['time'] ?>],
+            data: [<?
+                for($i=6;$i>=0;$i--){
+                  echo $attendance_record[$i]['time'];
+                  if($i==0){
+                    break ;
+                  }else{
+                    echo ",";
+                  }
+                }
+              ?>],
             showInLegend: false
         }]
 

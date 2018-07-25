@@ -235,7 +235,7 @@
 		}
 
 		public function get_attendance_record($user_id,$date){
-			if($q = $this->db->select(['id'])
+			if($q = $this->db->select(['check_in','check_out'])
 		 			 ->where(['user_id' => $user_id,'date'=>$date])
 		 			 ->get(ATTENDANCE)->row()){
   	

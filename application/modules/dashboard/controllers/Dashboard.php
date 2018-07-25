@@ -230,6 +230,25 @@ class Dashboard extends CI_Controller
 				$data['data'][] = $user_data;
 
 			}
+			$ym = date('Y-m');
+			$timestamp = strtotime($ym,"-01");
+			if ($timestamp === false) {
+			  $timestamp = time();
+			}
+			$day_count = date('t', $timestamp);
+
+			for ( $day = 1; $day <= $day_count; $day++) {
+
+			  $day = $day > 9 ? $day : "0".$day;	
+
+			  $date = $ym.'-'.$day;
+			  $presence_record[$day]['employees_present'] = $this->dashboardmodel->count_present_employees($company_id,$date);
+				$presence_record[$day]['day'] = date('l',strtotime($date));
+				$presence_record[$day]['display_date'] = date('(d M)',strtotime($date));
+
+			}
+			$data['presence_record'] = $presence_record;
+			$data['day_count'] = $day_count;
 
 			$this->load->view('attendance',$data);
 			
@@ -789,7 +808,8 @@ class Dashboard extends CI_Controller
 
 		$week .= str_repeat('<td></td>', $str);
 		$present_days = 0;
-		$absent_days = 0;
+		$sunday_count = 0;
+		$not_avail_count = 0;
 
 		for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
@@ -797,15 +817,24 @@ class Dashboard extends CI_Controller
 
 		  $date = $ym.'-'.$day;
 
+		  $attendance_record[$day]['day'] = date('l',strtotime($date));
+		  $attendance_record[$day]['display_date'] = date('(d M)',strtotime($date));
+
 		  if(date('l',strtotime($date))=="Sunday"){
 		  	$daystatus = "btn btn-info self-calendar-btn";
+		  	$attendance_record[$day]['time'] = 0;
+		  	$sunday_count++;
 		  }else{
-		  	if($this->dashboardmodel->get_attendance_record($user_id,$date)){
+		  	if($attendance_data = $this->dashboardmodel->get_attendance_record($user_id,$date)){
+		  		$temp_check_in = strtotime($attendance_data->check_in);
+				$temp_check_out = strtotime($attendance_data->check_out);
+				$attendance_record[$day]['time'] = round(($temp_check_out-$temp_check_in)/3600);
+
 		  		$daystatus = "btn btn-success self-calendar-btn";
 		  		$present_days++;
 		  	}else{
+		  		$attendance_record[$day]['time'] = 0;
 		  		$daystatus = "btn btn-danger self-calendar-btn";
-		  		$absent_days++;
 		  	}
 		  }
 
@@ -814,7 +843,10 @@ class Dashboard extends CI_Controller
 		    $week .= '<td ><button class="btn btn-primary self-calendar-btn">'.$day.'</button>';
 		  } else {
 		  	if($date>$today || $date<$joining_date){
-		  		$week .= '<td ><button class="btn self-calendar-btn">'.$day.'</button>';	
+		  		$week .= '<td ><button class="btn self-calendar-btn">'.$day.'</button>';
+		  		if(date('l',strtotime($date))!="Sunday"){
+		  			$not_avail_count++;	
+		  		}
 		  	}else{
 		    	$week .= '<td><button class="'.$daystatus.'">'.$day.'</button>';
 		   	}
@@ -834,10 +866,13 @@ class Dashboard extends CI_Controller
 		    $week = '';
 		  }
 		}
+
 		$data['present_days'] = $present_days;
-		$data['absent_days'] = $absent_days;
+		$data['absent_days'] = $day_count-($present_days+$not_avail_count+$sunday_count+1);
 		$data['joining_date'] = date('d M, Y',strtotime($joining_date));
+		$data['day_count'] = $day_count;
 		$data['weeks'] = $weeks;
+		$data['attendance_record'] = $attendance_record;
 
 		$this->load->view('monthly_attendance',$data);
 	}

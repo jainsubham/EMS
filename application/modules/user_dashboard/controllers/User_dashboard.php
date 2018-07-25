@@ -59,6 +59,9 @@
 			}
 		}
 
+		public function attendance(){
+			$this->load->view('attendance');
+		}
 
 	}
 ?>
