@@ -230,9 +230,6 @@ class Dashboard extends CI_Controller
 				$data['data'][] = $user_data;
 
 			}
-			/*echo "<pre>";
-			print_r($data);
-			die();*/
 
 			$this->load->view('attendance',$data);
 			
@@ -448,7 +445,7 @@ class Dashboard extends CI_Controller
 				$admin_id  = $this->session->userdata('adminid');
 				$company_id = $this->dashboardmodel->get_companyid($admin_id);
 				$company_name = $this->dashboardmodel->get_companyname($company_id);
-				$q  =  $this->dashboardmodel->fetchdata($user_id);
+				$q  =  $this->dashboardmodel->fetch_employee_data($user_id);
 				if ($q) {
 					$x['joining_date'] = $q[0]->joining_date;
 					$x['employee_id'] = $q[0]->employee_id;
@@ -474,8 +471,8 @@ class Dashboard extends CI_Controller
 					$data['x']['user_id'] = $user_id;
 					$data['company_name'] = $company_name;
 
-			$data['Email'] = $this->dashboardmodel->get_adminemail($user_id);
-			$data['x']['p']  = $this->dashboardmodel->select($user_id);
+			$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
+			$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 			$this->load->view('displayempdetails',$data);
 		}
 
@@ -496,7 +493,7 @@ class Dashboard extends CI_Controller
 				$admin_id  = $this->session->userdata('adminid');
 				$company_id = $this->dashboardmodel->get_companyid($admin_id);
 				$company_name = $this->dashboardmodel->get_companyname($company_id);
-				$q  =  $this->dashboardmodel->fetchdata($user_id);
+				$q  =  $this->dashboardmodel->fetch_employee_data($user_id);
 				
 				if ($q) {
 					$x['joining_date'] = $q[0]->joining_date;
@@ -528,8 +525,8 @@ class Dashboard extends CI_Controller
 					$data['designations'] = $designation;
 					$data['x']['user_id']=$user_id;
 					$data['company_name'] = $company_name;
-					$data['Email'] = $this->dashboardmodel->get_adminemail($user_id);
-					$data['x']['p']  = $this->dashboardmodel->select($user_id);
+					$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
+					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 					$this->load->view('editempdetails',$data);
 		}	
 	}
@@ -664,6 +661,7 @@ class Dashboard extends CI_Controller
 		redirect('dashboard/teams');
 
 	}
+
 	public function img_upload(){
 
 		$config['upload_path']          = './assets/img/user/';
@@ -681,6 +679,7 @@ class Dashboard extends CI_Controller
 			print_r($error);	
 		}
 	}
+
 	public function img_update(){
 			$user_id = $this->input->post('user_id');
 			if( $imgname = $this->img_upload()){
@@ -696,6 +695,7 @@ class Dashboard extends CI_Controller
 			}
 		
 	}
+
 	public function switch_user() {
 		if(null!=($this->session->userdata('adminid'))){
 				$user_id = $this->session->userdata('adminid');
@@ -708,6 +708,7 @@ class Dashboard extends CI_Controller
 				redirect('user/login');
 			}
 	}
+
 	public function leave() {
 		 $admin_id = $this->session->userdata('adminid');
 		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
@@ -723,6 +724,7 @@ class Dashboard extends CI_Controller
 
 		$this->load->view('leave',$data);
 	}
+
 	public function add_category() {
 		$category = $this->input->post('category');
 		$company_id = $this->input->post('company_id');
@@ -733,6 +735,7 @@ class Dashboard extends CI_Controller
 			redirect('dashboard/leave');
 		}
 	}
+
 	public function get_monthly_attendance(){
 		date_default_timezone_set('Asia/Kolkata');
 
@@ -755,11 +758,22 @@ class Dashboard extends CI_Controller
 		  $timestamp = time();
 		}
 
+		if($user_details = $this->dashboardmodel->select_user_details($user_id)){
+			$data['employee_name'] = $user_details->first_name." ".$user_details->last_name;
+			$data['img_link'] = $user_details->img;
+		}
+
+
 		$today = date('Y-m-j', time());
-		$joining_date = $this->dashboardmodel->get_employee_joining_date($user_id);
-		if(!$joining_date){
+		$employee_data = $this->dashboardmodel->fetch_employee_data($user_id)['0'];
+		if(!$employee_data){
 			redirect('dashboard/attendance');
 		}
+		$joining_date = $employee_data->joining_date;
+		$data['employee_id'] = $employee_data->employee_id;
+		$data['designation'] =  $this->dashboardmodel->get_designationname($employee_data->designation);
+ 		$team_id = $this->dashboardmodel->get_team_id($employee_data->designation);
+ 		$data['team_name'] = $this->dashboardmodel->get_team_name($team_id);
 
 		$data['html_title'] = date('M - Y', $timestamp);
 
@@ -774,6 +788,8 @@ class Dashboard extends CI_Controller
 		$week = '';
 
 		$week .= str_repeat('<td></td>', $str);
+		$present_days = 0;
+		$absent_days = 0;
 
 		for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
@@ -782,23 +798,25 @@ class Dashboard extends CI_Controller
 		  $date = $ym.'-'.$day;
 
 		  if(date('l',strtotime($date))=="Sunday"){
-		  	$daystatus = "off";
+		  	$daystatus = "btn btn-info self-calendar-btn";
 		  }else{
 		  	if($this->dashboardmodel->get_attendance_record($user_id,$date)){
-		  		$daystatus = "present";
+		  		$daystatus = "btn btn-success self-calendar-btn";
+		  		$present_days++;
 		  	}else{
-		  		$daystatus = "absent";
+		  		$daystatus = "btn btn-danger self-calendar-btn";
+		  		$absent_days++;
 		  	}
 		  }
 
 
 		  if ($today == $date) {
-		    $week .= '<td class="today">'.$day;
+		    $week .= '<td ><button class="btn btn-primary self-calendar-btn">'.$day.'</button>';
 		  } else {
 		  	if($date>$today || $date<$joining_date){
-		  		$week .= '<td class="not-avail">'.$day;	
+		  		$week .= '<td ><button class="btn self-calendar-btn">'.$day.'</button>';	
 		  	}else{
-		    	$week .= '<td class="'.$daystatus.'">'.$day;
+		    	$week .= '<td><button class="'.$daystatus.'">'.$day.'</button>';
 		   	}
 		  }
 		  $week .= '</td>';
@@ -816,7 +834,9 @@ class Dashboard extends CI_Controller
 		    $week = '';
 		  }
 		}
-		
+		$data['present_days'] = $present_days;
+		$data['absent_days'] = $absent_days;
+		$data['joining_date'] = date('d M, Y',strtotime($joining_date));
 		$data['weeks'] = $weeks;
 
 		$this->load->view('monthly_attendance',$data);
