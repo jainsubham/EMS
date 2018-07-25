@@ -124,7 +124,7 @@
           <div class="col-md-5">
             <div class="form-group">
               <label class="bmd-label-floating">Email address :</label>
-              <?php  echo $Email ?>
+              <?php  echo $x['p']->email ?>
             </div>
           </div>
         </div>
@@ -194,7 +194,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label class="bmd-label-floating">Martail Status :</label>
-              <?php  echo $x['p']->martail_status?>
+              <?php  echo $x['p']->martial_status?>
             </div>
           </div>
         </div>
@@ -420,7 +420,7 @@
     c11.784,0,22.687-3.495,31.983-9.329L301.393,241.631z M9.448,89.085C3.554,98.44,0,109.429,0,121.305v242.602
     c0,10.637,2.978,20.498,7.789,29.174l153.183-171.44L9.448,89.085z"/>
 </g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g><g></g></svg>
- &nbsp<?= $Email ?></div>
+ &nbsp<?= $x['p']->email ?></div>
                     </div>
                     <div class="row text-gray self-div-row-padding">
                     <div class="col-md-3 inline-flex-nd"><svg style="width:24px;height:24px; fill: #999999;" viewBox="0 0 24 24">

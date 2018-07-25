@@ -199,9 +199,12 @@ class Dashboard extends CI_Controller
 			$temp_data = array();
 			foreach ($user_id_data as $row) {
 				$user_data['user_id'] = $row->id;
-				$name_data = $this->dashboardmodel->get_user_name($user_data['user_id']);
+				$name_data = $this->dashboardmodel->select_user_details($user_data['user_id']);
+				// echo "<pre>";
+				// print_r($name_data);
+				// die();
 				$user_data['employee_id'] = $this->dashboardmodel->get_employee_id($user_data['user_id']);
-				$user_data['name']= $name_data['0']->first_name." ".$name_data['0']->last_name; 
+				$user_data['name']= $name_data->first_name." ".$name_data->last_name; 
 				$temp_data['0']['date'] = date('Y-m-d');
 				$temp_data['0']['day'] = date('l',strtotime($temp_data['0']['date']));
 				$temp_data['0']['display_date'] = date('(d M)',strtotime($temp_data['0']['date']));
@@ -491,13 +494,13 @@ class Dashboard extends CI_Controller
 					$data['x']['user_id'] = $user_id;
 					$data['company_name'] = $company_name;
 
-			$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
+
 			$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 			//Supervisor Detail
 			if($rep_sup_id = $this->dashboardmodel->get_reporting_supervisor_detail($user_id)) {
 				
 					$data['x']['reporting_id'] = $this->dashboardmodel->get_employee_id($rep_sup_id);
-					$data['x']['reporting_name'] = $this->dashboardmodel->get_user_name($rep_sup_id);
+
 			}
 			else {
 				$data['x']['reporting_id'] = 'NULL';
@@ -559,7 +562,7 @@ class Dashboard extends CI_Controller
 						
 						foreach ($q as $report) {
 							$id = $report->id;
-							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$name_data = $this->dashboardmodel->select_user_details($id);
 							$employee_id = $this->dashboardmodel->get_employee_id($id);	
 							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
 						}
@@ -571,7 +574,7 @@ class Dashboard extends CI_Controller
 					$data['x']['user_id']=$user_id;
 					$data['company_name'] = $company_name;
 
-					$data['Email'] = $this->dashboardmodel->get_admin_email($user_id);
+
 					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 
 					$this->load->view('editempdetails',$data);
@@ -872,8 +875,7 @@ class Dashboard extends CI_Controller
 				redirect('dashboard/add_supervisor');
 			}	
 		}
-
-
+	}
 	public function get_monthly_attendance(){
 		date_default_timezone_set('Asia/Kolkata');
 

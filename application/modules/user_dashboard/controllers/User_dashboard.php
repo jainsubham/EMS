@@ -13,7 +13,7 @@
 			if(null!=($this->session->userdata('logid'))){
 				$user_id = $this->session->userdata('logid');
 
-				if($user_name = $this->userdashboardmodel->get_user_name($user_id)){
+				if($user_name = $this->userdashboardmodel->select_user_details($user_id)->first_name){
 					$data['user_name'] = $user_name;
 					$week['0']['date'] = date('Y-m-d');
 					$week['0']['day'] = date('l',strtotime($week['0']['date']));
@@ -114,6 +114,15 @@
 		}
 		public function leave_data() {
 			$post = $this->input->post();
+			$start_date    = $post['start'];
+			$end_date     = $post['end'];
+			if($start_date<date('Y-m-d',time())){
+				redirect('user_dashboard/apply_leave');
+			}
+			if($end_date<$start_date){
+				redirect('user_dashboard/apply_leave');
+			}
+
 			$this->form_validation->set_rules('leave','Leave','required');
 			$this->form_validation->set_rules('start','From','required');
 			$this->form_validation->set_rules('end','To','required');
@@ -121,14 +130,14 @@
 				$user_id = $this->session->userdata('logid');
 				$data = array(
 					'leave_category'=> $post['leave'],
-					'start_date'    => $post['start'],
-					'end_date'      => $post['end'],
+					'start_date'	=> $start_date,
+					'end_date'		=> $end_date,
 					'reason'        => $post['reason'],
 					'half_day'      => $post['radio'],
 					'user_id'       => $user_id
 				);
 				if($this->userdashboardmodel->leave_data($data)) {
-					redirect('user_dashboard');
+					redirect('user_dashboard/leave');
 				}
 				else {
 				redirect('user_dashboard/apply_leave');

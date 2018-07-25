@@ -26,10 +26,11 @@
           <div class="row">
             <div class="col-md-12">
               <div class="card">
-                <div class="card-header card-header-success">
-                  <h4 class="card-title" style="margin-left: 15px">Leave Balance</h4>
+                <div class="card-header card-header-info">
+                  <h4 class="card-title" style="margin-left: 15px">Annual Leave Balance</h4>
                 </div>
                 <div class="card-body">
+                	
                 </div>
               </div>
             </div>

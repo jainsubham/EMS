@@ -93,7 +93,6 @@ define('DOCUMENTS','documents');
 define('BANK_DETAILS','bank_details');
 define('EMPLOYMENT_DETAILS','employment_details');
 define('DESIGNATIONS','designations');
-define('USER_DETAILS','user_details');
 define('SALARY','salary');
 define('REP_SUP','reporting_supervisor');
 define('INVITES','invites');

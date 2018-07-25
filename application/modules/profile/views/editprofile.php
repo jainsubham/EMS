@@ -26,7 +26,7 @@
                   <p class="card-category">Complete your profile</p>
                 </div>
                 <div class="card-body">
-                <? $hidden = array('adminid' => $x->user_id); echo form_open_multipart("profile/updateprofile",'',$hidden); ?>
+                <? $hidden = array('adminid' => $x->id); echo form_open_multipart("profile/updateprofile",'',$hidden); ?>
                     <div class="row">
                       <div class="col-md-4">
                         <div class="form-group">
@@ -63,7 +63,7 @@
                               $email = array(
                                 'class' =>'form-control',
                                 'type' => 'email',
-                                'value' => $Email,
+                                'value' => $x->email,
                                 'name' => 'email'
                               );
                           echo form_input($email);
@@ -208,12 +208,12 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Martail Status</label>
-                          <?php $martailstatus = array(
+                          <?php $martialstatus = array(
                                   'select' => '---select---',
                                   'married' =>'Married',
                                   'unmarried'=>"Unmarried",   
                                   );
-                          echo form_dropdown('MartailStatus',$martailstatus,$x->martail_status); ?>
+                          echo form_dropdown('MartialStatus',$martialstatus,$x->martial_status); ?>
                         </div>
                       </div>
                     </div>

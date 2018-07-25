@@ -3,10 +3,10 @@
 class Profilemodel extends CI_Model
 {
 	
-	public function select($q) {
+	public function select_user_details($q) {
 
-		return  $this->db->where(['user_id' =>$q] )
-					->get(USER_DETAILS)->row();
+		return  $this->db->where(['id' =>$q] )
+					->get(USER)->row();
 
 	}
 	public function get_companyid( $uid ){
@@ -32,26 +32,13 @@ class Profilemodel extends CI_Model
 				return False;
 			}
 		}
-	public function get_adminemail($adminid){
-		$q = $this->db->where(['id' => $adminid])
-					->get(USER);
-		if( $q->num_rows()==1){
-				return $q->row()->email;
-			}
-			else{
-				return False;
-			}
 
-	}
-	public function update_profile($id,$data,$Email) {
+	public function update_profile($id,$data) {
 
-		$this->db->set('email', $Email)
-						->where('id', $id)
-						->update(USER);
-		$this->db->where(['user_id' =>$id])
-					->update(USER_DETAILS,$data);
-					return true;
-	}
+		 return $this->db->where(['id' =>$id])
+							->update(USER,$data);
+
+			}
 	public function get_designation_name($designation_id) {
 		 	return $this->db->select('name')
 		 			 ->where(['id' => $designation_id])

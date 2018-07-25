@@ -21,11 +21,11 @@
 								$data[] = $q->name;
 								
 
-			 $this->db->insert(USER,array('password' =>$encpass,'account_status' =>1,'email' =>$post['maill'],'account_level' =>1,'company_id' => $id)); 
+			 $this->db->insert(USER,array('password' =>$encpass,'account_status' =>1,'email' =>$post['maill'],'account_level' =>1,'company_id' => $id,'first_name' =>$post['fname'],'last_name' =>$post['lname'],'contact_no' =>$post['contactno'])); 
 			 $uid = $this->db->where(['email' =>$post['maill']])
 			 					->get(USER)->row()->id;
 
-			 $this->db->insert(USER_DETAILS,array('first_name' =>$post['fname'],'last_name' =>$post['lname'],'contact_no' =>$post['contactno'],'user_id' =>$uid));
+
 			 
 			 		$mail_hash = md5(time());
 			 		
@@ -37,12 +37,9 @@
 
 		}	
 
-		public function user_reg($data,$Email,$password,$companyid,$hashed) {
+		public function user_reg($data,$hashed) {
 
-			 $this->db->insert(USER,array('email' => $Email,'password' =>$password,'account_status'=>1,'email_verified'=>1,'company_id' =>$companyid));
-			 $q = $data['user_id'] = $this->db->where(['email' =>$Email])
-			 			->get(USER)->row()->id;
-			  $this->db->insert(USER_DETAILS,$data);
+			 $this->db->insert(USER,$data);
 			  $this->db->set('used', '1')
 						->where('hash', $hashed)
 						->update(INVITES);

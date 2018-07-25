@@ -31,8 +31,8 @@ class Profile extends CI_Controller
 		}
 		$data['bank_details'] = $this->profile->get_bank_details($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['email'] = $this->profile->get_adminemail($uid);
-		$data['x']  = $this->profile->select($uid);
+
+		$data['x']  = $this->profile->select_user_details($uid);
 		$data['x']->dob = date('d M Y',strtotime($data['x']->dob));
 		$data['employement_details'] = $employement_data;
 		$data['employement_details']->joining_date = date('d M Y',strtotime($data['employement_details']->joining_date));
@@ -41,6 +41,7 @@ class Profile extends CI_Controller
 		$data['employement_details']->effective_to =  date('d M Y',strtotime($data['employement_details']->effective_to));
 		$this->load->view('display_profile',$data);
 	}
+
 	public function editprofile() {
 		if($this->session->userdata('adminid')){
 			$uid = $this->session->userdata('adminid');
@@ -52,16 +53,16 @@ class Profile extends CI_Controller
 		}
 		$companyid = $this->profile->get_companyid($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-		$data['Email'] = $this->profile->get_adminemail($uid);
-		$data['x']  = $this->profile->select($uid);
+
+		$data['x']  = $this->profile->select_user_details($uid);
 		$this->load->view('editprofile',$data);
 	}
+
 	public function updateprofile() {
 
 		 $post  = $this->input->post();
 		 $id = $post['adminid'];
-		 $Email = $post['email'];
-		 unset($post['email']);
+		 
 		 unset($post['adminid']);
 					$this->form_validation->set_rules('contact','Address','required');
 				 	$this->form_validation->set_rules('email','Email','required');
@@ -74,7 +75,7 @@ class Profile extends CI_Controller
 					$this->form_validation->set_rules('pin', 'PinCode', 'required');
 					$this->form_validation->set_rules('blood', 'BloodGroup', 'required');
 				 	$this->form_validation->set_rules('gender','Gender','required');
-				 	$this->form_validation->set_rules('MartailStatus','MartailStatus','required');
+				 	$this->form_validation->set_rules('MartialStatus','MartailStatus','required');
 				 	$this->form_validation->set_rules('dob','DOB','required');
 				 	$this->form_validation->set_rules('dis','Disability','required');
 				 	$this->form_validation->set_rules('pan','PanNumber','required');
@@ -85,9 +86,8 @@ class Profile extends CI_Controller
 				 	$this->form_validation->set_rules('children','Children','required');
 				 	$this->form_validation->set_rules('hc','HostelerChildren','required');
 				 	$this->form_validation->set_rules('submit','Submit','required');
+
 					if($this->form_validation->run()) {
-						//$x = $post['img'];
-						//die();
 						   if($this->img_upload()){
 						   		$img = $this->img_upload();
 						   }
@@ -98,7 +98,7 @@ class Profile extends CI_Controller
 								'blood_group' => $post['blood'],
 								'disability' => $post['dis'],
 								'dob' => $post['dob'],
-								'martail_status' => $post['MartailStatus'],
+								'martial_status' => $post['MartialStatus'],
 								'gender' => $post['gender'],
 								'address_1' => $post['add1'],
 								'address_2' => $post['add2'],
@@ -111,13 +111,15 @@ class Profile extends CI_Controller
 								'parents_seniority' => $post['ps'],
 								'parents_disability' => $post['pd'],
 								'children' => $post['children'],
-								'hosteler_children' => $post['hc']
+								'hosteler_children' => $post['hc'],
+								'email' => $post['email']
 			 					);
 						if($img){
 							$data['img'] = $img;
 						}
 
-						if($this->profile->update_profile($id,$data,$Email)) {
+						if($this->profile->update_profile($id,$data)==1){
+
 							redirect('profile');
 						}
 					}
@@ -125,11 +127,7 @@ class Profile extends CI_Controller
 						redirect('profile/editprofile');
 					}
 
-
-
-
-
-	}
+			}
 
 	public function img_upload(){
 		$config['upload_path']          = './assets/img/user/';

@@ -9,6 +9,7 @@ class User extends CI_Controller
 			$this->load->model('loginmodel');
 			$this->load->database();
 			$this->load->library('form_validation');
+			$this->load->library('uri');
 		}
 	
 	public function index() {
@@ -38,8 +39,7 @@ class User extends CI_Controller
 		}
 		$this->load->model('loginmodel');
 		$passwordenc = md5($password);
-		//print_r($passwordenc);
-		//die();
+
 		$userdata = $this->loginmodel->validate_login($emailfield,$passwordenc);
 			$userid = $userdata->id;
 			$accountlevel = $userdata->account_level;
@@ -170,7 +170,7 @@ class User extends CI_Controller
 
 		}
 	public function reg() {
-		$this->load->library('uri');
+		
 
 		if ($this->uri->segment(1) === FALSE){
         	$hash = 0;
@@ -217,7 +217,7 @@ class User extends CI_Controller
 			'blood_group' => $post['blood'],
 			'disability' => $post['Disability'],
 			'dob' => $post['dob'],
-			'martail_status' => $post['MartailStatus'],
+			'martial_status' => $post['MartailStatus'],
 			'gender' => $post['gender'],
 			'address_1' => $post['address1'],
 			'address_2' => $post['address2'],
@@ -230,15 +230,17 @@ class User extends CI_Controller
 			'parents_seniority' => $post['parents'],
 			'parents_disability' => $post['PDisability'],
 			'children' => $post['Children'],
-			'hosteler_children' => $post['Hchildren']
+			'hosteler_children' => $post['Hchildren'],
+			'account_status'=>1,
+			'email_verified'=>1,
+			'email' => $post['email'],
+			'password' => md5($post['password']),
+			'company_id' => $post['hidcompid']
 			 );
-			$Email = $post['email'];
-			$password = $post['password'];
-			$encpass = md5($password);
-			$companyid = $post['hidcompid'];
+			
 			$hashed = $post['hidhash'];
 
-		if($this->loginmodel->user_reg($data,$Email,$encpass,$companyid,$hashed)) {
+		if($this->loginmodel->user_reg($data,$hashed)) {
 			
 			redirect('user/email_verified');
 		}

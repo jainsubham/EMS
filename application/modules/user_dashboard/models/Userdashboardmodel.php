@@ -1,13 +1,6 @@
 <?php 
 	class Userdashboardmodel extends CI_Model {
 
-		public function get_user_name($user_id ){
-			$q = $this->db->select(['first_name'])
-				   				->where(['user_id'=> $user_id])
-				   				->get(USER_DETAILS)->row()->first_name;
-				return $q;	
-			
-		}
 
 		public function get_employee_id($user_id){
 			if($q = $this->db->select('employee_id')
@@ -30,10 +23,10 @@
 			 	return false;
 			 }
 		}
-		public function get_company_id( $admin_id ){
+		public function get_company_id( $user_id ){
 
-			$q = $this->db->where(['user_id'=>$admin_id])
-							->get(ADMIN);
+			$q = $this->db->where(['id'=>$user_id])
+							->get(USER);
 			if( $q->num_rows()==1){
 				return $q->row()->company_id;
 			}
@@ -88,8 +81,8 @@
 
 		public function select_user_details($user_id) {
 
-		return  $this->db->where(['user_id' =>$user_id] )
-					->get(USER_DETAILS)->row();
+		return  $this->db->where(['id' =>$user_id] )
+					->get(USER)->row();
 					
 
 		}

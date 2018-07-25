@@ -188,7 +188,7 @@
                               $email = array(
                                 'class' =>'form-control',
                                 'type' => 'email',
-                                'value' => $Email,
+                                'value' => $x['p']->email,
                                 'name' => 'email'
                               );
                           echo form_input($email);
@@ -333,12 +333,12 @@
                       <div class="col-md-4">
                         <div class="form-group">
                           <label class="bmd-label-floating">Martail Status</label>
-                          <?php $martailstatus = array(
+                          <?php $martialstatus = array(
                                   'select' => '---select---',
                                   'married' =>'Married',
                                   'unmarried'=>"Unmarried",   
                                   );
-                          echo form_dropdown('MartailStatus',$martailstatus,$x['p']->martail_status); ?>
+                          echo form_dropdown('MartialStatus',$martialstatus,$x['p']->martial_status); ?>
                         </div>
                       </div>
                     </div>

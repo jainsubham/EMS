@@ -24,21 +24,11 @@
 				return False;
 			}
 		}
-		public function get_admin_email($adminid){
-		$q = $this->db->where(['id' => $adminid])
-					->get(USER);
-		if( $q->num_rows()==1){
-				return $q->row()->email;
-			}
-			else{
-				return False;
-			}
 
-		}
 		public function select_user_details($user_id) {
 
-		return  $this->db->where(['user_id' =>$user_id] )
-					->get(USER_DETAILS)->row();
+		return  $this->db->where(['id' =>$user_id] )
+					->get(USER)->row();
 					
 
 		}
@@ -69,8 +59,8 @@
 		public function empdetails($uid) {
 
 				  $q = $this->db->select(['first_name','last_name','img'])
-				   				->where(['user_id'=> $uid])
-				   				->get(USER_DETAILS)->result(); 
+				   				->where(['id'=> $uid])
+				   				->get(USER)->result(); 
 				  $x = $this->db->select(['designation','employee_id'])
 				 	   			->where(['user_id' =>$uid])
 				 	   			->get(EMPLOYMENT_DETAILS)->result();
