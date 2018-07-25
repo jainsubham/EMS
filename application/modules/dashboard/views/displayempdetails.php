@@ -7,26 +7,32 @@
          <div class="row">
             <div class="col-lg-8 col-md-8">
               <div class="card">
-                <div class="card-header card-header-tabs card-header-primary">
+                <div class="card-header card-header-tabs card-header-info">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                      <span class="nav-tabs-title">Edit:</span>
+                      <!-- <span class="nav-tabs-title">Edit:</span> -->
                       <ul class="nav nav-tabs" data-tabs="tabs">
                         <li class="nav-item">
-                          <a class="nav-link active" href="#profile" data-toggle="tab">
+                          <a class="nav-link active" href="#profile" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
                             <i class="material-icons">person</i>Employee Details  
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#messeges"  data-toggle="tab">
-                            <i class="material-icons">person</i>Personal Details
+                          <a class="nav-link" href="#messeges"  data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">details</i>Personal Details
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#settings" data-toggle="tab">
-                            <i class="material-icons">cloud</i>Bank Details/salary
+                          <a class="nav-link" href="#settings" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">attach_money</i>Bank Details/salary
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item ">
+                          <a class="nav-link " href="#xyz" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">add</i> Supervisor
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -91,7 +97,7 @@
         
         <?php
                 $btn = array(
-                  'class' => "btn btn-primary pull-right",
+                  'class' => "btn btn-info pull-right",
                    'type' => 'submit',
                    'value' => 'Update'
                 );
@@ -283,14 +289,14 @@
         </div>
         <?php
                 $btn = array(
-                  'class' => "btn btn-primary pull-right",
+                  'class' => "btn btn-info pull-right",
                    'type' => 'submit',
                    'value' => 'Update'
                 );
         echo form_submit($btn);
         ?>
       <?php echo form_close(); ?>
-                      </div>
+            </div>
         </div>
       
         <div class="tab-pane" id="settings">
@@ -329,19 +335,67 @@
       </div> 
         <?php
                 $btn = array(
-                  'class' => "btn btn-primary pull-right",
+                  'class' => "btn btn-info pull-right",
                    'type' => 'submit',
                    'name' => 'submit',
-                   'value' => 'Edit'
+                   'value' => 'Update'
                 );
         echo form_submit($btn);
         ?>
-                      <?php echo form_close(); ?>
+        <?php echo form_close(); ?>
         </div>
-      </div> 
+        <div class="tab-pane" id = "xyz">
+          <?php echo form_open("dashboard/editempdetails/".$x['user_id']); ?>
+          <h3 align="Center" style="color: blue"><u>Employee</u></h3>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="bmd-label-floating">Emploee Name :</label>
+              <?php  echo $x['p']->first_name.' '.$x['p']->last_name ; ?>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="bmd-label-floating">Employee_Id :</label>
+              <?php echo $x['employee_id']  ?>
+            </div>
+          </div>
+      </div>
+        <h3 align="Center" style="color: blue"><u>Reporting Supervisor</u></h3>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="bmd-label-floating">Employee Name :</label>
+              <?php echo $x['reporting_name']['0']->first_name.' '.$x['reporting_name']['0']->last_name ; ?>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="bmd-label-floating">Employee_Id :</label>
+              <?= $x['reporting_id'] ?>
+            </div>
+          </div>
+      </div>
+        <?php
+                $btn = array(
+                  'class' => "btn btn-info pull-right",
+                   'type' => 'submit',
+                   'name' => 'submit',
+                   'value' => 'Update'
+                );
+        echo form_submit($btn);
+        ?>
+        <?php echo form_close(); ?>
+        </div>
+        </div>
     </div>        
   </div>
 </div>
+
         <div class="col-md-4">
               <div class="card card-profile">
                   <div class="card-avatar" style="margin-top: -22px;"> 

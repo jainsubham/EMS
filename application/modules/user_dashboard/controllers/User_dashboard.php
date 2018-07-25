@@ -57,6 +57,44 @@
 				redirect('user/login');
 			}
 		}
+		public function leave() {
+			if (null!=($this->session->userdata('logid'))) {
+				$user_id = $this->session->userdata('logid');
+				$this->load->library('pagination');
+				$config = array(
+					'base_url' => 'http://localhost/ems/user_dashboard/leave/',
+					'per_page' => '10',
+					'total_rows' => $this->userdashboardmodel->num_row(),
+					'full_tag_open' => '<ul class = "pagination">',
+					'full_tag_close' => '</ul>',
+					'first_tag_open' => '<li>',
+					'first_tag_close' => '</li>',
+					'last_tag_open' => '<li>',
+					'last_tag_close' => '</li>',
+					'next_tag_open'  => '<li>', 
+					'next_tag_close'  => '</li>', 
+					'prev_tag_open'  => '<li>', 
+					'prev_tag_close'  => '</li>', 
+					'num_tag_open'  => '<li>', 
+					'num_tag_close'  => '</li>', 
+					'cur_tag_open' => "<li class ='active'><a>",
+					'cur_tag_close' => '</a></li>'
+				);
+				$this->pagination->initialize($config);
+				if($q = $this->userdashboardmodel->dispaly_leave_data($user_id,$config['per_page'],$this->uri->segment(3))) {
+					 foreach ($q as $row) {
+					 	$category_id = $row->leave_category;
+					 	$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
+					 }
+				}
+					 $data['q'] = $q;
+					$this->load->view('leave',$data);
+			}
+			else {
+				redirect('user/login');
+			}
+			
+		}
 		public function apply_leave() {
 			$user_id = $this->session->userdata('logid');
 			$company_id = $this->userdashboardmodel->get_company_id($user_id);
@@ -101,6 +139,10 @@
 				redirect('user_dashboard/apply_leave');
 			}
 
+		}
+
+		public function leave_balance() {
+			$this->load->view('leave_balance');
 		}
 
 

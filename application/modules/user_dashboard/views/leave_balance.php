@@ -1,10 +1,11 @@
-<?php include('adminpannel.php');?>
-   <div class="main-panel">
+<?php include('user_header.php'); ?>
+<?php include('user_header.php'); ?>
+    <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Announcement</a>
+            <a class="navbar-brand" href="#pablo"><b>Leave Balance</b></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -12,7 +13,11 @@
             <span class="navbar-toggler-icon icon-bar"></span>
             <span class="navbar-toggler-icon icon-bar"></span>
           </button>
-          
+          <div class="collapse navbar-collapse justify-content-end">
+          	<a href="<?= base_url('user_dashboard/apply_leave'); ?>">
+                <button class="btn btn-primary pull-right" type="button"><i class="material-icons">add</i>APPLY LEAVE</button>
+                </a>
+          </div>
         </div>
       </nav>
       <!-- End Navbar -->
@@ -21,52 +26,19 @@
           <div class="row">
             <div class="col-md-12">
               <div class="card">
-                <div class="card-header card-header-primary">
-                  <h4 class="card-title">Announcement</h4>
+                <div class="card-header card-header-success">
+                  <h4 class="card-title" style="margin-left: 15px">Leave Balance</h4>
                 </div>
                 <div class="card-body">
-                  <?php echo form_open('dashboard/announcement_data'); ?>
-               	<div class="row">
-               	  	<div class="col-md-12">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">Enter Announcement</label>
-                          <?php
-      							        $data = array(
-          						        'class'  => 'form-control',
-          						        'rows'   => '7',
-          						        'cols'   => '12',
-          						        'name'	 => 'announcement'	
-           							  );
-          						    echo form_textarea($data); ?>
-					             	</div>
-					          </div>
-                </div>
-                <div class="row">
-               	  	<div class="col-md-12">
-                        <label class="bmd-label-floating">Date_Till_Display</label>
-                        <div class="form-group">
-                          <?php
-							             $display = array(
-        						        'class'  => 'form-control',
-        						        'type'	 => 'date',
-        						        'name'  => 'display'
-           							  );
-    						          echo form_input($display); ?>
-						            </div>
-					          </div>
-                </div>
-                <?php
-                    $btn = array(
-                        'class' => "btn btn-primary pull-right",
-                        'type' => 'submit',
-                        'name' => 'submit',
-                        'value' => 'submit'
-                            );
-                    echo form_submit($btn);?>
-                <?php echo form_close(); ?>
                 </div>
               </div>
-            </div>    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   Core JS Files   -->
   <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>

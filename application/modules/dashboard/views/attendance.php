@@ -80,7 +80,7 @@
             </div>
         </div>
 </div>
- <script src="<?= base_url('assets/js/core/jquery.min.js')?>" type="text/javascript"></script>
+<script src="<?= base_url('assets/js/core/jquery.min.js')?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js')?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js')?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.jquery.min.js')?>"></script>
@@ -106,4 +106,4 @@
     $('.mdl-grid').addClass('mdl-cell--12-col');
     $("#example_info").css("white-space", "normal");
 } );
-  </script>
+</script>

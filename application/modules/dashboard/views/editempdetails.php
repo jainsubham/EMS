@@ -1,4 +1,5 @@
 <?php include('adminpannel.php')  ?>
+<?= link_tag('assets/css/chosen.css') ?>
 <?php //echo "<pre>"; print_r($x['p']->contact_no); die(); ?>
 <div class="main-panel">
   <div class="container">
@@ -6,26 +7,31 @@
          <div class="row">
             <div class="col-lg-8 col-md-8">
               <div class="card">
-                <div class="card-header card-header-tabs card-header-primary">
+                <div class="card-header card-header-tabs card-header-info">
                   <div class="nav-tabs-navigation">
                     <div class="nav-tabs-wrapper">
-                      <span class="nav-tabs-title">Edit:</span>
                       <ul class="nav nav-tabs" data-tabs="tabs">
-                        <li class="nav-item">
-                          <a class="nav-link active" href="#profile" data-toggle="tab">
+                         <li class="nav-item">
+                          <a class="nav-link active" href="#profile" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
                             <i class="material-icons">person</i>Employee Details  
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#messages" data-toggle="tab">
-                            <i class="material-icons">person</i>Personal Details
+                          <a class="nav-link" href="#messages"  data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">details</i>Personal Details
                             <div class="ripple-container"></div>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="#settings" data-toggle="tab">
-                            <i class="material-icons">cloud</i>Bank Details/salary
+                          <a class="nav-link" href="#settings" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">attach_money</i>Bank Details/salary
+                            <div class="ripple-container"></div>
+                          </a>
+                        </li>
+                        <li class="nav-item ">
+                          <a class="nav-link " href="#xyz" data-toggle="tab" style="font-size: 10px; padding: 10px 10px;">
+                            <i class="material-icons">add</i> Supervisor
                             <div class="ripple-container"></div>
                           </a>
                         </li>
@@ -36,8 +42,7 @@
                 <div class="card-body">
                   <div class="tab-content">
                     <div class="tab-pane active" id="profile">
-                                 Employee Details;
-                                <?=  form_open('dashboard/editdata/'.$x['user_id']) ;?>
+                    <?=  form_open('dashboard/editdata/'.$x['user_id']) ;?>
                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -135,7 +140,7 @@
                     </div>
                             <?php
                             $btn = array(
-                              'class' => "btn btn-primary pull-right",
+                              'class' => "btn btn-info pull-right",
                                'type' => 'submit',
                                'value' => 'Update'
                             );
@@ -462,7 +467,7 @@
                     </div>
                     <?php
                             $btn = array(
-                              'class' => "btn btn-primary pull-right",
+                              'class' => "btn btn-info pull-right",
                                'type' => 'submit',
                                'name' => 'submit',
                                'value' => 'Update'
@@ -537,15 +542,37 @@
                   </div> 
                     <?php
                             $btn = array(
-                              'class' => "btn btn-primary pull-right",
+                              'class' => "btn btn-info pull-right",
                                'type' => 'submit',
                                'name' => 'submit',
                                'value' => 'Edit'
                             );
                     echo form_submit($btn);
                     ?>
-                                  <?php echo form_close(); ?>
+                    <?php echo form_close(); ?>
                     </div>
+                     <div class="tab-pane" id = "xyz" >
+                    <?=  form_open('dashboard/reporting_data/'.$x['user_id']) ;?>
+                      <select name="report" data-placeholder="Select Reporting Supervisor" class="chosen-select"  width="180px">
+                            <option> </option>
+                            <? foreach ($report as $row) {
+                              
+                              echo $row;
+                            }
+                             ?>
+                        </select>
+                        <br>
+                    <?php
+                            $btn = array(
+                              'class' => "btn btn-info pull-right",
+                               'type' => 'submit',
+                               'name' => 'submit',
+                               'value' => 'Update'
+                            );
+                    echo form_submit($btn);
+                    ?>
+                    <?php echo form_close(); ?>
+                  </div>
                   </div>
               </div>
           </div> 
@@ -578,6 +605,7 @@
   </div>
   <!--   Core JS Files   -->
  <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
+ <script src="<?= base_url('assets/js/chosen.jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.jquery.min.js');?>"></script>
@@ -607,3 +635,16 @@
 
     });
   </script>
+  <script type="text/javascript">
+    var config = {
+  '.chosen-select'           : {},
+  '.chosen-select-deselect'  : { allow_single_deselect: true },
+  '.chosen-select-no-single' : { disable_search_threshold: 10 },
+  '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
+  '.chosen-select-rtl'       : { rtl: true },
+  '.chosen-select-width'     : { width: '100%' }
+}
+for (var selector in config) {
+  $(selector).chosen(config[selector]);
+}
+</script>

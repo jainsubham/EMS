@@ -4,7 +4,7 @@
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
         <div class="container-fluid">
           <div class="navbar-wrapper">
-            <a class="navbar-brand" href="#pablo">Apply Leave</a>
+            <a class="navbar-brand" href="#pablo"><b>Apply Leave</b></a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -20,10 +20,10 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-success">
-                  <h4 class="card-title">Add Leave</h4>
+                  <h4 class="card-title" style="margin-left: 15px">Add Leave</h4>
                 </div>
                 <div class="card-body">
                  <?php echo form_open('user_dashboard/leave_data') ?>
@@ -69,12 +69,12 @@
                   	<div class="col-md-12">
                         <div class="form-group">
                     	<!-- <label class="bmd-label-floating">Are there any half day</label> -->
-	                  	<h4>Are there any half day</h4>
-	                 <div class="container">
-  						<input type="radio" name="radio" value="1">Yes		
-  						<input type="radio" name="radio" checked="checked" value="0">No
-  					</div>
-                  		</div>
+    	                  	<h4>Are there any half day</h4>
+    	                 <div class="container">
+            						<input type="radio" name="radio" value="1">Yes		
+            						<input type="radio" name="radio" checked="checked" value="0">No
+            					</div>
+                    </div>
                 	</div>
            		   </div> 
            		<div class="row">
@@ -94,7 +94,7 @@
                 </div>
                 <?php
                     $btn = array(
-                        'class' => "btn btn-primary pull-right",
+                        'class' => "btn btn-success pull-right",
                         'type' => 'submit',
                         'name' => 'submit',
                         'value' => 'Apply'

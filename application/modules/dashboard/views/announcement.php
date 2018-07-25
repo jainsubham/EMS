@@ -1,4 +1,3 @@
-
 <?php include('adminpannel.php') ;?>
     <div class="main-panel">
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
