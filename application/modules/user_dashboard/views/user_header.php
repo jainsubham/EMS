@@ -16,7 +16,8 @@
   <!-- CSS Files -->
   <?= link_tag('assets/css/custom.css') ?>
   <link href="<?php echo base_url('assets/css/material-dashboard.css?v=2.1.0'); ?>" rel="stylesheet" />
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.material.min.css">
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
 </head>
@@ -49,7 +50,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/attendance'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/attendance/'.date('Y-m',time())); ?>">
               <i class="material-icons">content_paste</i>
               <p>Attendance</p>
             </a>

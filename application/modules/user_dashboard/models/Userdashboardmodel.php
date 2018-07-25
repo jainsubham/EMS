@@ -31,5 +31,47 @@
 			 }
 		}
 
+		public function select_user_details($user_id) {
+
+		return  $this->db->where(['user_id' =>$user_id] )
+					->get(USER_DETAILS)->row();
+					
+
+		}
+
+		public function fetch_employee_data($user_id) {
+		 	return $this->db->select()
+		 				->where(['user_id' => $user_id])
+		 				->get(EMPLOYMENT_DETAILS)->result();
+		 }
+
+		 public function get_designationname($designation_id) {
+		 	return $this->db->select('name')
+		 			 ->where(['id' => $designation_id])
+		 			 ->get(DESIGNATIONS)->row()->name;
+
+		}
+		public function get_team_id($designation_id){
+			if($q = $this->db->select(['team_id'])
+		 			 ->where(['id' => $designation_id])
+		 			 ->get(DESIGNATIONS)->row()){
+  	
+		 	return $q->team_id;
+			 }else{
+			 	return false;
+			 }	
+		}
+
+		public function get_team_name($team_id){
+			if($q = $this->db->select(['name'])
+		 			 ->where(['id' => $team_id])
+		 			 ->get(TEAM)->row()){
+  	
+		 	return $q->name;
+			 }else{
+			 	return false;
+			 }	
+		}
+
 	}
 ?> 

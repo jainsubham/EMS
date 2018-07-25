@@ -248,7 +248,7 @@ class Dashboard extends CI_Controller
 
 			}
 			$data['presence_record'] = $presence_record;
-			$data['day_count'] = $day_count;
+			$data['day_count'] = date('d',time());
 
 			$this->load->view('attendance',$data);
 			
@@ -870,7 +870,7 @@ class Dashboard extends CI_Controller
 		$data['present_days'] = $present_days;
 		$data['absent_days'] = $day_count-($present_days+$not_avail_count+$sunday_count+1);
 		$data['joining_date'] = date('d M, Y',strtotime($joining_date));
-		$data['day_count'] = $day_count;
+		$data['day_count'] = date('d',time());
 		$data['weeks'] = $weeks;
 		$data['attendance_record'] = $attendance_record;
 

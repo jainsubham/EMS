@@ -48,7 +48,7 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/attendance'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/attendance/'.date('Y-m',time())); ?>">
               <i class="material-icons">content_paste</i>
               <p>Attendance</p>
             </a>
