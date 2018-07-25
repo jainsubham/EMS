@@ -261,10 +261,6 @@
 			$data['weeks'] = $weeks;
 			$data['attendance_record'] = $attendance_record;
 
-		/*	echo "<pre>";
-			print_r($data);
-			die();*/
-
 				$this->load->view('attendance',$data);
 			
 			}	
