@@ -819,8 +819,8 @@ class Dashboard extends CI_Controller
 	}
 
 
-	public function get_under_me($uid){
-		if($res = $this->dashboardmodel->check_emp_under_supervisor($uid)){
+	public function get_under_me($user_id){
+		if($res = $this->dashboardmodel->check_emp_under_supervisor($user_id)){
 
 		$this->x[$uid] = $res;
 
@@ -830,7 +830,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 		}else{
-			$this->x[$uid] = $res;
+			$this->x[$user_id] = $res;
 		}
 
 
@@ -876,6 +876,7 @@ class Dashboard extends CI_Controller
 			}	
 		}
 	}
+	
 	public function get_monthly_attendance(){
 		date_default_timezone_set('Asia/Kolkata');
 
