@@ -39,14 +39,11 @@
 
 		public function user_reg($data,$hashed) {
 
-			 $this->db->insert(USER,$data);
-			  $this->db->set('used', '1')
+			$this->db->insert(USER,$data);
+			$this->db->set('used', '1')
 						->where('hash', $hashed)
 						->update(INVITES);
-				return true;
-
-
-
+			return true;
 		}
 
 		public function verify_invite_hash($hash){

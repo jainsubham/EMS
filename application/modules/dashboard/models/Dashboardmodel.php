@@ -32,6 +32,7 @@
 					
 
 		}
+
 		public function get_reporting_supervisor_detail($user_id) {
 			if($q =$this->db->select('rep_sup')
 						->where(['user_id' => $user_id])
@@ -39,10 +40,10 @@
 				return  $q->rep_sup;
 			}
 			else {
-				return false;			}
-				
-
+				return false;			
+			}		
 		}
+
 		public function send_invite($emailid,$companyid,$hash){
 
 			if($this->db->insert(INVITES,array('email_id' =>$emailid,'hash' =>$hash,'company_id' =>$companyid,'invite_time'=> date('Y-m-d H:i:s',time()) )) ){
@@ -50,12 +51,14 @@
 				return True;
 			}
 		}
+
 		public function get_userid($compid) {
 
 			return $this->db->select('id')
 							->where(['company_id' => $compid,'account_status'=>1])
 							->get(USER)->result();					
 		}
+
 		public function empdetails($uid) {
 
 				  $q = $this->db->select(['first_name','last_name','img'])
@@ -111,11 +114,13 @@
 				return True;
 			}
 		}
+
 	    public function fetch_employee_data($user_id) {
 		 	return $this->db->select()
 		 				->where(['user_id' => $user_id])
 		 				->get(EMPLOYMENT_DETAILS)->result();
 		 }
+
 		public function updatedata($data) {
 		 		
 		 	 $q  = $this->db->select('user_id')
@@ -145,32 +150,28 @@
 
 		 	  }
 		}
+
 		public function get_designationname($designation_id) {
 		 	return $this->db->select('name')
 		 			 ->where(['id' => $designation_id])
 		 			 ->get(DESIGNATIONS)->row()->name;
 
 		}
-		public function update_personal_info($data,$email) {
-			$this->db->set('email', $email)
-							->where(['id' => $data['user_id']])
-							->update(USER);
-			$this->db->where(['user_id' =>$data['user_id']])
-						->update(USER_DETAILS,$data);
+
+		public function update_personal_info($data,$user_id) {
+			$this->db->where(['id' => $user_id])
+						->update(USER,$data);
 						return true;
 		}
+
 		public function img_update($user_id,$img) {
 		 	return $this->db->set('img',$img)
-		 				->where(['user_id' => $user_id])
-		 				->update(USER_DETAILS);
+		 				->where(['id' => $user_id])
+		 				->update(USER);
 		}
+
 		public function attendance($attendance) {
 			 $this->db->insert(ATTENDANCE,$attendance);
-		}
-		public function get_user_name($user_id) {
-			return $this->db->select(['first_name','last_name'])
-						->where(['user_id'=>$user_id])
-						->get(USER_DETAILS)->result();
 		}
 
 		public function count_employees($company_id) {
@@ -178,32 +179,39 @@
 			return  $this->db->where(['company_id' => $company_id,'account_status'=>1,'email_verified'=>1])
 					   		->count_all_results(USER);
 		}
+
 		public function get_leave_category($company_id) {
 			return $this->db->select(['category_name','company_id'])
 						->where(['company_id'=>$company_id])
 						->get(LEAVE_CATEGORY)->result();
 		} 
+
 		public function add_category($category,$company_id) {
 			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id));
 		}
+
 		public function announcement($company_id) {
 			return $this->db->select(['id','announcement','date_till_display'])
 								->where(['company_id' => $company_id,'deleted'=>0,'date_till_display >=' =>date('Y-m-d')])
 								->get(ANNOUNCEMENT)->result();
 		}
+
 		public function get_announcement($id) {
 			return $this->db->select(['announcement','date_till_display'])
 								->where(['id' => $id])
 								->get(ANNOUNCEMENT)->row();
 
 		}
+
 		public function add_announcement($data) {
 			return $this->db->insert(ANNOUNCEMENT,$data); 
 		}
+
 		public function update_announcement($data,$id) {
 			return $this->db->where(['id' => $id])
 								->update(ANNOUNCEMENT,$data);
 		}
+
 		public function delete_announcement($id) {
 			return $this->db->set('deleted',1)
 							->where(['id' => $id])
@@ -245,21 +253,10 @@
 			 	return false;
 			 }
 		}
-		public function get_user_id($company_id,$user_id) {
-			if($q = $this->db->select('id')
-						->where(['company_id'=>$company_id])
-						->not_like('id',$user_id)
-						->get(USER)->result()) {
-					return $q;
-			}
-			else {
-				return false;
-			}
-
-		}
 		public function insert_supervisor($user_id,$rep_sup) {
 			return $this->db->insert(REP_SUP,array('user_id' => $user_id,'rep_sup'=> $rep_sup ));
 		}
+
 		public function select_user($reporting_id) {
 			if($q = $this->db->select('user_id')
 						->where(['rep_sup' =>$reporting_id])
@@ -270,6 +267,7 @@
 				return false;
 			}
 		}
+
 		public function get_users($company_id) {
 			if($subquery = $this->db->select('user_id')
 									->get(REP_SUP)->result()) {
@@ -287,6 +285,7 @@
 						->get(USER)->result();
 			}
 		}
+		
 		public function check_emp_under_supervisor($rep_sup_id) {
 			  if($q =$this->db->select('user_id')
 						->where(['rep_sup' => $rep_sup_id])
@@ -297,6 +296,7 @@
 			  	false;
 			  }
 		}
+
 		public function get_reporting_user($user_id,$data) {
 			$team_id = $this->db->select('team_id')
 						->where(['user_id'=> $user_id])

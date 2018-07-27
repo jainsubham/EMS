@@ -30,9 +30,54 @@
                   <h4 class="card-title" style="margin-left: 15px">Annual Leave Balance</h4>
                 </div>
                 <div class="card-body">
-                	
+                    <div class = "self-card-small-header" style="overflow-x:auto;" >
+                       <div class="content">
+                         <div class="container">
+                            <div class="container-fluid">
+                              <div class="row">
+                                  <table style="margin-top: 20px;" class="table table-bordered table-striped table-hover css-serial reult" id="myTable"> 
+                                    <thead  class="col-md-12 ">
+                                      <tr class="card-header card-header-info" style="background-color: #9c27b0; color: white; box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
+                                        <th style="width:140px">Leave Category</th>
+                                        <th>Opening Balance</th>
+                                        <th>Accrued Balance</th>
+                                        <th>Leaves Taken</th>
+                                        <th>Leaves Lapsed</th>
+                                        <th>Ending Balance</th>
+                                        <th>future Balance</th>
+                                        <th>Usable Balance</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                      <td><b>Casual Leave</b></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                    </tr>
+                                    <tr>
+                                      <td><b>Privilege/Earned Leave</b></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                      <td></td>
+                                    </tr>
+                                    </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>

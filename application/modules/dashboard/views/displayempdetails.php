@@ -368,7 +368,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Employee Name :</label>
-              <?php echo $x['reporting_name']['0']->first_name.' '.$x['reporting_name']['0']->last_name ; ?>
+              <?php echo $x['reporting_name']->first_name.' '.$x['reporting_name']->last_name ; ?>
             </div>
           </div>
       </div>

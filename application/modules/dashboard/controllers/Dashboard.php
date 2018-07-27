@@ -500,12 +500,14 @@ class Dashboard extends CI_Controller
 			if($rep_sup_id = $this->dashboardmodel->get_reporting_supervisor_detail($user_id)) {
 				
 					$data['x']['reporting_id'] = $this->dashboardmodel->get_employee_id($rep_sup_id);
+					$data['x']['reporting_name']  = $this->dashboardmodel->select_user_details($rep_sup_id);
 
 			}
 			else {
+				$data['x']['reporting_name'] = new stdClass();
 				$data['x']['reporting_id'] = 'NULL';
-				$data['x']['reporting_name']['0']->first_name = 'NULL';
-				$data['x']['reporting_name']['0']->last_name = '';
+				$data['x']['reporting_name']->first_name = 'NULL';
+				$data['x']['reporting_name']->last_name = '';
 			}
 
 			$this->load->view('displayempdetails',$data);
@@ -557,16 +559,17 @@ class Dashboard extends CI_Controller
 							}
 						$designation = $y;
 				}
-				if($q = $this->dashboardmodel->get_user_id($company_id,$user_id)) {
-						$x = array();
-						
+				$this->get_under_me($user_id);
+		    	$dataa  = array_keys($this->x);	
+				if($q = $this->dashboardmodel->get_reporting_user($user_id,$dataa)) {
+						$xyz = array();
 						foreach ($q as $report) {
-							$id = $report->id;
+							$id = $report->user_id;
 							$name_data = $this->dashboardmodel->select_user_details($id);
 							$employee_id = $this->dashboardmodel->get_employee_id($id);	
-							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
+							$xyz[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
 						}
-						$report = $x;
+						$report = $xyz;
 						$data['report'] = $report;
 				}
 
@@ -576,7 +579,6 @@ class Dashboard extends CI_Controller
 
 
 					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
-
 					$this->load->view('editempdetails',$data);
 		}	
 	}
@@ -638,7 +640,7 @@ class Dashboard extends CI_Controller
 				$this->form_validation->set_rules('pin', 'PinCode', 'required');
 				$this->form_validation->set_rules('blood', 'BloodGroup', 'required');
 				$this->form_validation->set_rules('gender','Gender','required');
-				$this->form_validation->set_rules('MartailStatus','MartailStatus','required');
+				$this->form_validation->set_rules('MartialStatus','MartialStatus','required');
 				$this->form_validation->set_rules('dob','DOB','required');
 				$this->form_validation->set_rules('dis','Disability','required');
 				$this->form_validation->set_rules('pan','PanNumber','required');
@@ -657,7 +659,7 @@ class Dashboard extends CI_Controller
 								'blood_group' => $post['blood'],
 								'disability' => $post['dis'],
 								'dob' => $post['dob'],
-								'martail_status' => $post['MartailStatus'],
+								'martial_status' => $post['MartialStatus'],
 								'gender' => $post['gender'],
 								'address_1' => $post['add1'],
 								'address_2' => $post['add2'],
@@ -670,16 +672,18 @@ class Dashboard extends CI_Controller
 								'parents_seniority' => $post['ps'],
 								'parents_disability' => $post['pd'],
 								'children' => $post['children'],
-								'hosteler_children' => $post['hc']
+								'hosteler_children' => $post['hc'],
+								'email' => $post['email']
 			 					);
-				 			$data['user_id'] = $user_id;
-				 			$email = $post['email'];
-				 			if($this->dashboardmodel->update_personal_info($data,$email)) {
+				 			if($this->dashboardmodel->update_personal_info($data,$user_id)) {
 				 				redirect('dashboard/displayempdetails/'.$user_id);
 				 			}
 				 			else {
 				 				redirect('dashboard/editempdetails/'.$user_id);
 				 			}
+				}
+				else {
+				 	redirect('dashboard/editempdetails/'.$user_id);
 				}
 		}
 	}
@@ -807,7 +811,7 @@ class Dashboard extends CI_Controller
 					$x = array();
 						foreach ($q as $report) {
 							$id = $report->id;
-							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$name_data = $this->dashboardmodel->select_user_details($id);
 							$employee_id = $this->dashboardmodel->get_employee_id($id);	
 							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
 						}
@@ -822,7 +826,7 @@ class Dashboard extends CI_Controller
 	public function get_under_me($user_id){
 		if($res = $this->dashboardmodel->check_emp_under_supervisor($user_id)){
 
-		$this->x[$uid] = $res;
+		$this->x[$user_id] = $res;
 
 			if(count($res) > 0){			
 				foreach ($res as $key => $value) {
@@ -832,8 +836,6 @@ class Dashboard extends CI_Controller
 		}else{
 			$this->x[$user_id] = $res;
 		}
-
-
 	}
 
 
@@ -847,7 +849,7 @@ class Dashboard extends CI_Controller
 					$x = array();
 						foreach ($q as $report) {
 							$id = $report->user_id;
-							$name_data = $this->dashboardmodel->get_user_name($id)['0'];
+							$name_data = $this->dashboardmodel->select_user_details($id);
 							$employee_id = $this->dashboardmodel->get_employee_id($id);	
 							$x[$id] = "<option value='".$id."'>".$employee_id."-".$name_data->first_name." ".$name_data->last_name."</option>";
 						}
@@ -856,13 +858,15 @@ class Dashboard extends CI_Controller
 						$data['user_id'] = $user_id;
 					$this->load->view('supervisor',$data);
 				} 		
+		
+				else {
+						$this->load->view('supervisor');
+				}
 		}
 		else {
-			$this->load->view('supervisor');
+			redirect('dashboard/add_supervisor');
 		}
-
 	}
-
 	public function make_supervisor() {
 		$this->form_validation->set_rules('rep_sup_id','Reporting','required');
 		if ($this->form_validation->run()) {
