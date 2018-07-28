@@ -97,6 +97,12 @@
               <p>Teams / Departments</p>
             </a>
           </li>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/add_supervisor'); ?>">
+              <i class="material-icons">person</i>
+              <p>Add Supervisor</p>
+            </a>
+          </li>
            <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/switch_user'); ?>">
               <i class="material-icons">person</i>

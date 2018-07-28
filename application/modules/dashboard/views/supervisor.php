@@ -29,7 +29,9 @@
                 </div>
                 <div class="card-body">
                  <h5>Select Reporting Supervisor : </h5>
+                 <?php if(isset($user_id)) {?>
                  <?=  form_open('dashboard/make_supervisor/'.$user_id) ;?>
+                 <?php } ?>
                  <?php //echo "<pre>"; print_r($report); die(); ?>
                       <select name="rep_sup_id" data-placeholder="Select Reporting Supervisor" class="chosen-select"  width="180px">
                             <option> </option>

@@ -237,7 +237,6 @@ class User extends CI_Controller
 			'password' => md5($post['password']),
 			'company_id' => $post['hidcompid']
 			 );
-			
 			$hashed = $post['hidhash'];
 
 		if($this->loginmodel->user_reg($data,$hashed)) {

@@ -38,6 +38,7 @@
         <tbody>
             <?php
 			foreach ($data as $row) { ?>
+
 				<tr>
 				<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "55px" style="border-radius:50px;"></td>
 				<td><?= $row['employee_id'] ?></td>
