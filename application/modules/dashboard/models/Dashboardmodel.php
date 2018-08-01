@@ -1,10 +1,10 @@
 <?php 
 	class Dashboardmodel extends CI_Model {
 
-		public function get_companyid( $adminid ){
+		public function get_companyid( $user_id ){
 
-			$q = $this->db->where(['user_id'=>$adminid])
-							->get(ADMIN);
+			$q = $this->db->where(['id'=>$user_id])
+							->get(USER);
 
 			if( $q->num_rows()==1){
 				return $q->row()->company_id;

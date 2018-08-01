@@ -31,9 +31,13 @@
                	  <!-- <p class="card-category">Complete your profile</p> -->
                   </div>
                 <div class="card-body">
+                    <? 
+		    		    for($i=1;$i<=$count;$i++){
+                            echo '<div class="chart" id="org_struct_'.$i.'"></div>';
+		    	         }
+                     ?>
 
-		    		<div class="chart" id="org-struct"></div>
-		    	</div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -45,10 +49,13 @@
 		    <script src="<?= base_url('assets/js/raphael.js') ?>"></script>
 		    <script src="<?= base_url('assets/js/treant.js') ?>"></script>
     
+    <? $c = 1;
 
+        foreach ($data as $node) {
+    ?>
 <script type="text/javascript">
-	var config = {
-        container: "#org-struct",
+    var config_<?= $c ?>= {
+        container: "#org_struct_<?= $c ?>",
         
         connectors: {
             type: 'step'
@@ -57,112 +64,58 @@
             HTMLclass: 'nodeExample1'
         }
     },
-    c1 = {
-        text: {
-            name: "Mark Hill",
-            title: "Chief executive officer",
-            contact: "Tel: 01 213 123 134",
+
+    <?
+            foreach ($node as $key => $element) {
+                $chart_element[] = $key;
+    ?>
+
+        e<?= $key ?> = {
+       <? if(isset($element['parent'])){
+        ?>
+            parent: e<?= $element['parent'] ?>,
+            stackChildren: true,
+        <?
+        }
+       ?>        text:{
+            name: "<?= $element['name'] ?>",
+            title: "<?= $element['employee_id'] ?> - <?= $element['designation'] ?>",
         },
-        image: "../headshots/2.jpg"
+        image: "<?= base_url('/assets/img/user/'.$element['img']) ?>"
     },
 
-    cto = {
-        parent: c1,
-        text:{
-            name: "Joe Linux",
-            title: "Chief Technology Officer",
-        },
-        stackChildren: true,
-        image: "../headshots/1.jpg"
-    },
-    cbo = {
-        parent: c1,
-        stackChildren: true,
-        text:{
-            name: "Linda May",
-            title: "Chief Business Officer",
-        },
-        image: "../headshots/5.jpg"
-    },
-    cdo = {
-        parent: c1,
-        text:{
-            name: "John Green",
-            title: "Chief accounting officer",
-            contact: "Tel: 01 213 123 134",
-        },
-        image: "../headshots/6.jpg"
-    },
-    cio = {
-        parent: cto,
-        text:{
-            name: "Ron Blomquist",
-            title: "Chief Information Security Officer"
-        },
-        image: "../headshots/8.jpg"
-    },
-    ciso = {
-        parent: cto,
-        text:{
-            name: "Michael Rubin",
-            title: "Chief Innovation Officer",
-            contact: {val: "we@aregreat.com", href: "mailto:we@aregreat.com"}
-        },
-        image: "../headshots/9.jpg"
-    },
-    cio2 = {
-        parent: cdo,
-        text:{
-            name: "Erica Reel",
-            title: "Chief Customer Officer"
-        },
-        link: {
-            href: "http://www.google.com"
-        },
-        image: "../headshots/10.jpg"
-    },
-    ciso2 = {
-        parent: cbo,
-        text:{
-            name: "Alice Lopez",
-            title: "Chief Communications Officer"
-        },
-        image: "../headshots/7.jpg"
-    },
-    ciso3 = {
-        parent: cbo,
-        text:{
-            name: "Mary Johnson",
-            title: "Chief Brand Officer"
-        },
-        image: "../headshots/4.jpg"
-    },
-    ciso4 = {
-        parent: cbo,
-        text:{
-            name: "Kirk Douglas",
-            title: "Chief Business Development Officer"
-        },
-        image: "../headshots/11.jpg"
-    }
+    <?
+            }
 
-    chart_config = [
-        config,
-        c1,
-        cto,
-        cbo,
-        cdo,
-        cio,
-        ciso,
-        cio2,
-        ciso2,
-        ciso3,
-        ciso4
+            $elements_in_node = end($chart_element);
+    ?>
+
+    chart_config_<?= $c ?> = [
+        config_<?= $c ?>,
+        <? foreach ($chart_element as $key => $data) {
+
+            if($data==$elements_in_node){
+                echo "e".$data."\n";
+            }else{
+                
+                $n =  "e".$data.", \n";
+            print_r($n);
+            }
+            
+        }
+        unset($chart_element);
+        ?>
     ];
 
-	new Treant( chart_config );
+    new Treant(chart_config_<?= $c ?>);
 
 </script>
+    <?
+
+            $c++;
+        }
+
+    ?>
 
 </body>
-</html>
+</html> 
