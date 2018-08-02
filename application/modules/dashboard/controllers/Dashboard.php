@@ -957,7 +957,8 @@ class Dashboard extends CI_Controller
 		}
 
 
-		$today = date('Y-m-j', time());
+		$today = date('Y-m-d', time());
+
 		$employee_data = $this->dashboardmodel->fetch_employee_data($user_id)['0'];
 		if(!$employee_data){
 			redirect('dashboard/attendance');
