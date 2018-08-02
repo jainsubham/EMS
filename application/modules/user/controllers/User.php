@@ -239,8 +239,19 @@ class User extends CI_Controller
 			 );
 			$hashed = $post['hidhash'];
 
-		if($this->loginmodel->user_reg($data,$hashed)) {
-			
+		if($data = $this->loginmodel->user_reg($data,$hashed)) {
+			// echo "<pre>";
+			// print_r($data);
+			// die();
+			$array = array(
+				'user_id' => $data['user_id'],
+				'casual_leaves_allowed' => $data['leave']->default_casual_leave,
+				'earning_leave_allowed' => $data['leave']->default_earning_leave,
+				'casual_leave_id' => $data['leave']->default_casual_id,
+				'earning_leave_id' => $data['leave']->default_earning_id,
+				'company_id' => $data['company_id']
+			);
+			$this->loginmodel->insert_leave_allowance_data($array);
 			redirect('user/email_verified');
 		}
 

@@ -61,12 +61,19 @@
               <p>Announcement</p>
             </a>
           </li>
-          <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('dashboard/leave'); ?>">
-              <i class="material-icons">library_books</i>
-              <p>Leaves</p>
-            </a>
-          </li>
+           <div class=" nav-item dropdown" >
+            <li  id="dropdownMenu1"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a href="#" class="nav-link">
+              <i class="material-icons">speaker_notes</i>
+              <p>Leave</p>
+              </a>
+            </li>
+            <div class="dropdown-menu dropdown-primary">
+               <a class="nav-link" href="<?= base_url('dashboard/add_leave_category') ?>">Leave Category</a>
+               <a class="nav-link" href="<?= base_url('dashboard/leave_balance') ?>">Leave Balance</a>
+               <a class="nav-link" href="<?= base_url('dashboard/leave_request') ?>">Leave Request</a>
+            </div>
+          </div>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/invite'); ?>">
               <i class="material-icons">bubble_chart</i>

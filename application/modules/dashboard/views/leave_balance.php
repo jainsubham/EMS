@@ -4,7 +4,7 @@
     <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
       <div class="container-fluid">
         <div class="navbar-wrapper">
-          <a class="navbar-brand" href="#">Employee Directory</a>
+          <a class="navbar-brand" href="#">Leave Balance</a>
         </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="sr-only">Toggle navigation</span>
@@ -21,48 +21,45 @@
           		 <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-success">
-                  <h4 class="card-title">Employee's of your organization</h4>
+                  <h4 class="card-title">Leave Balance Of Empoyees</h4>
                   <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
-                <div class="card-body"> 
+                <div class="card-body">
                 <table id="example" class="mdl-data-table" style="width:100%">
         <thead>
             <tr>
-				<th>Photo</th>
-				<th>Employee_Id</th>
-				<th>Employee Name</th>
-				<th>Designation</th>
-				<th></th>
+      				<th>Employee_Id</th>
+      				<th>Employee Name</th>
+      				<th>Casual Leave Allowed</th>
+              <th>Earning Leave Allowed</th>
+      				<th>Action</th>
             </tr>
         </thead>
         <tbody>
-            <?php
-			foreach ($data as $row) { ?>
-
-				<tr>
-				<td align="center"><img src="<?= base_url('assets/img/user/').$row['img']; ?>" height = "55px" style="border-radius:50px;"></td>
-				<td><?php if(isset($row['employee_id'])) { ?>
-          <?= $row['employee_id'] ?>
-          <?php } ?>  
-          </td>
-				<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
-				<td align="center"><?php echo $row['designationname'] ?></td>
-				<?= form_open('dashboard/displayempdetails/'.$row['user_id']) ;?>			
-				<td align="center">
-					<?php
-                            $btn = array(
-                              'class' => "btn btn-info pull-center",
-                               'type' => 'submit',
-                               'name' => 'submit',
-                               'value' => 'Manage'
-                            );
-                    echo form_submit($btn); ?>   
-				</td>
-				<?php echo form_close(); ?>
-				</tr>
-			 <?php	
-			}
-		?>
+          <?php //echo "<pre>"; print_r($leave); die(); ?>
+          <?php foreach ($leave as $row) { ?>
+            <tr>
+            <td><?php if (isset($row['employee_id'])) {
+             echo $row['employee_id']; ?></td>  
+            <?php } ?>
+            <td><?= $row['employee_name'];?></td>
+            <td><?= $row['Casual Leave']; ?> </td>
+            <td><?= $row['Privilege/Earned Leave']; ?> </td>
+            <?= form_open('dashboard/edit_leave_data/'.$row['user_id']) ?>
+            <td>
+              <?php 
+                  $btn = array(
+                    'class' => "btn btn-info pull-center",
+                    'type' => 'submit',
+                    'name' => 'submit',
+                    'value' => 'Edit'
+                  );
+                echo form_submit($btn);
+                echo form_close(); ?>
+            </td>
+          </tr>
+         <?php  } ?>
+          
         </tbody>
      
       </table>

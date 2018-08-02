@@ -44,10 +44,10 @@
 			}
 		}
 		public function leave_data($data) {
-			 return $this->db->insert(LEAVE_REQ,$data);
+			return $this->db->insert(LEAVE_REQ,$data);			
 		}
+
 		public function dispaly_leave_data($user_id,$limit,$offset) {
-			
 			if($q = $this->db->where(['user_id' => $user_id])
 							 ->order_by('start_date','DESC')
 							 ->limit($limit,$offset)
@@ -58,6 +58,7 @@
 				return false;
 			}
 		}
+
 		public function num_row() {
 			if($q=$this->db->count_all_results(LEAVE_REQ)) {
 					return $q;
@@ -65,9 +66,8 @@
 			else {
 				return false;
 			}
-				
-
 		}
+		
 		public function get_category_name($category_id) {
 				if($q = $this->db->select('category_name')
 							->where(['id' => $category_id])
@@ -119,6 +119,41 @@
 			 }else{
 			 	return false;
 			 }	
+		}
+
+		public function get_admin_id($company_id) {
+			if ($q = $this->db->select('user_id')
+						->where(['company_id' => $company_id])
+						->get(ADMIN)->row()) {
+					return $q->user_id;
+
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function check_supervisor($user_id) {
+			  if($q =$this->db->select('rep_sup')
+						->where(['user_id' => $user_id])
+						->get(REP_SUP)->result()) {
+			  	 return $q;
+			  }
+			  else {
+			  	false;
+			  }
+		}
+		public function dispaly_leave_data_to_manager($user_id,$limit,$offset,$array) {
+			$q = $this->db->select('id')
+						->where(['user_id'=>$user_id])
+						->get(LEAVE_REQ)->result();
+						echo "<pre>";
+				foreach ($q as $row) {
+					$id[] = $row->id;
+
+				}
+	
+
 		}
 
 	}
