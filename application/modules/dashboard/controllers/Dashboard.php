@@ -402,8 +402,59 @@ class Dashboard extends CI_Controller
 		}
 	}
 	public function organization() {
-		$this->load->view('organization');
+		$user_id = $this->session->userdata('adminid');
+		$company_id = $this->dashboardmodel->get_companyid($user_id);
+		$user_list = $this->dashboardmodel->get_users($company_id);
+
+		foreach ($user_list as $row) {
+			$user = $row->id;
+			$this->get_under_me($user);
+			$supervisor_id = key($this->x);
+			
+			$node = $this->x;
+			foreach ($node as $key => $row) {
+				$row_data = $row;
+				unset($node[$key]);
+				$data_p['parent'] = $key;
+				if(isset($row_data)){
+					foreach ($row_data as $user_list) {
+						$id =  $user_list->user_id;
+						$data_p['child'][] = $id;
+					}
+				}
+				$target[] = $data_p;
+				unset($data_p);
+				$user_data = $this->dashboardmodel->select_user_details($key);
+				$employee_data = $this->dashboardmodel->fetch_employee_data($key)['0'];
+
+				$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
+				$node[$key]['img'] = $user_data->img;
+				$node[$key]['employee_id'] = $employee_data->employee_id;
+				$node[$key]['designation'] = $this->dashboardmodel->get_designationname($employee_data->designation);
+				
+			}
+			
+			foreach ($target as $row) {
+				if(isset($row['child'])){
+					foreach ($row['child'] as $child_list) {
+						$node[$child_list]['parent'] = $row['parent'];
+					}
+				}
+			}
+
+			$data['data'][] = $node;
+			unset($this->x);
+			unset($target);
+		}
+		$data['count']= count($data['data']);
+		
+		/*echo "<pre>";
+		print_r($data);
+		die();*/
+
+		$this->load->view('organization',$data);
 	}
+
 	public function EmpDetails() {
 		$userid = $this->session->userdata('adminid');
 		$compid = $this->dashboardmodel->get_companyid($userid);
@@ -761,6 +812,19 @@ class Dashboard extends CI_Controller
 			}
 	}
 
+	public function leave() {
+		 $admin_id = $this->session->userdata('adminid');
+		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
+		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
+		 	$data['q'] = $q;
+		 
+		 }else {
+		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
+		 }
+
+		$this->load->view('leave',$data);
+	}
+
 
 	public function add_category() {
 		$category = $this->input->post('category');
@@ -892,7 +956,8 @@ class Dashboard extends CI_Controller
 		}
 
 
-		$today = date('Y-m-j', time());
+		$today = date('Y-m-d', time());
+
 		$employee_data = $this->dashboardmodel->fetch_employee_data($user_id)['0'];
 		if(!$employee_data){
 			redirect('dashboard/attendance');
