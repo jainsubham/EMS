@@ -179,7 +179,7 @@
 			}
 
 
-			$today = date('Y-m-d', time());
+			$today = date('Y-m-j', time());
 			$employee_data = $this->userdashboardmodel->fetch_employee_data($user_id)['0'];
 			if(!$employee_data){
 				redirect('dashboard/attendance');
@@ -305,8 +305,8 @@
 				$array[] = $admin_id;
 				unset($array['0']);
 				if($admin_id == true && $array == true ) {
-
- 						if($q = $this->userdashboardmodel->dispaly_leave_data_to_manager($user_id,$config['per_page'],$this->uri->segment(3),$array)){
+ 						if($q = $this->userdashboardmodel->dispaly_leave_data_to_manager($user_id,$array)){
+ 						
 					 		foreach ($q as $row) {
 					 			$category_id = $row->leave_category;
 					 			$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
@@ -315,8 +315,9 @@
 					 		$data['q'] = $q;
 							$this->load->view('team_leave',$data);
 				}
-				else { 
+				else {
 					die('hellloo');
+
 					if($q = $this->userdashboardmodel->dispaly_leave_data($user_id,$config['per_page'],$this->uri->segment(3))){
 					 		foreach ($q as $row) {
 					 			$category_id = $row->leave_category;

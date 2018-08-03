@@ -405,12 +405,11 @@ class Dashboard extends CI_Controller
 		$user_id = $this->session->userdata('adminid');
 		$company_id = $this->dashboardmodel->get_companyid($user_id);
 		$user_list = $this->dashboardmodel->get_users($company_id);
-
+		
 		foreach ($user_list as $row) {
 			$user = $row->id;
 			$this->get_under_me($user);
 			$supervisor_id = key($this->x);
-			
 			$node = $this->x;
 			foreach ($node as $key => $row) {
 				$row_data = $row;
@@ -1113,6 +1112,67 @@ class Dashboard extends CI_Controller
 		 		redirect('dashboard/edit_leave_data/'.$user_id);	
 		 	}
 		
+	}
+
+	public function leave_request() {
+		if (null!=($this->session->userdata('adminid'))) {
+				$admin_id = $this->session->userdata('adminid');
+				$this->load->library('pagination');
+				$config = array(
+					'base_url' => 'http://localhost/ems/dashboard/leave_request/',
+					'per_page' => '10',
+					'total_rows' => $this->dashboardmodel->num_row(),
+					'full_tag_open' => '<ul class = "pagination">',
+					'full_tag_close' => '</ul>',
+					'first_tag_open' => '<li>',
+					'first_tag_close' => '</li>',
+					'last_tag_open' => '<li>',
+					'last_tag_close' => '</li>',
+					'next_tag_open'  => '<li>', 
+					'next_tag_close'  => '</li>', 
+					'prev_tag_open'  => '<li>', 
+					'prev_tag_close'  => '</li>', 
+					'num_tag_open'  => '<li>', 
+					'num_tag_close'  => '</li>', 
+					'cur_tag_open' => "<li class ='active'><a>",
+					'cur_tag_close' => '</a></li>'
+				);
+				$this->pagination->initialize($config);
+				$this->get_under_me($admin_id);
+				$array = array_keys($this->x);
+				if($q = $this->dashboardmodel->get_emp_leave_req($array,$config['per_page'],$this->uri->segment(3))) {
+
+					 foreach ($q as $row) {
+					 	$user_id = $row->user_id;
+						$employee_id = $this->dashboardmodel->get_employee_id($user_id);
+						$name_data = $this->dashboardmodel->select_user_details($user_id);
+						$row->user_id = $employee_id.'/'.$name_data->first_name.' '.$name_data->last_name; 
+					 	$category_id = $row->leave_category;
+					 	$row->leave_category = $this->dashboardmodel->get_category_name($category_id)->category_name;	
+					 }
+				}
+					 $data['q'] = $q;
+					$this->load->view('leave_request',$data);
+			}
+			else {
+				redirect('user/login');
+			}
+
+	}
+
+	public function action_leave_request() {
+		$id = $this->uri->segment(3);
+		$approvation_status	= $this->uri->segment(4);
+		if($approvation_status == 1) {
+			if($this->dashboardmodel->action_request($id,$approvation_status)) {
+				redirect('dashboard/leave_request');
+			}
+		}
+		else {
+			if($this->dashboardmodel->action_request($id,$approvation_status)) {
+				redirect('dashboard/leave_request');
+			}	
+		}
 	}
 	
 }

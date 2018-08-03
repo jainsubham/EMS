@@ -55,6 +55,7 @@
 					return $q;
 			}
 			else {
+				
 				return false;
 			}
 		}
@@ -143,18 +144,21 @@
 			  	false;
 			  }
 		}
-		public function dispaly_leave_data_to_manager($user_id,$limit,$offset,$array) {
-			$q = $this->db->select('id')
-						->where(['user_id'=>$user_id])
-						->get(LEAVE_REQ)->result();
+
+		public function dispaly_leave_data_to_manager($user_id,$array) {
+			$q = $this->db->select()
+							->where(['user_id'=>$user_id])
+							->get(LEAVE_REQ)->result();
 						echo "<pre>";
-				foreach ($q as $row) {
-					$id[] = $row->id;
+						foreach ($q as $row) {
+							$id[] = $row->id;	
+						}
+						print_r($q);
+						print_r($array);	
+						die();
+						
+		} 
 
-				}
-	
-
-		}
 
 	}
 ?> 

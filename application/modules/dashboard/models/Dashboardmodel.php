@@ -269,6 +269,7 @@
 		public function get_users($company_id) {
 			if($subquery = $this->db->select('user_id')
 									->get(REP_SUP)->result()) {
+				
 					foreach ($subquery as $row) {
 						$data[] = $row->user_id;
 					}
@@ -380,6 +381,34 @@
 					  		->where(['user_id'=>$user_id])
 					  		->update(LEAVE_ALLOWANCE);
 
+		}
+
+		public function num_row() {
+			if($q=$this->db->count_all_results(LEAVE_REQ)) {
+					return $q;
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function get_emp_leave_req($data,$limit,$offset) {
+			if($q = $this->db->where_in('user_id',$data)
+							 ->order_by('start_date','DESC')
+							 ->limit($limit,$offset)
+							->get(LEAVE_REQ)->result()) {
+					return $q;
+			}
+			else {
+				
+				return false;
+			}
+		}
+
+		public function action_request($id,$approvation_status) {
+				return $this->db->set('approvation_status',$approvation_status)
+							->where(['id'=>$id])
+							->update(LEAVE_REQ);
 		}
 
 	}
