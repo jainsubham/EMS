@@ -1,7 +1,22 @@
 <?php include('adminpannel.php') ;?>
-
-<?= link_tag('assets/css/treant.css') ?>
-<?= link_tag('assets/css/org-struct.css') ?>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<style type="text/css">
+  td{
+    width: 45px;
+  }
+  .profileImageTree{
+    display: block;
+    margin: auto;
+  }
+  .profileName{
+    font-weight: 600;
+    font-size: 12px;
+  }
+  .jobTitle{
+    line-height: 0;
+    margin-bottom: 15px;
+  }
+</style>
 
  <div class="main-panel">
       <!-- Navbar -->
@@ -26,7 +41,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="card">
-                  <div class="card-header card-header-info">
+                  <div class="card-header card-header-success">
                    <h4 class="card-title">Graphical presentation of structure of your Organization </h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                   </div>
@@ -46,76 +61,47 @@
 	</div>
 </div>
 
-		    <script src="<?= base_url('assets/js/raphael.js') ?>"></script>
-		    <script src="<?= base_url('assets/js/treant.js') ?>"></script>
     
     <? $c = 1;
 
         foreach ($data as $node) {
     ?>
-<script type="text/javascript">
-    var config_<?= $c ?>= {
-        container: "#org_struct_<?= $c ?>",
-        
-        connectors: {
-            type: 'step'
-        },
-        node: {
-            HTMLclass: 'nodeExample1'
-        }
-    },
+ <script type="text/javascript">
+      google.charts.load('current', {packages:["orgchart"]});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Name');
+        data.addColumn('string', 'Manager');
+        data.addColumn('string', 'ToolTip');
+        // For each orgchart box, provide the name, manager, and tooltip to show.
+        data.addRows([
 
     <?
             foreach ($node as $key => $element) {
-                $chart_element[] = $key;
     ?>
+        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation'] ?></div></div>'},'<? if(isset($element['parent'])){
+           echo $element['parent']; 
+           }
+       ?>', ''],
 
-        e<?= $key ?> = {
-       <? if(isset($element['parent'])){
-        ?>
-            parent: e<?= $element['parent'] ?>,
-            stackChildren: true,
-        <?
-        }
-       ?>        text:{
-            name: "<?= $element['name'] ?>",
-            title: "<?= $element['employee_id'] ?> - <?= $element['designation'] ?>",
-        },
-        image: "<?= base_url('/assets/img/user/'.$element['img']) ?>"
-    },
+    <?  }   ?>
+     ]);
+    // Create the chart.
+        var chart = new google.visualization.OrgChart(document.getElementById('org_struct_<?= $c ?>'));
+        // Draw the chart, setting the allowHtml option to true for the tooltips.
+        chart.draw(data, {allowHtml:true,allowCollapse:true});
+      }
+   
+   </script>
 
     <?
-            }
-
-            $elements_in_node = end($chart_element);
-    ?>
-
-    chart_config_<?= $c ?> = [
-        config_<?= $c ?>,
-        <? foreach ($chart_element as $key => $data) {
-
-            if($data==$elements_in_node){
-                echo "e".$data."\n";
-            }else{
-                
-                $n =  "e".$data.", \n";
-            print_r($n);
-            }
-            
-        }
-        unset($chart_element);
-        ?>
-    ];
-
-    new Treant(chart_config_<?= $c ?>);
-
-</script>
-    <?
-
             $c++;
         }
 
     ?>
+
 
 </body>
 </html> 
