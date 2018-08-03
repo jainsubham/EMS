@@ -41,7 +41,7 @@
             <div class="row">
               <div class="col-lg-12">
                 <div class="card">
-                  <div class="card-header card-header-success">
+                  <div class="card-header card-header-info">
                    <h4 class="card-title">Graphical presentation of structure of your Organization </h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                   </div>
