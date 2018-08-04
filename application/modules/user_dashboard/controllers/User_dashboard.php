@@ -299,7 +299,9 @@
 				);
 				$this->get_under_me($user_id);
 				$data = $this->x[$user_id];
-				$this->notification_for_leave($user_id,$data);
+				if (isset($data)) {
+					$this->notification_for_leave($user_id,$data);	
+				}
 				$array = array_keys($this->x);
 				unset($array['0']);
 				$this->pagination->initialize($config);
@@ -338,7 +340,63 @@
 	}
 
 	public function notification_for_leave($user_id,$data) {
-		
+		foreach ($data as $row) {
+			$id = $row->user_id;
+			$x = array();
+			if($q = $this->userdashboardmodel->get_immediate_emp_leave_req($id)) {	
+				
+				$q = $this->userdashboardmodel->select_user_details($user_id);
+				$full_name = $q->first_name.' '.$q->last_name;
+				$email = $q->email;
+				$subject = "EMS Account Invitation";
+				$name = '';	
+				$web_link = base_url('');
+				$invite_link=  base_url('user_dashboard/team_leave');
+				$part1 = "<div> Hello ";
+				$part2 = " ,<br><br>
+				 You have been invited by ".$company_name." to create your account on EMS .<br>
+				Please create your account on EMS by clicking on the following link : <br>
+				<a href='";	
+				$part3 = "'> Accept Invitation </a>.<br>
+				If you have any questions , please contact us on ".$web_link."
+				<br> Regards ,<br>EMS Team
+				</div>";
+				$name = $full_name;
+				$email_to = $email;
+				$tobehashed = $company_id.$email_to;
+				$hash = md5($tobehashed);
+				$invite_link = $invite_link."/".$hash;
+				
+				$msg_body = $part1.$name.$part2.$invite_link.$part3;
+				
+
+				$this->init_mail();
+				$this->sendmail($subject , $msg_body , $email_to);	
+				if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
+					echo $name." is invited"."<br>";
+				}
+				else {
+					$error = array('error' => $this->upload->display_errors());
+					print_r($error);
+				}
+			}
+
+ 		}
+ 		
+	}
+	public function init_mail(){
+		$config = Array(
+		    'protocol' => 'smtp',
+		    'smtp_host' => 'ssl://smtp.googlemail.com',
+		    'smtp_port' => 465,
+		    'smtp_user' => 'subham3996@gmail.com',
+		    'smtp_pass' => 'subham@@3996',
+		    'charset'   => 'utf-8',
+		    'mailtype'  => 'html',
+		    'starttls'  => true,
+		    'newline'   => "\r\n"
+		);
+		$this->load->library('email', $config);
 	}
 }
 
