@@ -175,17 +175,6 @@
 			}
 		}
 
-		public function check_emp_under_supervisor($rep_sup_id) {
-			  if($q =$this->db->select('user_id')
-						->where(['rep_sup' => $rep_sup_id])
-						->get(REP_SUP)->result()) {
-			  	 return $q;
-			  }
-			  else {
-			  	false;
-			  }
-		}
-
 		public function get_emp_leave_req($data,$limit,$offset) {
 			if ($data) {
 				if($q = $this->db->where_in('user_id',$data)

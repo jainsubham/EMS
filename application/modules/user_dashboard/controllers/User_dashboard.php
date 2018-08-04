@@ -393,21 +393,7 @@
 			}
 	}
 
-	public function get_under_me($user_id){
-		if($res = $this->userdashboardmodel->check_emp_under_supervisor($user_id)){
-			$this->x[$user_id] = $res;
-			if(count($res) > 0){			
-				foreach ($res as $key => $value) {
-					$this->get_under_me($value->user_id);
-				}
-			}
-		}
-		else{
-			$this->x[$user_id] = $res;
-		}
-
-	}
-
+	
 	public function notification_for_leave($user_id,$data) {
 		
 	}
