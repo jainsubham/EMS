@@ -179,7 +179,7 @@
 			}
 
 
-			$today = date('Y-m-j', time());
+			$today = date('Y-m-d', time());
 			$employee_data = $this->userdashboardmodel->fetch_employee_data($user_id)['0'];
 			if(!$employee_data){
 				redirect('dashboard/attendance');
@@ -337,10 +337,7 @@
 					unset($target);
 				}
 				$data['count']= count($data['data']);
-				
-				/*echo "<pre>";
-				print_r($data);
-				die();*/
+			
 
 				$this->load->view('organization',$data);
 			}
