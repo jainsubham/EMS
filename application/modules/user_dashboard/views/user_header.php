@@ -76,7 +76,7 @@
           </li>
           
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/organization'); ?>">
               <i class="material-icons">store_mall_directory</i>
               <p>Organization Structure</p>
             </a>

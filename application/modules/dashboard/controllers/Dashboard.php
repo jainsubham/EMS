@@ -8,6 +8,9 @@ class Dashboard extends CI_Controller
 			$this->load->database();
 			$this->load->model('dashboardmodel');
 			$this->x = [];
+			if(null==($this->session->userdata('adminid'))){
+				redirect('user/login');
+			}
 
 		}
 

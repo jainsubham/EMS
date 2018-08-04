@@ -13,6 +13,19 @@
 			 }
 		}
 
+		public function get_companyid( $user_id ){
+
+			$q = $this->db->where(['id'=>$user_id])
+							->get(USER);
+
+			if( $q->num_rows()==1){
+				return $q->row()->company_id;
+			}
+			else{
+				return False;
+			}
+		}
+
 		public function get_attendance_record($user_id,$date){
 			if($q = $this->db->select(['check_in','check_out'])
 		 			 ->where(['user_id' => $user_id,'date'=>$date])
@@ -119,6 +132,34 @@
 			 }else{
 			 	return false;
 			 }	
+		}
+		public function get_users($company_id) {
+			if($subquery = $this->db->select('user_id')
+									->get(REP_SUP)->result()) {
+					foreach ($subquery as $row) {
+						$data[] = $row->user_id;
+					}
+				return $this->db->select('id')
+						->where(['company_id' => $company_id])
+						->where_not_in('id',$data)
+						->get(USER)->result();
+			}
+			else {
+				return $this->db->select('id')
+						->where(['company_id' => $company_id])
+						->get(USER)->result();
+			}
+		}
+
+		public function check_emp_under_supervisor($rep_sup_id) {
+			  if($q =$this->db->select('user_id')
+						->where(['rep_sup' => $rep_sup_id])
+						->get(REP_SUP)->result()) {
+			  	 return $q;
+			  }
+			  else {
+			  	false;
+			  }
 		}
 
 	}
