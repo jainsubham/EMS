@@ -170,7 +170,7 @@ class Dashboard extends CI_Controller
 			$part2 = " ,<br><br>
 			 You have been invited by ".$company_name." to create your account on EMS .<br>
 			Please create your account on EMS by clicking on the following link : <br>
-			<a href='";
+			<a href='";	
 			$part3 = "'> Accept Invitation </a>.<br>
 			If you have any questions , please contact us on ".$web_link."
 			<br> Regards ,<br>EMS Team
@@ -408,12 +408,11 @@ class Dashboard extends CI_Controller
 		$user_id = $this->session->userdata('adminid');
 		$company_id = $this->dashboardmodel->get_companyid($user_id);
 		$user_list = $this->dashboardmodel->get_users($company_id);
-
+		
 		foreach ($user_list as $row) {
 			$user = $row->id;
 			$this->get_under_me($user);
 			$supervisor_id = key($this->x);
-			
 			$node = $this->x;
 			foreach ($node as $key => $row) {
 				$row_data = $row;
@@ -566,11 +565,9 @@ class Dashboard extends CI_Controller
 
 			$this->load->view('displayempdetails',$data);
 		}
+    
+	}
 
-
-			
-		    
-		}
 	public function editempdetails() {
 
 		if ($this->uri->segment(1) === FALSE){
@@ -830,6 +827,7 @@ class Dashboard extends CI_Controller
 		$this->load->view('leave',$data);
 	}
 
+
 	public function add_category() {
 		$category = $this->input->post('category');
 		$company_id = $this->input->post('company_id');
@@ -1054,5 +1052,131 @@ class Dashboard extends CI_Controller
 
 		$this->load->view('monthly_attendance',$data);
 	}
+
+	public function add_leave_category() {
+		 $admin_id = $this->session->userdata('adminid');
+		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
+		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
+		 	$data['q'] = $q;
+		 	// echo "<pre>"
+		 	// print_r($data);
+		 	// die();
+			
+		 }else {
+		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
+		 }
+
+		$this->load->view('add_leave_category',$data);
+	}
+
+	public function leave_balance() {
+		$q =$this->dashboardmodel->get_leave_balance();	
+			$x = array();
+		foreach ($q as $row) {
+			$x['user_id'] = $row->user_id;
+			$x['employee_id'] = $this->dashboardmodel->get_employee_id($x['user_id']);	
+			$name_data = $this->dashboardmodel->select_user_details($x['user_id']);
+			$x['employee_name'] = $name_data->first_name.' '.$name_data->last_name; 
+			$category_id_1  = $row->casual_leave_id;
+			$category_id_2 = $row->earning_leave_id;
+			$category_1 = $this->dashboardmodel->get_category_name($category_id_1)->category_name;
+			$category_2 = $this->dashboardmodel->get_category_name($category_id_2)->category_name; 
+			$x[$category_1]  = $row->casual_leaves_allowed; 
+			$x[$category_2]  = $row->earning_leave_allowed;
+			$row_data[] = $x;
+		}
+		$data['leave'] = $row_data;
+		$this->load->view('leave_balance',$data);
+
+	}
+
+	public function edit_leave_data() {
+		$user_id = $this->uri->segment(3);
+		$q =$this->dashboardmodel->get_leave_balance_single_user($user_id);
+		$data['leave'] = $q;	
+		$this->load->view('edit_leave_balance',$data);
+	}
+
+	public function update_leave_data() {
+		$this->form_validation->set_rules('casual','Casual Leave','required');
+		$this->form_validation->set_rules('earning','Earning Leave','required');
+		if($this->form_validation->run()) {
+			$post = $this->input->post();
+			$user_id = $this->uri->segment(3);
+		 	if($this->dashboardmodel->update_leave_data($user_id,$post)) {
+		 		redirect('dashboard/leave_balance');
+		 	}
+		 	else {
+		 		redirect('dashboard/edit_leave_data/'.$user_id);	
+		 	}
+
+		}
+		else {
+		 		redirect('dashboard/edit_leave_data/'.$user_id);	
+		 	}
+		
+	}
+
+	public function leave_request() {
+		if (null!=($this->session->userdata('adminid'))) {
+				$admin_id = $this->session->userdata('adminid');
+				$this->load->library('pagination');
+				$config = array(
+					'base_url' => 'http://localhost/ems/dashboard/leave_request/',
+					'per_page' => '10',
+					'total_rows' => $this->dashboardmodel->num_row(),
+					'full_tag_open' => '<ul class = "pagination">',
+					'full_tag_close' => '</ul>',
+					'first_tag_open' => '<li>',
+					'first_tag_close' => '</li>',
+					'last_tag_open' => '<li>',
+					'last_tag_close' => '</li>',
+					'next_tag_open'  => '<li>', 
+					'next_tag_close'  => '</li>', 
+					'prev_tag_open'  => '<li>', 
+					'prev_tag_close'  => '</li>', 
+					'num_tag_open'  => '<li>', 
+					'num_tag_close'  => '</li>', 
+					'cur_tag_open' => "<li class ='active'><a>",
+					'cur_tag_close' => '</a></li>'
+				);
+				$this->pagination->initialize($config);
+				$this->get_under_me($admin_id);
+				$array = array_keys($this->x);
+				if($q = $this->dashboardmodel->get_emp_leave_req($array,$config['per_page'],$this->uri->segment(3))) {
+
+					 foreach ($q as $row) {
+					 	$user_id = $row->user_id;
+						$employee_id = $this->dashboardmodel->get_employee_id($user_id);
+						$name_data = $this->dashboardmodel->select_user_details($user_id);
+						$row->user_id = $employee_id.'/'.$name_data->first_name.' '.$name_data->last_name; 
+					 	$category_id = $row->leave_category;
+					 	$row->leave_category = $this->dashboardmodel->get_category_name($category_id)->category_name;	
+					 }
+				}
+					 $data['q'] = $q;
+					$this->load->view('leave_request',$data);
+			}
+			else {
+				redirect('user/login');
+			}
+
+	}
+
+	public function action_leave_request() {
+		$id = $this->uri->segment(3);
+		$approvation_status	= $this->uri->segment(4);
+		if($approvation_status == 1) {
+			if($this->dashboardmodel->action_request($id,$approvation_status)) {
+				redirect('dashboard/leave_request');
+			}
+		}
+		else {
+			if($this->dashboardmodel->action_request($id,$approvation_status)) {
+				redirect('dashboard/leave_request');
+			}	
+		}
+	}
+	
 }
 ?>

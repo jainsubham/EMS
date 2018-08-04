@@ -1,5 +1,4 @@
 <?php
-
 	class User_dashboard extends CI_Controller
 	{
 		function __construct() {
@@ -8,6 +7,7 @@
 				$this->load->library(array('session','form_validation'));
 				$this->load->database();
 				$this->load->model('userdashboardmodel');
+				$this->x = [];
 		}
 		public function index() {
 			if(null!=($this->session->userdata('logid'))){
@@ -141,7 +141,7 @@
 				}
 				else {
 				redirect('user_dashboard/apply_leave');
-			}
+				}
 
 			}
 			else {
@@ -179,7 +179,7 @@
 			}
 
 
-			$today = date('Y-m-d', time());
+			$today = date('Y-m-j', time());
 			$employee_data = $this->userdashboardmodel->fetch_employee_data($user_id)['0'];
 			if(!$employee_data){
 				redirect('dashboard/attendance');
@@ -272,7 +272,8 @@
 
 				$this->load->view('attendance',$data);
 			
-			}	
+	}	
+
 
 
 			public function get_under_me($user_id){
@@ -344,5 +345,80 @@
 				$this->load->view('organization',$data);
 			}
 
+	public function team_leave() {
+		if (null!=($this->session->userdata('logid'))) {
+				$user_id = $this->session->userdata('logid');
+				$this->load->library('pagination');
+				$config = array(
+					'base_url' => 'http://localhost/ems/user_dashboard/team_leave/',
+					'per_page' => '10',
+					'total_rows' => $this->userdashboardmodel->num_row(),
+					'full_tag_open' => '<ul class = "pagination">',
+					'full_tag_close' => '</ul>',
+					'first_tag_open' => '<li>',
+					'first_tag_close' => '</li>',
+					'last_tag_open' => '<li>',
+					'last_tag_close' => '</li>',
+					'next_tag_open'  => '<li>', 
+					'next_tag_close'  => '</li>', 
+					'prev_tag_open'  => '<li>', 
+					'prev_tag_close'  => '</li>', 
+					'num_tag_open'  => '<li>', 
+					'num_tag_close'  => '</li>', 
+					'cur_tag_open' => "<li class ='active'><a>",
+					'cur_tag_close' => '</a></li>'
+				);
+				$this->pagination->initialize($config);
+				$company_id = $this->userdashboardmodel->get_company_id($user_id);
+				$admin_id = $this->userdashboardmodel->get_admin_id($company_id);
+				$this->get_upper_me($user_id);
+				$array = array_keys($this->x);
+				$array[] = $admin_id;
+				unset($array['0']);
+				if($admin_id == true && $array == true ) {
+ 						if($q = $this->userdashboardmodel->dispaly_leave_data_to_manager($user_id,$array)){
+ 						
+					 		foreach ($q as $row) {
+					 			$category_id = $row->leave_category;
+					 			$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
+					 		}
+						}
+					 		$data['q'] = $q;
+							$this->load->view('team_leave',$data);
+				}
+				else {
+					die('');
+
+					if($q = $this->userdashboardmodel->dispaly_leave_data($user_id,$config['per_page'],$this->uri->segment(3))){
+					 		foreach ($q as $row) {
+					 			$category_id = $row->leave_category;
+					 			$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
+					 		}
+						}
+					 		$data['q'] = $q;
+							$this->load->view('team_leave',$data);
+				}
+
+		}
+		else {
+				redirect('user/login');
+		}
 	}
+
+	public function get_upper_me($user_id){
+		if($res = $this->userdashboardmodel->check_supervisor($user_id)){
+
+		$this->x[$user_id] = $res;
+			if(count($res) > 0){			
+				foreach ($res as $key => $value) {
+					$this->get_upper_me($value->rep_sup);
+				}
+			}
+		}else{
+			$this->x[$user_id] = $res;
+		}
+
+	}
+}
+
 ?>

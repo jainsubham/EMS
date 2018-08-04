@@ -66,6 +66,8 @@
                <a class="nav-link" href="<?= base_url('user_dashboard/leave') ?>">Leave Status</a>
                <a class="nav-link" href="<?= base_url('user_dashboard/leave_balance') ?>">Leave Balance</a>
                <a class="nav-link" href="<?= base_url('user_dashboard/apply_leave') ?>">Leave Request</a>
+               <a class="nav-link" href="<?= base_url('user_dashboard/team_leave') ?>">Team Request</a>
+
             </div>
           </div>
           <li class="nav-item ">

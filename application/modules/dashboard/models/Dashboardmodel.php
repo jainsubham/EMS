@@ -29,8 +29,6 @@
 
 		return  $this->db->where(['id' =>$user_id] )
 					->get(USER)->row();
-					
-
 		}
 
 		public function get_reporting_supervisor_detail($user_id) {
@@ -60,7 +58,6 @@
 		}
 
 		public function empdetails($uid) {
-
 				  $q = $this->db->select(['first_name','last_name','img'])
 				   				->where(['id'=> $uid])
 				   				->get(USER)->result(); 
@@ -133,10 +130,10 @@
 					$team_id = $this->db->select('team_id')
 		 	  							 ->where(['id' => $data['designation']])
 		 	  							 ->get(DESIGNATIONS)->row();
+		 	  							 
 					$this->db->set('team_id',$team_id->team_id)
 								->where(['user_id' =>$q->user_id])
 								->update(TEAM_ALLOTED);		
-
 					return true;
 		 	  }
 		 	  else {
@@ -145,6 +142,7 @@
 		 	  	$team_id = $this->db->select('team_id')
 		 	  				->where(['id' => $data['designation']])
 		 	  				->get(DESIGNATIONS)->row();
+
 		 	  	$this->db->insert(TEAM_ALLOTED,array('user_id'=>$data['user_id'], 'team_id' => $team_id->team_id));
 		 	  	 return true;
 
@@ -247,9 +245,9 @@
 			if($q = $this->db->select(['employee_id'])
 								->where(['user_id'=>$user_id])
 								->get(EMPLOYMENT_DETAILS)->row()){
-  	
-		 	return $q->employee_id;
-			 }else{
+		 			return $q->employee_id;
+			} 
+		    else {
 			 	return false;
 			 }
 		}
@@ -271,6 +269,7 @@
 		public function get_users($company_id) {
 			if($subquery = $this->db->select('user_id')
 									->get(REP_SUP)->result()) {
+				
 					foreach ($subquery as $row) {
 						$data[] = $row->user_id;
 					}
@@ -298,13 +297,14 @@
 		}
 
 		public function get_reporting_user($user_id,$data) {
-			$team_id = $this->db->select('team_id')
+			if($team_id = $this->db->select('team_id')
 						->where(['user_id'=> $user_id])
-						->get(TEAM_ALLOTED)->row();
-			return $this->db->select('user_id')
+						->get(TEAM_ALLOTED)->row()) {
+				return $this->db->select('user_id')
 			 				->where(['team_id' => $team_id->team_id])
 				 			->where_not_in('user_id',$data)
 				 			->get(TEAM_ALLOTED)->result();
+			}
 
 		}
 					
@@ -340,6 +340,75 @@
 			 }else{
 			 	return false;
 			 }	
+		}
+
+		public function get_leave_balance() {
+			if($q = $this->db->select()
+								->get(LEAVE_ALLOWANCE)->result()) {
+
+				return $q;
+			}
+			else {
+				false;
+			}
+		}
+
+		public function get_leave_balance_single_user($user_id) {
+			if($q = $this->db->select()
+							 ->where(['user_id'=>$user_id])
+								->get(LEAVE_ALLOWANCE)->result()) {
+
+				return $q;
+			}
+			else {
+				false;
+			}
+		}
+
+		public function get_category_name($category_id) {
+				if($q = $this->db->select('category_name')
+							->where(['id' => $category_id])
+							->get(LEAVE_CATEGORY)->row()) {
+					return $q;
+				}
+				else {
+					return false;
+				}
+		}
+
+		public function update_leave_data($user_id,$data) {
+			return $this->db->set(array('casual_leaves_allowed'=>$data['casual'],'earning_leave_allowed'=>$data['earning']))
+					  		->where(['user_id'=>$user_id])
+					  		->update(LEAVE_ALLOWANCE);
+
+		}
+
+		public function num_row() {
+			if($q=$this->db->count_all_results(LEAVE_REQ)) {
+					return $q;
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function get_emp_leave_req($data,$limit,$offset) {
+			if($q = $this->db->where_in('user_id',$data)
+							 ->order_by('start_date','DESC')
+							 ->limit($limit,$offset)
+							->get(LEAVE_REQ)->result()) {
+					return $q;
+			}
+			else {
+				
+				return false;
+			}
+		}
+
+		public function action_request($id,$approvation_status) {
+				return $this->db->set('approvation_status',$approvation_status)
+							->where(['id'=>$id])
+							->update(LEAVE_REQ);
 		}
 
 	}

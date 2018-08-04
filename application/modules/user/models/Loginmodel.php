@@ -33,8 +33,6 @@
 			 $this->db->insert(VERIFY_HASH,array('user_id' =>$uid,'hash' =>$mail_hash));
 			 $this->db->insert(ADMIN,array('company_id' =>$id,'user_id'=>$uid,'date' =>date('Y-m-d H:i:s',time())));	
 			 return $mail_hash;
-
-
 		}	
 
 		public function user_reg($data,$hashed) {
@@ -43,7 +41,15 @@
 			$this->db->set('used', '1')
 						->where('hash', $hashed)
 						->update(INVITES);
-			return true;
+			$q = $this->db->where(['email' =>$data['email']])
+			 					->get(USER)->row();
+			 			$x['user_id'] = $q->id;
+			 			$x['company_id'] = $q->company_id;
+
+			$x['leave'] = $this->db->select(array('default_casual_leave','default_earning_leave','default_casual_id','default_earning_id'))
+			 				->where(['id' => $q->company_id])
+			 				->get(COMPANY)->row();
+			return $x;
 		}
 
 		public function verify_invite_hash($hash){
@@ -52,7 +58,7 @@
 			return $q;
 		}
 
-		public function account_email_verify($hash){
+		public function account_email_verify($hash) {
 			if($this->db->where(['hash' =>$hash,'active'=>1])
 			 			->get(VERIFY_HASH)->num_rows()!=0){
 
@@ -67,6 +73,11 @@
 						->update(USER);
 					return TRUE;
 			 }			
+		}
+
+		public function insert_leave_allowance_data($data) {
+			$this->db->insert(LEAVE_ALLOWANCE,$data);
+			return true;
 		}
 
 	}

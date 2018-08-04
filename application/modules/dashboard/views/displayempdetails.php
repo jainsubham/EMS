@@ -90,7 +90,9 @@
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Designation :</label>
-              <?php echo $x['name']; ?>
+              <?php if(isset($x['name'])){
+              echo $x['name']; 
+            }?>
             </div>
           </div>
       </div>
@@ -404,7 +406,9 @@
                     </a>
                   </div>
                   <div class="card-body">
-                  <p class="self-card-designation text-gray inline-flex-nd"><i class="material-icons">work</i> &nbsp <?= $x['name'] ?>  at &nbsp<b><?= $company_name ?></b></p>
+                  <p class="self-card-designation text-gray inline-flex-nd"><i class="material-icons">work</i> &nbsp <?php if(isset($x['name'])){
+              echo $x['name']; 
+              }?>  at &nbsp<b><?= $company_name ?></b></p>
                   <h4 class="card-title"><?php echo $x['p']->first_name.' '.$x['p']->last_name?></h4>
                   <p class="card-description ">
                     <div class="row text-gray">
