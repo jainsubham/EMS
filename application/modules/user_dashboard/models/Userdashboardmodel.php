@@ -160,6 +160,19 @@
 			}
 		}
 
+		public function get_immediate_emp_leave_req($user_id) {
+			if ($user_id) {
+				if($q = $this->db->where('user_id',$user_id)
+							->get(LEAVE_REQ)->result()) {
+					return $q;
+				}
+			}
+			else {
+		
+				return false;
+			}
+		}
+
 
 
 	}
