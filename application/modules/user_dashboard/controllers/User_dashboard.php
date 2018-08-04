@@ -368,56 +368,48 @@
 					'cur_tag_open' => "<li class ='active'><a>",
 					'cur_tag_close' => '</a></li>'
 				);
-				$this->pagination->initialize($config);
-				$company_id = $this->userdashboardmodel->get_company_id($user_id);
-				$admin_id = $this->userdashboardmodel->get_admin_id($company_id);
-				$this->get_upper_me($user_id);
+				$this->get_under_me($user_id);
+				$data = $this->x[$user_id];
+				$this->notification_for_leave($user_id,$data);
 				$array = array_keys($this->x);
-				$array[] = $admin_id;
 				unset($array['0']);
-				if($admin_id == true && $array == true ) {
- 						if($q = $this->userdashboardmodel->dispaly_leave_data_to_manager($user_id,$array)){
- 						
-					 		foreach ($q as $row) {
-					 			$category_id = $row->leave_category;
-					 			$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
-					 		}
-						}
-					 		$data['q'] = $q;
-							$this->load->view('team_leave',$data);
+				$this->pagination->initialize($config);
+				if($q = $this->userdashboardmodel->get_emp_leave_req($array,$config['per_page'],$this->uri->segment(3))) {
+					 foreach ($q as $row) {
+					 	$user_id = $row->user_id;
+						$employee_id = $this->userdashboardmodel->get_employee_id($user_id);
+						$name_data = $this->userdashboardmodel->select_user_details($user_id);
+						$row->user_id = $employee_id.'/'.$name_data->first_name.' '.$name_data->last_name; 
+					 	$category_id = $row->leave_category;
+					 	$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
+					 }
 				}
-				else {
-					die('');
+					 $data['q'] = $q;
 
-					if($q = $this->userdashboardmodel->dispaly_leave_data($user_id,$config['per_page'],$this->uri->segment(3))){
-					 		foreach ($q as $row) {
-					 			$category_id = $row->leave_category;
-					 			$row->leave_category = $this->userdashboardmodel->get_category_name($category_id)->category_name;	
-					 		}
-						}
-					 		$data['q'] = $q;
-							$this->load->view('team_leave',$data);
-				}
-
-		}
-		else {
+					$this->load->view('team_leave',$data);
+			}
+			else {
 				redirect('user/login');
-		}
+			}
 	}
 
-	public function get_upper_me($user_id){
-		if($res = $this->userdashboardmodel->check_supervisor($user_id)){
-
-		$this->x[$user_id] = $res;
+	public function get_under_me($user_id){
+		if($res = $this->userdashboardmodel->check_emp_under_supervisor($user_id)){
+			$this->x[$user_id] = $res;
 			if(count($res) > 0){			
 				foreach ($res as $key => $value) {
-					$this->get_upper_me($value->rep_sup);
+					$this->get_under_me($value->user_id);
 				}
 			}
-		}else{
+		}
+		else{
 			$this->x[$user_id] = $res;
 		}
 
+	}
+
+	public function notification_for_leave($user_id,$data) {
+		
 	}
 }
 

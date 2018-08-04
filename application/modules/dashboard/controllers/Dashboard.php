@@ -7,6 +7,10 @@ class Dashboard extends CI_Controller
 			$this->load->library(array('session','form_validation','uri'));
 			$this->load->database();
 			$this->load->model('dashboardmodel');
+			if(null!=($this->session->userdata('adminid')));
+			else {
+				redirect('user/login');
+			}
 			$this->x = [];
 			if(null==($this->session->userdata('adminid'))){
 				redirect('user/login');

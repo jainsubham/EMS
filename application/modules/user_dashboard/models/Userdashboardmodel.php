@@ -175,9 +175,9 @@
 			}
 		}
 
-		public function check_supervisor($user_id) {
-			  if($q =$this->db->select('rep_sup')
-						->where(['user_id' => $user_id])
+		public function check_emp_under_supervisor($rep_sup_id) {
+			  if($q =$this->db->select('user_id')
+						->where(['rep_sup' => $rep_sup_id])
 						->get(REP_SUP)->result()) {
 			  	 return $q;
 			  }
@@ -186,19 +186,34 @@
 			  }
 		}
 
-		public function dispaly_leave_data_to_manager($user_id,$array) {
-			$q = $this->db->select()
-							->where(['user_id'=>$user_id])
-							->get(LEAVE_REQ)->result();
-						echo "<pre>";
-						foreach ($q as $row) {
-							$id[] = $row->id;	
-						}
-						print_r($q);
-						print_r($array);	
-						die();
-						
-		} 
+		public function get_emp_leave_req($data,$limit,$offset) {
+			if ($data) {
+				if($q = $this->db->where_in('user_id',$data)
+							 ->order_by('start_date','DESC')
+							 ->limit($limit,$offset)
+							->get(LEAVE_REQ)->result()) {
+					return $q;
+				}
+			}
+			else {
+				
+				return false;
+			}
+		}
+
+		public function get_immediate_emp_leave_req($user_id) {
+			if ($user_id) {
+				if($q = $this->db->where('user_id',$user_id)
+							->get(LEAVE_REQ)->result()) {
+					return $q;
+				}
+			}
+			else {
+		
+				return false;
+			}
+		}
+
 
 
 	}
