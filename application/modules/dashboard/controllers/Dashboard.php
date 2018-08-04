@@ -12,6 +12,9 @@ class Dashboard extends CI_Controller
 				redirect('user/login');
 			}
 			$this->x = [];
+			if(null==($this->session->userdata('adminid'))){
+				redirect('user/login');
+			}
 
 		}
 
@@ -450,10 +453,6 @@ class Dashboard extends CI_Controller
 			unset($target);
 		}
 		$data['count']= count($data['data']);
-		
-		/*echo "<pre>";
-		print_r($data);
-		die();*/
 
 		$this->load->view('organization',$data);
 	}

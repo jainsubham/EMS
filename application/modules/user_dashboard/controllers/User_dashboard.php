@@ -179,7 +179,7 @@
 			}
 
 
-			$today = date('Y-m-j', time());
+			$today = date('Y-m-d', time());
 			$employee_data = $this->userdashboardmodel->fetch_employee_data($user_id)['0'];
 			if(!$employee_data){
 				redirect('dashboard/attendance');
@@ -274,6 +274,74 @@
 			
 	}	
 
+
+
+			public function get_under_me($user_id){
+				if($res = $this->userdashboardmodel->check_emp_under_supervisor($user_id)){
+
+				$this->x[$user_id] = $res;
+
+					if(count($res) > 0){			
+						foreach ($res as $key => $value) {
+							$this->get_under_me($value->user_id);
+						}
+					}
+				}else{
+					$this->x[$user_id] = $res;
+				}
+			}
+
+			public function organization() {
+				$user_id = $this->session->userdata('logid');
+				$company_id = $this->userdashboardmodel->get_companyid($user_id);
+				$user_list = $this->userdashboardmodel->get_users($company_id);
+
+				foreach ($user_list as $row) {
+					$user = $row->id;
+					$this->get_under_me($user);
+					$supervisor_id = key($this->x);
+					
+					$node = $this->x;
+					foreach ($node as $key => $row) {
+						$row_data = $row;
+						unset($node[$key]);
+						$data_p['parent'] = $key;
+						if(isset($row_data)){
+							foreach ($row_data as $user_list) {
+								$id =  $user_list->user_id;
+								$data_p['child'][] = $id;
+							}
+						}
+						$target[] = $data_p;
+						unset($data_p);
+						$user_data = $this->userdashboardmodel->select_user_details($key);
+						$employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0'];
+
+						$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
+						$node[$key]['img'] = $user_data->img;
+						$node[$key]['employee_id'] = $employee_data->employee_id;
+						$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+						
+					}
+					
+					foreach ($target as $row) {
+						if(isset($row['child'])){
+							foreach ($row['child'] as $child_list) {
+								$node[$child_list]['parent'] = $row['parent'];
+							}
+						}
+					}
+
+					$data['data'][] = $node;
+					unset($this->x);
+					unset($target);
+				}
+				$data['count']= count($data['data']);
+			
+
+				$this->load->view('organization',$data);
+			}
+
 	public function team_leave() {
 		if (null!=($this->session->userdata('logid'))) {
 				$user_id = $this->session->userdata('logid');
@@ -306,7 +374,6 @@
 				unset($array['0']);
 				$this->pagination->initialize($config);
 				if($q = $this->userdashboardmodel->get_emp_leave_req($array,$config['per_page'],$this->uri->segment(3))) {
-
 					 foreach ($q as $row) {
 					 	$user_id = $row->user_id;
 						$employee_id = $this->userdashboardmodel->get_employee_id($user_id);
@@ -325,20 +392,7 @@
 			}
 	}
 
-	public function get_under_me($user_id){
-		if($res = $this->userdashboardmodel->check_emp_under_supervisor($user_id)){
-			$this->x[$user_id] = $res;
-			if(count($res) > 0){			
-				foreach ($res as $key => $value) {
-					$this->get_under_me($value->user_id);
-				}
-			}
-		}
-		else{
-			$this->x[$user_id] = $res;
-		}
-	}
-
+	
 	public function notification_for_leave($user_id,$data) {
 		foreach ($data as $row) {
 			$id = $row->user_id;
