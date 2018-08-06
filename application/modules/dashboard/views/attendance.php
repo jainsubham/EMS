@@ -36,7 +36,7 @@
                   <h4 class="card-title">Last weeks's Attendance of Employees</h4>
                   <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
-                <div class="card-body">
+                <div class="card-body row">
                 <table id="example" class="mdl-data-table" style="width:100%">
         <thead>
             <tr>

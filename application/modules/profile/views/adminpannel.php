@@ -3,62 +3,77 @@
 
 <head>
   <meta charset="utf-8" />
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="<?= base_url('assets/img/apple-icon.png'); ?>">
+  <link rel="icon" type="image/png" href="<?= base_url('assets/img/favicon.png');  ?>">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-      Dashboard
+   Dashboard
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
- <?= link_tag('assets/css/material-dashboard.css?v=2.1.0') ?>
-  <?= link_tag('assets/css/custom.css') ?>
-  <!-- CSS Just for demo purpose, don't include it in your project -->
-  <!-- <link href="../assets/demo/demo.css" rel="stylesheet" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.1.0/material.min.css">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/dataTables.material.min.css">
+
+  <?= link_tag('assets/css/material-dashboard.css?v=2.1.0'); ?>
+  <?= link_tag('assets/css/custom.css'); ?>
+
 </head>
 
 <body class="">
   <div class="wrapper ">
-    <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
+    <div class="sidebar" data-color="purple" data-background-color="white" data-image="<?php echo base_url('assets/img/sidebar-1.jpg') ?>">
       <!--
         Tip 1: You can change the color of the sidebar using: data-color="purple | azure | green | orange | danger"
 
         Tip 2: you can also add an image using data-image tag
     -->
       <div class="logo">
-        <a href="http://www.creative-tim.com" class="simple-text logo-normal">
+        <a href="#" class="simple-text logo-normal">
           Admin Dashboard
         </a>
       </div>
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li class="nav-item active">
-            <a class="nav-link" href='<?= base_url('dashboard') ?>'>
+            <a class="nav-link" href='<?= base_url('dashboard'); ?>'>
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-            <li class="nav-item">
-            <a class="nav-link" href='<?= base_url('profile') ?>'>
+          <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('profile'); ?>">
               <i class="material-icons">person</i>
-              <p>Profile</p>
+              <p>Admin Profile</p>
             </a>
           </li>
-           <li class="nav-item ">
+          <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/attendance'); ?>">
               <i class="material-icons">content_paste</i>
               <p>Attendance</p>
             </a>
           </li>
-          <li class="nav-item ">
+           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/announcement'); ?>">
               <i class="material-icons">library_books</i>
               <p>Announcement</p>
             </a>
           </li>
+           <div class=" nav-item dropdown" >
+            <li  id="dropdownMenu1"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a href="#" class="nav-link">
+              <i class="material-icons">speaker_notes</i>
+              <p>Leave</p>
+              </a>
+            </li>
+            <div class="dropdown-menu dropdown-primary">
+               <a class="nav-link" href="<?= base_url('dashboard/add_leave_category') ?>">Leave Category</a>
+               <a class="nav-link" href="<?= base_url('dashboard/leave_balance') ?>">Leave Balance</a>
+               <a class="nav-link" href="<?= base_url('dashboard/leave_request') ?>">Leave Request</a>
+            </div>
+          </div>
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/invite'); ?>">
               <i class="material-icons">bubble_chart</i>
@@ -72,14 +87,11 @@
             </a>
           </li>
           <li class="nav-item ">
-
-            <a class="nav-link" href="<?= base_url('dashboard/Empdetails') ?>">
-
+            <a class="nav-link" href="<?= base_url('dashboard/EmpDetails'); ?>">
               <i class="material-icons">person</i>
               <p>Employees</p>
             </a>
           </li>
-
           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/designations'); ?>">
               <i class="material-icons">person</i>
@@ -93,9 +105,15 @@
             </a>
           </li>
           <li class="nav-item ">
+            <a class="nav-link" href="<?= base_url('dashboard/add_supervisor'); ?>">
+              <i class="material-icons">person</i>
+              <p>Add Supervisor</p>
+            </a>
+          </li>
+           <li class="nav-item ">
             <a class="nav-link" href="<?= base_url('dashboard/switch_user'); ?>">
               <i class="material-icons">person</i>
-              <p>Switch as user</p>
+              <p>switch as user</p>
             </a>
           </li>
           <li class="nav-item ">
@@ -104,8 +122,6 @@
               <p>Logout</p>
             </a>
           </li>
-
         </ul>
       </div>
-      
     </div>
