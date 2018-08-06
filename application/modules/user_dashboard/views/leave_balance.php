@@ -1,5 +1,4 @@
 <?php include('user_header.php'); ?>
-<?php include('user_header.php'); ?>
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -40,35 +39,28 @@
                                       <tr class="card-header card-header-info" style="background-color: #9c27b0; color: white; box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
                                         <th style="width:140px">Leave Category</th>
                                         <th>Opening Balance</th>
-                                        <th>Accrued Balance</th>
                                         <th>Leaves Taken</th>
-                                        <th>Leaves Lapsed</th>
                                         <th>Ending Balance</th>
-                                        <th>future Balance</th>
                                         <th>Usable Balance</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <tr>
-                                      <td><b>Casual Leave</b></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                    <tr>
-                                      <td><b>Privilege/Earned Leave</b></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
+                                      <?php foreach ($q as $row) { ?>
+                                        <tr>
+                                          <td>Casual Leave</td>
+                                          <td><?= $row->casual_leaves_allowed.'days' ?></td>
+                                          <td><?= $row->casual_leaves_allowed.'days' ?></td>
+                                          <td></td>
+                                          <td></td>
+                                        </tr>
+                                        <tr>
+                                          <td>Privilege/Earning Leave</td>
+                                          <td><?= $row->earning_leave_allowed.'days' ?></td>
+                                          <td><?= $row->earning_leave_allowed.'days' ?></td>
+                                          <td></td>
+                                          <td></td>
+                                        </tr>
+                                    <?php  } ?>
                                     </tbody>
                                   </table>
                               </div>

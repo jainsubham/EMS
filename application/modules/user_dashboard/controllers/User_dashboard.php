@@ -7,6 +7,9 @@
 				$this->load->library(array('session','form_validation'));
 				$this->load->database();
 				$this->load->model('userdashboardmodel');
+				if (null == $this->session->userdata('logid')) {
+					redirect('user/login');
+				}
 				$this->x = [];
 		}
 		public function index() {
@@ -22,7 +25,7 @@
 						$temp_check_in = strtotime($q->check_in);
 						$temp_check_out = strtotime($q->check_out);
 						$week['0']['time'] = round(($temp_check_out-$temp_check_in)/3600);
-					}else{
+					}else{if (null!=($this->session->userdata('logid'))) {
 						$week['0']['time'] = 0;
 					}
 					for($i=1;$i<=6;$i++){
@@ -41,9 +44,11 @@
 					$this->load->view('user_header');
 					$this->load->view('user_dashboard',$data);
 				}
-			}else{
+			}
+			else {
 				redirect('user/login');
 			}
+		}
 		}
 		public function switch_admin() {
 			if (null!=($this->session->userdata('logid'))) {
@@ -57,6 +62,7 @@
 				redirect('user/login');
 			}
 		}
+
 		public function leave() {
 			if (null!=($this->session->userdata('logid'))) {
 				$user_id = $this->session->userdata('logid');
@@ -113,13 +119,29 @@
 			$this->load->view('apply_leave',$data);
 		}
 		public function leave_data() {
+			$user_id = $this->session->userdata('logid');
 			$post = $this->input->post();
 			$start_date    = $post['start'];
+			$date1 = strtotime($start_date);
 			$end_date     = $post['end'];
-			if($start_date<date('Y-m-d',time())){
+			$date2 = strtotime($end_date);
+			$datediff = $date2 - $date1;
+			$no_of_days =  floor($datediff / (60 * 60 * 24));
+			$leave_category = $post['leave'];
+			if ($leave_category == 4) {
+				$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
+				$casual_leave = $q['0']->casual_leaves_allowed;
+				if ($casual_leave >= $no_of_days) {
+					
+				}
+			}
+			elseif ($leave_category == 5) {
+				
+			}
+			elseif($start_date<date('Y-m-d',time())){
 				redirect('user_dashboard/apply_leave');
 			}
-			if($end_date<$start_date){
+			elseif($end_date<$start_date){
 				redirect('user_dashboard/apply_leave');
 			}
 
@@ -127,9 +149,8 @@
 			$this->form_validation->set_rules('start','From','required');
 			$this->form_validation->set_rules('end','To','required');
 			if($this->form_validation->run()) {
-				$user_id = $this->session->userdata('logid');
 				$data = array(
-					'leave_category'=> $post['leave'],
+					'leave_category'=>$leave_category,
 					'start_date'	=> $start_date,
 					'end_date'		=> $end_date,
 					'reason'        => $post['reason'],
@@ -151,7 +172,13 @@
 		}
 
 		public function leave_balance() {
-			$this->load->view('leave_balance');
+			$user_id = $this->session->userdata('logid');
+			$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
+			echo "<pre>";
+			print_r($q);
+			die();
+			$data['q'] = $q; 
+			$this->load->view('leave_balance',$data);
 		}
 
 		public function attendance(){
@@ -366,10 +393,10 @@
 					'cur_tag_close' => '</a></li>'
 				);
 				$this->get_under_me($user_id);
-				$data = $this->x[$user_id];
+				/*$data = $this->x[$user_id];
 				if (isset($data)) {
 					$this->notification_for_leave($user_id,$data);	
-				}
+				}*/
 				$array = array_keys($this->x);
 				unset($array['0']);
 				$this->pagination->initialize($config);
@@ -398,46 +425,39 @@
 			$id = $row->user_id;
 			$x = array();
 			if($q = $this->userdashboardmodel->get_immediate_emp_leave_req($id)) {	
-				
-				$q = $this->userdashboardmodel->select_user_details($user_id);
-				$full_name = $q->first_name.' '.$q->last_name;
-				$email = $q->email;
+				$employee_id = $this->userdashboardmodel->get_employee_id($user_id);
+				$name_data = $this->userdashboardmodel->select_user_details($user_id);
+				$row->user_id = $employee_id.'/'.$name_data->first_name.' '.$name_data->last_name; 
+				$user_data = $this->userdashboardmodel->select_user_details($user_id);
+				$full_name = $user_data->first_name.' '.$user_data->last_name;
+				$email = $user_data->email;
 				$subject = "EMS Account Invitation";
 				$name = '';	
 				$web_link = base_url('');
 				$invite_link=  base_url('user_dashboard/team_leave');
 				$part1 = "<div> Hello ";
 				$part2 = " ,<br><br>
-				 You have been invited by ".$company_name." to create your account on EMS .<br>
-				Please create your account on EMS by clicking on the following link : <br>
-				<a href='";	
-				$part3 = "'> Accept Invitation </a>.<br>
-				If you have any questions , please contact us on ".$web_link."
-				<br> Regards ,<br>EMS Team
-				</div>";
+					You have leave request of your under employee";
 				$name = $full_name;
 				$email_to = $email;
-				$tobehashed = $company_id.$email_to;
+				$tobehashed = $user_id.$email_to;
 				$hash = md5($tobehashed);
 				$invite_link = $invite_link."/".$hash;
-				
-				$msg_body = $part1.$name.$part2.$invite_link.$part3;
-				
-
+				$msg_body = $part1.$name.$part2.$invite_link;
 				$this->init_mail();
 				$this->sendmail($subject , $msg_body , $email_to);	
-				if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
+				/*if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
 					echo $name." is invited"."<br>";
 				}
-				else {
+				else{
 					$error = array('error' => $this->upload->display_errors());
 					print_r($error);
-				}
+				}*/
 			}
 
  		}
  		
-	}
+	}	
 	public function init_mail(){
 		$config = Array(
 		    'protocol' => 'smtp',
@@ -451,6 +471,34 @@
 		    'newline'   => "\r\n"
 		);
 		$this->load->library('email', $config);
+	}
+
+	public function sendmail($subject , $msgbody , $emailto){
+		
+			        $message = '<!DOCTYPE html>
+			        <html>
+			        <head>
+			        	<title>Email</title>
+			        </head>
+			        <body>
+			        '.$msgbody.'
+			        </body>
+			        </html>';
+			    
+			      $this->email->from('EMS'); 
+			      $this->email->to($emailto);
+			      $this->email->subject($subject);
+			      $this->email->message($message);
+			      if($this->email->send())
+			     {
+			      $datareturn = 'Sent';
+			     }
+			     else
+			    {
+			    $datareturn = show_error($this->email->print_debugger());
+			    }
+			    return $datareturn;
+
 	}
 }
 

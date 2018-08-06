@@ -203,6 +203,17 @@
 			}
 		}
 
+		public function get_leave_balance_single_user($user_id) {
+			if($q = $this->db->select()
+							 ->where(['user_id'=>$user_id])
+								->get(LEAVE_ALLOWANCE)->result()) {
+
+				return $q;
+			}
+			else {
+				false;
+			}
+		}
 
 
 	}

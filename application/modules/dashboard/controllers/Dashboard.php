@@ -1058,14 +1058,9 @@ class Dashboard extends CI_Controller
 		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
 		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
 		 	$data['q'] = $q;
-		 	// echo "<pre>"
-		 	// print_r($data);
-		 	// die();
-			
 		 }else {
 		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
 		 }
-
 		$this->load->view('add_leave_category',$data);
 	}
 
