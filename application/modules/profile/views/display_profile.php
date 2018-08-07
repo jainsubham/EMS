@@ -56,7 +56,11 @@
            Bank Account No :
         </div>
         <div class="col-md-6">
-            <?php //$bank_details->bank_acc_no  ?>
+            <?php 
+            if(isset($bank_details->bank_acc_no)){
+                  echo $bank_details->bank_acc_no;
+                }
+                  ?>
         </div>
       </div>
       <div class="row">
@@ -64,7 +68,11 @@
            Bank IFSC Code :
         </div>
         <div class="col-md-6">
-            <?php //$bank_details->bank_ifsc_code ?>
+            <?
+            if(isset($bank_details->bank_ifsc_code)){
+                  echo $bank_details->bank_ifsc_code;
+                }
+                 ?>
         </div>
       </div>
       <div class="row">
@@ -72,7 +80,11 @@
            Bank Name :
         </div>
         <div class="col-md-6">
-            <?php //$bank_details->bank_name ?>
+            <?
+            if(isset($bank_details->bank_name)){
+                  echo $bank_details->bank_name;
+                }
+                 ?>
         </div>
       </div>
       <div class="row">
@@ -80,7 +92,11 @@
            Bank Address :
         </div>
         <div class="col-md-6">
-            <?php //$bank_details->bank_address ?>
+            <?php
+            if(isset($bank_details->bank_address)){
+                   echo $bank_details->bank_address; 
+                }
+                 ?>
         </div>
       </div>
       <div class="row">
@@ -88,7 +104,11 @@
            Payment mode :
         </div>
         <div class="col-md-6">
-            <?php //$bank_details->payment_mode ?>
+            <?php 
+                if(isset($bank_details->payment_mode)){
+                 echo  $bank_details->payment_mode;
+                }
+              ?>
         </div>
       </div>
     </div>
