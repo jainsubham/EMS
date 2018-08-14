@@ -500,6 +500,24 @@
 			    return $datareturn;
 
 	}
+
+	public function employee_directory(){
+		if (null!=($this->session->userdata('logid'))) {
+				$user_id = $this->session->userdata('logid');
+				$company_id = $this->userdashboardmodel->get_companyid($user_id);
+
+				$q		=  $this->userdashboardmodel->get_userid($company_id);
+				foreach ($q as $row) {
+					 $uid  = $row->id;
+					if($z = $this->userdashboardmodel->empdetails($uid)){
+					 $data[]= $z;
+					}
+				}
+				$view['data'] = $data;
+
+				$this->load->view('employee_directory',$view);
+			}
+	}
 }
 
 ?>
