@@ -86,7 +86,6 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 define('COMPANY','company');
-define('ADMIN','admin');
 define('USER','user');
 define('VERIFY_HASH','verify_hash');
 define('DOCUMENTS','documents');
@@ -99,7 +98,7 @@ define('INVITES','invites');
 define('ATTENDANCE','attendance');
 define('LEAVE_REQ','leave_req');
 define('LEAVE_ALLOWANCE','leave_allowance');
-define('LEAVE_CATEGORY','leave_category');
+define('LEAVE_CATEGORY','leave_setting');
 define('TEAM','team');
 define('TEAM_ALLOTED','team_alloted');
 define('ANNOUNCEMENT','announcements');

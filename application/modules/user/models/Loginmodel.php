@@ -30,8 +30,7 @@
 			 		$mail_hash = md5(time());
 			 		
 
-			 $this->db->insert(VERIFY_HASH,array('user_id' =>$uid,'hash' =>$mail_hash));
-			 $this->db->insert(ADMIN,array('company_id' =>$id,'user_id'=>$uid,'date' =>date('Y-m-d H:i:s',time())));	
+			 $this->db->insert(VERIFY_HASH,array('user_id' =>$uid,'hash' =>$mail_hash));	
 			 return $mail_hash;
 		}	
 

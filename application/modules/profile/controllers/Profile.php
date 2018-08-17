@@ -34,11 +34,17 @@ class Profile extends CI_Controller
 
 		$data['x']  = $this->profile->select_user_details($uid);
 		$data['x']->dob = date('d M Y',strtotime($data['x']->dob));
-		$data['employement_details'] = $employement_data;
-		$data['employement_details']->joining_date = date('d M Y',strtotime($data['employement_details']->joining_date));
-		$data['employement_details']->confirmation_date =  date('d M Y',strtotime($data['employement_details']->confirmation_date));
-		$data['employement_details']->effective_from =  date('d M Y',strtotime($data['employement_details']->effective_from));
-		$data['employement_details']->effective_to =  date('d M Y',strtotime($data['employement_details']->effective_to));
+		if($employement_data) {
+			$data['employement_details'] = $employement_data;
+			$data['employement_details']->joining_date = date('d M Y',strtotime($data['employement_details']->joining_date));
+			$data['employement_details']->confirmation_date =  date('d M Y',strtotime($data['employement_details']->confirmation_date));
+			$data['employement_details']->effective_from =  date('d M Y',strtotime($data['employement_details']->effective_from));
+			$data['employement_details']->effective_to =  date('d M Y',strtotime($data['employement_details']->effective_to));
+		}
+		else {
+			$data['employement_details'] = Null;
+		}
+
 		$this->load->view('display_profile',$data);
 	}
 

@@ -56,7 +56,7 @@ class Dashboard extends CI_Controller
 	}
 
 
-	public function sendmail($subject , $msgbody , $emailto){
+	public function sendmail($subject , $msgbody , $emailto) {
 		
 			        $message = '<!DOCTYPE html>
 			        <html>
@@ -134,6 +134,9 @@ class Dashboard extends CI_Controller
 
 			$name = $dataa['0'];
 			$emailto = $dataa['1'];
+			print_r($name);
+			print_r($emailto);
+			die();
 			$tobehashed = $companyid.$emailto;
 			$hash = md5($tobehashed);
 			$invitelink = $invitelin."/".$hash;
@@ -431,13 +434,13 @@ class Dashboard extends CI_Controller
 				$target[] = $data_p;
 				unset($data_p);
 				$user_data = $this->dashboardmodel->select_user_details($key);
-				$employee_data = $this->dashboardmodel->fetch_employee_data($key)['0'];
-
+				if($employee_data = $this->dashboardmodel->fetch_employee_data($key)['0']) {
+					$node[$key]['employee_id'] = $employee_data->employee_id;
+					$node[$key]['designation'] = $this->dashboardmodel->get_designationname($employee_data->designation);
+				}
 				$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 				$node[$key]['img'] = $user_data->img;
-				$node[$key]['employee_id'] = $employee_data->employee_id;
-				$node[$key]['designation'] = $this->dashboardmodel->get_designationname($employee_data->designation);
-				
+					
 			}
 			
 			foreach ($target as $row) {
@@ -609,6 +612,11 @@ class Dashboard extends CI_Controller
 								$y[$des->id] = $des->name; 
 							}
 						$designation = $y;
+					$data['designations'] = $designation;
+
+				}
+				else {
+					$data['designations'] = Null;
 				}
 				$this->get_under_me($user_id);
 		    	$dataa  = array_keys($this->x);	
@@ -624,11 +632,8 @@ class Dashboard extends CI_Controller
 						$data['report'] = $report;
 				}
 
-					$data['designations'] = $designation;
 					$data['x']['user_id']=$user_id;
 					$data['company_name'] = $company_name;
-
-
 					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 					$this->load->view('editempdetails',$data);
 		}	
@@ -823,15 +828,17 @@ class Dashboard extends CI_Controller
 		 }else {
 		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
 		 }
-
-		$this->load->view('leave',$data);
+		 $data['company_id'] = $company_id;
+		$this->load->view('add_leave_category',$data);
 	}
 
 
 	public function add_category() {
 		$category = $this->input->post('category');
+		$nature = $this->input->post('year');
+		$leave_default_value = $this->input->post('default');
 		$company_id = $this->input->post('company_id');
-		if($this->dashboardmodel->add_category($category,$company_id)) {
+		if($this->dashboardmodel->add_category($category,$company_id,$nature,$leave_default_value)) {
 			redirect('dashboard/leave');
 		}
 		else {
@@ -1058,14 +1065,17 @@ class Dashboard extends CI_Controller
 		 $company_id = $this->dashboardmodel->get_companyid($admin_id);
 		 if($q = $this->dashboardmodel->get_leave_category($company_id)){
 		 	$data['q'] = $q;
-		 }else {
+		 }
+		 else {
 		 	$data['data'] = "No Leave Category are Entered till now . Kindly add Categories for Leave";
 		 }
+		 $data['company_id'] = $company_id;
 		$this->load->view('add_leave_category',$data);
 	}
 
 	public function leave_balance() {
-		$q =$this->dashboardmodel->get_leave_balance();	
+		$this->load->view('leave_balance');
+		/*$q =$this->dashboardmodel->get_leave_balance();	
 			$x = array();
 		foreach ($q as $row) {
 			$x['user_id'] = $row->user_id;
@@ -1081,11 +1091,11 @@ class Dashboard extends CI_Controller
 			$row_data[] = $x;
 		}
 		$data['leave'] = $row_data;
-		$this->load->view('leave_balance',$data);
+		$this->load->view('leave_balance',$data);*/
 
 	}
 
-	public function edit_leave_data() {
+	/*public function edit_leave_data() {
 		$user_id = $this->uri->segment(3);
 		$q =$this->dashboardmodel->get_leave_balance_single_user($user_id);
 		$data['leave'] = $q;	
@@ -1110,7 +1120,7 @@ class Dashboard extends CI_Controller
 		 		redirect('dashboard/edit_leave_data/'.$user_id);	
 		 	}
 		
-	}
+	}*/
 
 	public function leave_request() {
 		if (null!=($this->session->userdata('adminid'))) {
@@ -1171,6 +1181,40 @@ class Dashboard extends CI_Controller
 				redirect('dashboard/leave_request');
 			}	
 		}
+	}
+
+	public function csv_upload(){
+		$post = $this->input->post('year');
+		$config['upload_path']          = './assets/csv/';
+		$config['allowed_types']        = 'csv';
+		$config['max_size']             = 10000;
+
+		$this->load->library('upload', $config);
+		$adminid = $this->session->userdata('adminid');
+		$companyid = $this->dashboardmodel->get_companyid($adminid);	
+		if ( $this->upload->do_upload('csvfile')){
+			$uploaddata = $this->upload->data();
+			$filename = $uploaddata['file_name'];
+			$link = base_url('assets/csv/'.$filename);
+			$data = fopen($link,"r");
+			$x = array();
+			while($dataa = fgetcsv($data,"1000",",")){
+
+				$employee_id = $dataa['0'];
+				$x['casual'] = $dataa['1'];
+				$x['earning'] = $dataa['2'];
+				$x['year'] = $post;
+				$user_id = $this->dashboardmodel->get_user_id($employee_id);
+				$this->dashboardmodel->upload_leave_data($user_id,$x);
+			}
+			unlink('assets/csv/'.$filename);
+			redirect('dashboard');				
+		}
+		else {
+			redirect('dashboard/leave_balance');				
+				
+		}
+
 	}
 	
 }

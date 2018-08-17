@@ -1,4 +1,5 @@
-<?php include('adminpannel.php')  ?>
+<?php 
+include('adminpannel.php')  ?>
 <?= link_tag('assets/css/chosen.css') ?>
 <?php //echo "<pre>"; print_r($x['designation']); die(); ?>
 <div class="main-panel">

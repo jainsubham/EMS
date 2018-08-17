@@ -113,9 +113,14 @@
 		}
 
 	    public function fetch_employee_data($user_id) {
-		 	return $this->db->select()
+		 	if($q = $this->db->select()
 		 				->where(['user_id' => $user_id])
-		 				->get(EMPLOYMENT_DETAILS)->result();
+		 				->get(EMPLOYMENT_DETAILS)->result()) {
+		 		return $q;
+		 	}
+		 	else {
+		 		return false;
+		 	}
 		 }
 
 		public function updatedata($data) {
@@ -184,8 +189,8 @@
 						->get(LEAVE_CATEGORY)->result();
 		} 
 
-		public function add_category($category,$company_id) {
-			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id));
+		public function add_category($category,$company_id,$nature,$leave_default_value) {
+			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id,'nature'=>$nature,'leave_default_value'=>$leave_default_value));
 		}
 
 		public function announcement($company_id) {
@@ -376,8 +381,15 @@
 				}
 		}
 
-		public function update_leave_data($user_id,$data) {
+		/*public function update_leave_data($user_id,$data) {
 			return $this->db->set(array('casual_leaves_allowed'=>$data['casual'],'earning_leave_allowed'=>$data['earning']))
+					  		->where(['user_id'=>$user_id])
+					  		->update(LEAVE_ALLOWANCE);
+
+		}*/
+
+		public function upload_leave_data($user_id,$data) {
+			return $this->db->set(array('casual_leaves_allowed'=>$data['casual'],'earning_leave_allowed'=>$data['earning'],'years' =>$data['year']))
 					  		->where(['user_id'=>$user_id])
 					  		->update(LEAVE_ALLOWANCE);
 
@@ -409,6 +421,17 @@
 				return $this->db->set('approvation_status',$approvation_status)
 							->where(['id'=>$id])
 							->update(LEAVE_REQ);
+		}
+
+		public function get_user_id($employee_id) {
+			if($q = $this->db->select('user_id')
+						->where(['employee_id'=>$employee_id])
+						->get(EMPLOYMENT_DETAILS)->row()) {
+				return $q->user_id;
+			}
+			else {
+				return false;
+			}
 		}
 
 	}

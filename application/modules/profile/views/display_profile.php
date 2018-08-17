@@ -1,3 +1,4 @@
+
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -154,7 +155,11 @@
                Employee Identity : 
             </div>
             <div class="col-md-6">
-                <?= $employement_details->employee_id ?>
+            <?
+              if(isset($employement_details->employee_id)){
+                  echo $employement_details->employee_id;
+                }
+            ?>
             </div>
           </div>
           <div class="row">
@@ -170,7 +175,11 @@
                Joining Date : 
             </div>
             <div class="col-md-6">
-                <?= $employement_details->joining_date ?>
+            <?
+              if(isset($employement_details->joining_date)){
+                  echo $employement_details->joining_date;
+                }
+            ?>
             </div>
           </div>
           <div class="row">
@@ -178,7 +187,11 @@
                 Confirmation Date : 
             </div>
             <div class="col-md-6">
-                <?= $employement_details->confirmation_date ?>
+            <?
+              if(isset($employement_details->confirmation_date)){
+                  echo $employement_details->confirmation_date;
+                }
+            ?>
             </div>
           </div>
           <div class="row">
@@ -186,7 +199,11 @@
                Effective from : 
             </div>
             <div class="col-md-6">
-                <?= $employement_details->effective_from ?>
+            <?
+              if(isset($employement_details->effective_from)){
+                  echo $employement_details->effective_from;
+                }
+            ?>
             </div>
           </div>
           <div class="row">
@@ -194,10 +211,13 @@
                Effective to : 
             </div>
             <div class="col-md-6">
-                <?= $employement_details->effective_to ?>
+            <?
+              if(isset($employement_details->effective_to)){
+                  echo $employement_details->effective_to;
+                }
+            ?>   
             </div>
           </div>
-
        </div>
       </div>
     </div>

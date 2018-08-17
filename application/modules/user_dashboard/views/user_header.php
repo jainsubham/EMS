@@ -71,8 +71,8 @@
             </div>
           </div>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
-              <i class="material-icons">speaker_notes</i>
+            <a class="nav-link" href="<?= base_url('user_dashboard/announcement'); ?>">
+              <i class="material-icons">announcement</i>
               <p>Announcements</p>
             </a>
           </li>

@@ -1,5 +1,4 @@
-<?php 
-include('adminpannel.php');?>
+<?php include('adminpannel.php');?>
     <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
@@ -27,7 +26,6 @@ include('adminpannel.php');?>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
                 <div class="card-body">
-                  
                    <div class="row">
                       <div class="col-md-6">
                         <div class="form-group">
@@ -44,21 +42,40 @@ include('adminpannel.php');?>
                               ?>
                             </ul>
                         </div>
-                      </div>
-                       <div class="form-group">
-                        <h4>Add Leave Categories</h4>
-                        
-                            <? $hidden = array('company_id' => $row->company_id); echo form_open('dashboard/add_category','',$hidden); ?>
-                            <?php 
-                              $category= array(
-                                'class' =>'form-control',
-                                'type' => 'text',
-                                'placeholder' => 'Category Name',
-                                'name' =>'category'
-                              );
-                              echo form_input($category);?>
-                              <?php
-
+                       </div>
+                      <div class="col-md-6">
+                         <div class="form-group">
+                          <h4>Add Leave Categories</h4>
+                              <? $hidden = array('company_id' => $company_id); echo form_open('dashboard/add_category','',$hidden); ?>
+                              <?php 
+                                $category= array(
+                                  'class' =>'form-control',
+                                  'type' => 'text',
+                                  'placeholder' => 'Category Name',
+                                  'name' =>'category'
+                                );
+                              echo form_input($category);?> <br>
+                          </div>
+                         <div class="form-group">
+                              <label>Select Month OR Year if you want increment</label><br>
+                            <?php $year = array(
+                               'no' => '-----Select Month or Year-----',
+                                   'month' =>'Monthly',
+                                   'year'=>"Yearly"   
+                            );       
+                            echo form_dropdown('year',$year,'select'); ?> <br>
+                          </div>
+                         <div class="form-group">
+                            <label class="bmd-label-floating">Enter Default Leave</label> <br>
+                                  <?php
+                                    $default = array(
+                                      'class'  => 'form-control',
+                                      'type' => 'text',
+                                      'name'   => 'default'  
+                                  );
+                                  echo form_input($default); ?>
+                        </div>
+                            <?php
                               $btn = array(
                                 'class' => "btn btn-primary pull-right",
                                  'type' => 'submit',
@@ -68,14 +85,15 @@ include('adminpannel.php');?>
                                echo form_submit($btn);
                              ?>
                             <?= form_close(); ?>
+                          </div>
                         </div>
-                      </div>  
+                      </div>
                     </div>
-
-
+                  </div>
                 </div>
               </div>
-            </div>    
+            </div>
+          </div>              
   <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>

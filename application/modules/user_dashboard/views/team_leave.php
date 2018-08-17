@@ -109,7 +109,7 @@
                                 <?php } ?> 
                                 <?php if ($row->approvation_status == 1) { ?>
                                 <td class="td-actions text-center">
-                                 <a href="<?= base_url('dashboard/action_leave_request/'.$row->id.'/2') ?>">
+                                 <a href="<?= base_url('user_dashboard/action_leave_request/'.$row->id.'/2') ?>">
                                   <button type="button" rel="tooltip" title="Reject" class="btn btn-danger btn-link btn-sm">
                                       <i class="material-icons">close</i>
                                   </button>
@@ -118,7 +118,7 @@
                                 <?php  } 
                                 elseif ($row->approvation_status == 2) { ?>
                                 <td class="td-actions text-center">
-                                  <a href="<?= base_url('dashboard/action_leave_request/'.$row->id.'/1') ?>">
+                                  <a href="<?= base_url('user_dashboard/action_leave_request/'.$row->id.'/1') ?>">
                                     <button type="button" rel="tooltip" title="Approve" class="btn btn-primary btn-link btn-sm">
                                       <i class="material-icons">done</i>
                                     </button>
@@ -127,12 +127,12 @@
                                 <?php }
                                 else {  ?>
                                 <td class="td-actions text-center">
-                                  <a href="<?= base_url('dashboard/action_leave_request/'.$row->id.'/1') ?>">
+                                  <a href="<?= base_url('user_dashboard/action_leave_request/'.$row->id.'/1') ?>">
                                     <button type="button" rel="tooltip" title="Approve" class="btn btn-primary btn-link btn-sm">
                                           <i class="material-icons">done</i>
                                     </button>
                                   </a>
-                                  <a href="<?= base_url('dashboard/action_leave_request/'.$row->id.'/2') ?>">
+                                  <a href="<?= base_url('user_dashboard/action_leave_request/'.$row->id.'/2') ?>">
                                     <button type="button" rel="tooltip" title="Reject" class="btn btn-danger btn-link btn-sm">
                                           <i class="material-icons">close</i>
                                     </button>

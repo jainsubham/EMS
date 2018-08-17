@@ -39,26 +39,36 @@
                                       <tr class="card-header card-header-info" style="background-color: #9c27b0; color: white; box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
                                         <th style="width:140px">Leave Category</th>
                                         <th>Opening Balance</th>
+                                        <th>Accrued Balance</th>
                                         <th>Leaves Taken</th>
-                                        <th>Ending Balance</th>
                                         <th>Usable Balance</th>
                                       </tr>
                                     </thead>
                                     <tbody>
-                                      <?php foreach ($q as $row) { ?>
+                                    <?php //echo "<pre>"; print_r($q); die(); ?>
+                                    <?php foreach ($q as $row) { ?>
                                         <tr>
                                           <td>Casual Leave</td>
+                                          <td><?= '14days' ?></td>
                                           <td><?= $row->casual_leaves_allowed.'days' ?></td>
-                                          <td><?= $row->casual_leaves_allowed.'days' ?></td>
-                                          <td></td>
-                                          <td></td>
+                                          <?php if (isset($total_casual_days)) { ?>
+                                            <td><?= $total_casual_days.'days' ?></td>
+                                          <?php } ?>
+                                           <?php if (isset($total_casual_days)) { ?>
+                                            <td><?= $row->casual_leaves_allowed-$total_casual_days.'days' ?></td>
+                                          <?php } ?>
                                         </tr>
                                         <tr>
                                           <td>Privilege/Earning Leave</td>
+                                          <td><?= '2.5days' ?></td>
                                           <td><?= $row->earning_leave_allowed.'days' ?></td>
-                                          <td><?= $row->earning_leave_allowed.'days' ?></td>
-                                          <td></td>
-                                          <td></td>
+                                          <?php if (isset($total_earning_days)) { ?>
+                                            <td><?= $total_earning_days.'days' ?></td>
+                                          <?php } ?>
+                                           <?php if (isset($total_earning_days)) { ?>
+                                            <td><?= $row->earning_leave_allowed-$total_earning_days.'days' ?></td>
+                                          <?php } ?>
+
                                         </tr>
                                     <?php  } ?>
                                     </tbody>

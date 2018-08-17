@@ -1,3 +1,4 @@
+
 <?php
 	class User_dashboard extends CI_Controller
 	{
@@ -15,7 +16,6 @@
 		public function index() {
 			if(null!=($this->session->userdata('logid'))){
 				$user_id = $this->session->userdata('logid');
-
 				if($user_name = $this->userdashboardmodel->select_user_details($user_id)->first_name){
 					$data['user_name'] = $user_name;
 					$week['0']['date'] = date('Y-m-d');
@@ -25,7 +25,12 @@
 						$temp_check_in = strtotime($q->check_in);
 						$temp_check_out = strtotime($q->check_out);
 						$week['0']['time'] = round(($temp_check_out-$temp_check_in)/3600);
-					}else{if (null!=($this->session->userdata('logid'))) {
+						$data['attendance_record'] = $week;
+					$this->load->view('user_header');
+					$this->load->view('user_dashboard',$data);
+					}
+					else {
+						if (null!=($this->session->userdata('logid'))) {
 						$week['0']['time'] = 0;
 					}
 					for($i=1;$i<=6;$i++){
@@ -122,29 +127,49 @@
 			$user_id = $this->session->userdata('logid');
 			$post = $this->input->post();
 			$start_date    = $post['start'];
-			$date1 = strtotime($start_date);
+			$date1 = 	strtotime($start_date);	
 			$end_date     = $post['end'];
-			$date2 = strtotime($end_date);
+			$date2 = 	strtotime($end_date);
 			$datediff = $date2 - $date1;
-			$no_of_days =  floor($datediff / (60 * 60 * 24));
+			$no_of_days = floor($datediff/(60*60*24));
 			$leave_category = $post['leave'];
 			if ($leave_category == 4) {
 				$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
 				$casual_leave = $q['0']->casual_leaves_allowed;
 				if ($casual_leave >= $no_of_days) {
-					
+				}
+
+				elseif ($casual_leave < $no_of_days) {
+						$no_of_days = $no_of_days - $casual_leave;
+						 //$this->session->set_flashdata('Error', 'This is test message');
+						 redirect('user_dashboard/apply_leave');		 
+				}
+				else {
+
+					redirect('user_dashboard/apply_leave');	
 				}
 			}
-			elseif ($leave_category == 5) {
-				
+			if($leave_category == 5) { 
+				$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
+				$earning_leave = $q['0']->earning_leave_allowed;
+				if ($earning_leave >= $no_of_days) {
+				}
+				elseif ($earning_leave < $no_of_days) {
+					$no_of_days = $no_of_days - $earning_leave;
+						 //$this->session->set_flashdata('Error', 'This is test message');
+						 redirect('user_dashboard/apply_leave');
+				}
+				else {
+					redirect('user_dashboard/apply_leave');	
+				}
 			}
-			elseif($start_date<date('Y-m-d',time())){
+			
+			if($start_date<date('Y-m-d',time())){
 				redirect('user_dashboard/apply_leave');
 			}
-			elseif($end_date<$start_date){
+			if($end_date<$start_date){
 				redirect('user_dashboard/apply_leave');
 			}
-
 			$this->form_validation->set_rules('leave','Leave','required');
 			$this->form_validation->set_rules('start','From','required');
 			$this->form_validation->set_rules('end','To','required');
@@ -174,9 +199,29 @@
 		public function leave_balance() {
 			$user_id = $this->session->userdata('logid');
 			$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
-			echo "<pre>";
-			print_r($q);
-			die();
+			if($x =  $this->userdashboardmodel->get_total_leave_user($user_id)) {
+				$total_casual_days = 0;
+				$total_earning_days = 0;
+				foreach ($x as $row) { 
+					if($row->leave_category == 4) {
+						$date1 = strtotime($row->start_date);
+						$date2 = strtotime($row->end_date);
+						$datediff = $date2 - $date1;
+						$no_of_days = floor($datediff/(60*60*24));
+						$total_casual_days = $no_of_days + $total_casual_days;
+					}
+					if ($row->leave_category == 5) {
+						$date1 = strtotime($row->start_date);
+						$date2 = strtotime($row->end_date);
+						$datediff = $date2 - $date1;
+						$no_of_days = floor($datediff/(60*60*24));
+						$total_earning_days = $no_of_days + $total_earning_days;
+					}
+				}
+				$data['total_earning_days'] = $total_earning_days;
+				$data['total_casual_days'] = $total_casual_days;
+
+			}
 			$data['q'] = $q; 
 			$this->load->view('leave_balance',$data);
 		}
@@ -419,8 +464,44 @@
 			}
 	}
 
+	public function action_leave_request() {
+		$id = $this->uri->segment(3);
+		$approvation_status	= $this->uri->segment(4);
+		if($approvation_status == 1) {
+			if($this->userdashboardmodel->action_request($id,$approvation_status)) {
+				$q = $this->userdashboardmodel->get_leave_req($id);
+				$date1 = strtotime($q->start_date);
+				$date2 = strtotime($q->end_date);
+				$datediff = $date2 - $date1;
+				$no_of_days = floor($datediff/(60*60*24));
+				if ($q->leave_category == 4) {
+					$x = $this->userdashboardmodel->get_leave_balance_single_user($q->user_id);
+					$casual_leave = $x['0']->casual_leaves_allowed;
+					if ($casual_leave >= $no_of_days) {
+						$remaining_days = $casual_leave - $no_of_days;
+						$this->userdashboardmodel->update_casual_leave($remaining_days,$q->user_id);
+					}
+				}
+				if ($q->leave_category == 5) {
+					$x = $this->userdashboardmodel->get_leave_balance_single_user($q->user_id);
+					$earning_leave = $x['0']->earning_leave_allowed;
+					if ($earning_leave >= $no_of_days) {
+						$remaining_days = $earning_leave - $no_of_days;
+						$this->userdashboardmodel->update_earning_leave($remaining_days,$q->user_id);
+					}
+				}
+				redirect('user_dashboard/team_leave');
+			}
+		}
+		else {
+			if($this->userdashboardmodel->action_request($id,$approvation_status)) {
+				redirect('user_dashboard/team_leave');
+			}	
+		}
+	}
+
 	
-	public function notification_for_leave($user_id,$data) {
+	/*public function notification_for_leave($user_id,$data) {
 		foreach ($data as $row) {
 			$id = $row->user_id;
 			$x = array();
@@ -446,13 +527,13 @@
 				$msg_body = $part1.$name.$part2.$invite_link;
 				$this->init_mail();
 				$this->sendmail($subject , $msg_body , $email_to);	
-				/*if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
+				if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
 					echo $name." is invited"."<br>";
 				}
 				else{
 					$error = array('error' => $this->upload->display_errors());
 					print_r($error);
-				}*/
+				}
 			}
 
  		}
@@ -499,6 +580,14 @@
 			    }
 			    return $datareturn;
 
+	}*/
+
+	public function announcement() {
+		$user_id = $this->session->userdata('logid');
+		$company_id = $this->userdashboardmodel->get_companyid($user_id);
+		$data['x'] = $this->userdashboardmodel->announcement($company_id);
+
+		$this->load->view('announcement',$data);
 	}
 }
 

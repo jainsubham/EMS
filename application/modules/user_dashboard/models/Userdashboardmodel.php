@@ -189,20 +189,6 @@
 				return false;
 			}
 		}
-
-		public function get_immediate_emp_leave_req($user_id) {
-			if ($user_id) {
-				if($q = $this->db->where('user_id',$user_id)
-							->get(LEAVE_REQ)->result()) {
-					return $q;
-				}
-			}
-			else {
-		
-				return false;
-			}
-		}
-
 		public function get_leave_balance_single_user($user_id) {
 			if($q = $this->db->select()
 							 ->where(['user_id'=>$user_id])
@@ -215,6 +201,43 @@
 			}
 		}
 
+		public function action_request($id,$approvation_status) {
+				return $this->db->set('approvation_status',$approvation_status)
+							->where(['id'=>$id])
+							->update(LEAVE_REQ);
+		}
 
+		public function get_leave_req($leave_id) {
+			return $this->db->where(['id' =>$leave_id])
+						->get(LEAVE_REQ)->row();
+
+		}
+
+		public function update_casual_leave($remaining_days,$user_id) {
+			return $this->db->set('casual_leaves_allowed',$remaining_days)
+								->where(['user_id'=>$user_id])
+								->update(LEAVE_ALLOWANCE);
+		} 
+
+		public function update_earning_leave($remaining_days,$user_id) {
+			return $this->db->set('earning_leave_allowed',$remaining_days)
+								->where(['user_id'=>$user_id])
+								->update(LEAVE_ALLOWANCE);
+		} 
+		public function get_total_leave_user($user_id) {
+
+			if($q = $this->db->where(['user_id'=>$user_id,'approvation_status' => 1])
+						->get(LEAVE_REQ)->result()) {
+				return $q;
+			} 
+			else {
+				return false;
+			}
+		}
+		public function announcement($company_id) {
+			return $this->db->select(['id','announcement','date_till_display'])
+								->where(['company_id' => $company_id,'deleted'=>0,'date_till_display >=' =>date('Y-m-d')])
+								->get(ANNOUNCEMENT)->result();
+		}
 	}
 ?> 
