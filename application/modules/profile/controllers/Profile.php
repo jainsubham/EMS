@@ -59,7 +59,13 @@ class Profile extends CI_Controller
 		}
 		$companyid = $this->profile->get_companyid($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);
-
+		if($employement_data = $this->profile->get_employement_details($uid)){
+			$designation_id = $employement_data->designation;
+			$designation = $this->profile->get_designation_name($designation_id);
+			$data['designation'] = $designation;
+		}else{
+			$data['designation'] = "Works ";
+		}
 		$data['x']  = $this->profile->select_user_details($uid);
 		$this->load->view('editprofile',$data);
 	}

@@ -1,4 +1,3 @@
-
 <?php
 	class User_dashboard extends CI_Controller
 	{
@@ -25,9 +24,7 @@
 						$temp_check_in = strtotime($q->check_in);
 						$temp_check_out = strtotime($q->check_out);
 						$week['0']['time'] = round(($temp_check_out-$temp_check_in)/3600);
-						$data['attendance_record'] = $week;
-					$this->load->view('user_header');
-					$this->load->view('user_dashboard',$data);
+						
 					}
 					else {
 						if (null!=($this->session->userdata('logid'))) {
@@ -479,7 +476,7 @@
 					$casual_leave = $x['0']->casual_leaves_allowed;
 					if ($casual_leave >= $no_of_days) {
 						$remaining_days = $casual_leave - $no_of_days;
-						$this->userdashboardmodel->update_casual_leave($remaining_days,$q->user_id);
+						//$this->userdashboardmodel->update_casual_leave($remaining_days,$q->user_id);
 					}
 				}
 				if ($q->leave_category == 5) {
@@ -487,7 +484,7 @@
 					$earning_leave = $x['0']->earning_leave_allowed;
 					if ($earning_leave >= $no_of_days) {
 						$remaining_days = $earning_leave - $no_of_days;
-						$this->userdashboardmodel->update_earning_leave($remaining_days,$q->user_id);
+						//$this->userdashboardmodel->update_earning_leave($remaining_days,$q->user_id);
 					}
 				}
 				redirect('user_dashboard/team_leave');
@@ -588,6 +585,24 @@
 		$data['x'] = $this->userdashboardmodel->announcement($company_id);
 
 		$this->load->view('announcement',$data);
+	}
+
+	public function employee_directory(){
+		if (null!=($this->session->userdata('logid'))) {
+				$user_id = $this->session->userdata('logid');
+				$company_id = $this->userdashboardmodel->get_companyid($user_id);
+
+				$q		=  $this->userdashboardmodel->get_userid($company_id);
+				foreach ($q as $row) {
+					 $uid  = $row->id;
+					if($z = $this->userdashboardmodel->empdetails($uid)){
+					 $data[]= $z;
+					}
+				}
+				$view['data'] = $data;
+
+				$this->load->view('employee_directory',$view);
+			}
 	}
 }
 

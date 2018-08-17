@@ -412,7 +412,7 @@
                   <h4 class="card-title"><?php echo $x['p']->first_name.' '.$x['p']->last_name?></h4>
                   <p class="card-description ">
                     <div class="row text-gray">
-                    <div class="col-md-5 inline-flex-nd "><i class="material-icons">call</i> &nbsp <?= $x['p']->contact_no ?></div>
+                    <div class="col-md-5 inline-flex-nd "><i class="material-icons">call</i><?= $x['p']->contact_no ?></div>
                     <div class="col-md-7 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
    width="18.211px" height="24.211px" viewBox="0 0 485.211 485.211" style="enable-background:new 0 0 485.211 485.211; fill: #999999;"
    xml:space="preserve">
@@ -429,7 +429,7 @@
                     <div class="row text-gray self-div-row-padding">
                     <div class="col-md-3 inline-flex-nd"><svg style="width:24px;height:24px; fill: #999999;" viewBox="0 0 24 24">
     <path  d="M12,20A6,6 0 0,1 6,14C6,10 12,3.25 12,3.25C12,3.25 18,10 18,14A6,6 0 0,1 12,20Z" />
-</svg> &nbsp <?= $x['p']->blood_group ?></div>
+</svg><?= $x['p']->blood_group ?></div>
                     <div class="col-md-3 inline-flex-nd"><svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="24px;" height="20px"
    viewBox="0 0 512 512" style="enable-background:new 0 0 512 512; fill: #999999;"  xml:space="preserve">
 <g>

@@ -83,9 +83,9 @@
             </a>
           </li>
           <li class="nav-item ">
-            <a class="nav-link" href="<?= base_url('user_dashboard/#'); ?>">
+            <a class="nav-link" href="<?= base_url('user_dashboard/employee_directory'); ?>">
               <i class="material-icons">group</i>
-              <p>Employees</p>
+              <p>Employee Directory</p>
             </a>
           </li>
         

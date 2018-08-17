@@ -134,9 +134,9 @@ class Dashboard extends CI_Controller
 
 			$name = $dataa['0'];
 			$emailto = $dataa['1'];
-			print_r($name);
+			/*print_r($name);
 			print_r($emailto);
-			die();
+			die();*/
 			$tobehashed = $companyid.$emailto;
 			$hash = md5($tobehashed);
 			$invitelink = $invitelin."/".$hash;
@@ -593,6 +593,8 @@ class Dashboard extends CI_Controller
 					$x['effective_from'] = $q[0]->effective_from;
 					$x['effective_to'] = $q[0]->effective_to;
 					$x['designation'] = $q[0]->designation;
+					$designation_id = $x['designation'];
+					$x['designation_name'] = $this->dashboardmodel->get_designationname($designation_id);
 					$data['x']= $x;
 				}
 				else {
