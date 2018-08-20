@@ -280,13 +280,13 @@
 						$data[] = $row->user_id;
 					}
 				return $this->db->select('id')
-						->where(['company_id' => $company_id])
+						->where(['company_id' => $company_id,'account_status'=>1])
 						->where_not_in('id',$data)
 						->get(USER)->result();
 			}
 			else {
 				return $this->db->select('id')
-						->where(['company_id' => $company_id])
+						->where(['company_id' => $company_id,'account_status'=>1])
 						->get(USER)->result();
 			}
 		}

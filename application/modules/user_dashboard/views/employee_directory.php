@@ -33,7 +33,6 @@
 				<th>Employee_Id</th>
 				<th>Employee Name</th>
         <th>Designation</th>
-        <th>Contact No</th>
 				<th>Email Id</th>
 			
             </tr>
@@ -50,7 +49,7 @@
           </td>
 				<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
         <td align="center"><?php echo $row['designationname'] ?></td>
-        <td align="center"><?php echo $row['contact_no'] ?></td>
+
 				<td align="center"><?php echo $row['email'] ?></td>
 				
 				</tr>

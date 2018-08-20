@@ -347,6 +347,12 @@
 							}
 						}
 						$target[] = $data_p;
+						if(isset($data_p['child'])){
+					
+							$employee_under = count($data_p['child']);
+						}else{
+							$employee_under = 0;
+						}
 						unset($data_p);
 						$user_data = $this->userdashboardmodel->select_user_details($key);
 						if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
@@ -355,15 +361,17 @@
 						}
 						$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 						$node[$key]['img'] = $user_data->img;
-								
-							}
-							
-							foreach ($target as $row) {
-								if(isset($row['child'])){
-									foreach ($row['child'] as $child_list) {
-										$node[$child_list]['parent'] = $row['parent'];
-									}
-								}
+
+						$node[$key]['employee_id'] = $employee_data->employee_id;
+						$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+						$node[$key]['employee_under'] = $employee_under;
+						
+					}
+					
+					foreach ($target as $row) {
+						if(isset($row['child'])){
+							foreach ($row['child'] as $child_list) {
+								$node[$child_list]['parent'] = $row['parent'];
 							}
 
 							$data['data'][] = $node;

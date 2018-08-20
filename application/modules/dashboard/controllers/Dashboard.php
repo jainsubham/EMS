@@ -425,6 +425,7 @@ class Dashboard extends CI_Controller
 				$row_data = $row;
 				unset($node[$key]);
 				$data_p['parent'] = $key;
+		
 				if(isset($row_data)){
 					foreach ($row_data as $user_list) {
 						$id =  $user_list->user_id;
@@ -432,6 +433,12 @@ class Dashboard extends CI_Controller
 					}
 				}
 				$target[] = $data_p;
+				if(isset($data_p['child'])){
+					
+					$employee_under = count($data_p['child']);
+				}else{
+					$employee_under = 0;
+				}
 				unset($data_p);
 				$user_data = $this->dashboardmodel->select_user_details($key);
 				if($employee_data = $this->dashboardmodel->fetch_employee_data($key)['0']) {
@@ -440,7 +447,7 @@ class Dashboard extends CI_Controller
 				}
 				$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 				$node[$key]['img'] = $user_data->img;
-					
+				$node[$key]['employee_under'] = $employee_under;
 			}
 			
 			foreach ($target as $row) {
