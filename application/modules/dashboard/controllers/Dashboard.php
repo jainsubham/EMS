@@ -1,4 +1,4 @@
-<?php
+F<?php
 class Dashboard extends CI_Controller
 {
 	function __construct() {
@@ -654,7 +654,6 @@ class Dashboard extends CI_Controller
 						$this->form_validation->set_rules('jdate','joining_date','required');
 						$this->form_validation->set_rules('cdate','confirmation_date','required');
 						$this->form_validation->set_rules('efrom','effective_from','required');
-						$this->form_validation->set_rules('eto','effective_to','required');
 						$this->form_validation->set_rules('designations','designation','required');
 						if($this->form_validation->run()) {
 							$data = array(
@@ -1203,11 +1202,15 @@ class Dashboard extends CI_Controller
 			while($dataa = fgetcsv($data,"1000",",")){
 
 				$employee_id = $dataa['0'];
-				$x['casual'] = $dataa['1'];
-				$x['earning'] = $dataa['2'];
-				$x['year'] = $post;
+				$casual = $dataa['1'];
+				$earning = $dataa['2'];
+				$year = $post;
 				$user_id = $this->dashboardmodel->get_user_id($employee_id);
-				$this->dashboardmodel->upload_leave_data($user_id,$x);
+				$company_id = $this->dashboardmodel->get_companyid($user_id);
+				$category_1 = 4;
+				$category_2 = 5;
+				$this->dashboardmodel->upload_leave_data($user_id,$category_1,$company_id,$casual,$year);
+				$this->dashboardmodel->upload_leave_data($user_id,$category_2,$company_id,$earning,$year);
 			}
 			unlink('assets/csv/'.$filename);
 			redirect('dashboard');				
@@ -1217,6 +1220,23 @@ class Dashboard extends CI_Controller
 				
 		}
 
+	}
+
+	public function monthly_crone_job() {
+		$q = $this->dashboardmodel->get_monthly_crone_job();
+		foreach ($q as $row) {
+			$category_id = $row->id;
+			$company_id = $row->company_id;
+			$leave_default_value = $row->leave_default_value;
+			$data = $this->dashboardmodel->get_leave_balance($category_id,$company_id);
+			foreach ($data as $leave) {
+				$balance1 = $leave->accrued_balance;
+				$balance2 = $leave->balance;
+				$accrued_balance = $balance1 + $leave_default_value;
+				$balance = $balance2 + $leave_default_value;
+				$this->dashboardmodel->update_crone_job($category_id,$company_id,$accrued_balance,$balance);	
+			}
+		}
 	}
 	
 }

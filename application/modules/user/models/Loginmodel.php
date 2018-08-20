@@ -42,12 +42,11 @@
 						->update(INVITES);
 			$q = $this->db->where(['email' =>$data['email']])
 			 					->get(USER)->row();
-			 			$x['user_id'] = $q->id;
-			 			$x['company_id'] = $q->company_id;
-
-			$x['leave'] = $this->db->select(array('default_casual_leave','default_earning_leave','default_casual_id','default_earning_id'))
-			 				->where(['id' => $q->company_id])
-			 				->get(COMPANY)->row();
+			$x = $this->db->select(array('id','leave_default_value'))
+			 				->where(['company_id' => $q->company_id,'leave_default_value >' => '0'])
+			 				->get(LEAVE_CATEGORY)->result();
+			 $x['user_id'] = $q->id;
+			 $x['company_id'] = $q->company_id; 
 			return $x;
 		}
 
@@ -74,8 +73,8 @@
 			 }			
 		}
 
-		public function insert_leave_allowance_data($data) {
-			$this->db->insert(LEAVE_ALLOWANCE,$data);
+		public function insert_leave_allowance_data($user_id,$category_id,$company_id,$opening_balance) {
+			$this->db->insert(LEAVE_ALLOWANCE,array('user_id'=>$user_id,'category_id'=>$category_id,'company_id'=>$company_id,'opening_balance'=>$opening_balance,'balance' =>$opening_balance));
 			return true;
 		}
 

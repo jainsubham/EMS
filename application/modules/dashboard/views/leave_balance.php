@@ -32,7 +32,7 @@ include('adminpannel.php');?>
                
                         <h4>Select CSV file to upload</h4>  
                   <p class="card-description">Upload  the CSV file in the predefined format : <br>
-                    -> Employee1_ID ,Closing_Casual_Leave,Closing_Earning_leavve<br>
+                    -> Employee1_ID ,Closing_Casual_Leave,Closing_Earning_leave<br>
                   </p>
                       <?= form_open_multipart('dashboard/csv_upload'); ?>
                         <div class="form-group">

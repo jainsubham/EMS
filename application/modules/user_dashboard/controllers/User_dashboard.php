@@ -118,6 +118,7 @@
 			if(isset($leave)){
 				$data['leave'] = $leave;
 			}
+
 			$this->load->view('apply_leave',$data);
 		}
 		public function leave_data() {
@@ -130,37 +131,22 @@
 			$datediff = $date2 - $date1;
 			$no_of_days = floor($datediff/(60*60*24));
 			$leave_category = $post['leave'];
-			if ($leave_category == 4) {
-				$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
-				$casual_leave = $q['0']->casual_leaves_allowed;
-				if ($casual_leave >= $no_of_days) {
-				}
-
-				elseif ($casual_leave < $no_of_days) {
-						$no_of_days = $no_of_days - $casual_leave;
-						 //$this->session->set_flashdata('Error', 'This is test message');
-						 redirect('user_dashboard/apply_leave');		 
-				}
-				else {
-
-					redirect('user_dashboard/apply_leave');	
-				}
-			}
-			if($leave_category == 5) { 
-				$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
-				$earning_leave = $q['0']->earning_leave_allowed;
-				if ($earning_leave >= $no_of_days) {
-				}
-				elseif ($earning_leave < $no_of_days) {
-					$no_of_days = $no_of_days - $earning_leave;
-						 //$this->session->set_flashdata('Error', 'This is test message');
-						 redirect('user_dashboard/apply_leave');
-				}
-				else {
-					redirect('user_dashboard/apply_leave');	
+			$data = $this->userdashboardmodel->get_category_details($user_id);
+			foreach ($data as $row) {
+				$id = $row->category_id;
+				if ($id == $leave_category) {
+					$leave_balance = $row->balance;
+					if ($leave_balance >= $no_of_days) {
+					}
+					elseif($leave_balance < $no_of_days) {
+							$this->session->set_flashdata('Error', 'Leave Balance Not Remains');
+							redirect('user_dashboard/apply_leave');		 
+					}
+					else {
+						redirect('user_dashboard/apply_leave');	
+					}
 				}
 			}
-			
 			if($start_date<date('Y-m-d',time())){
 				redirect('user_dashboard/apply_leave');
 			}
@@ -195,31 +181,11 @@
 
 		public function leave_balance() {
 			$user_id = $this->session->userdata('logid');
-			$q = $this->userdashboardmodel->get_leave_balance_single_user($user_id);
-			if($x =  $this->userdashboardmodel->get_total_leave_user($user_id)) {
-				$total_casual_days = 0;
-				$total_earning_days = 0;
-				foreach ($x as $row) { 
-					if($row->leave_category == 4) {
-						$date1 = strtotime($row->start_date);
-						$date2 = strtotime($row->end_date);
-						$datediff = $date2 - $date1;
-						$no_of_days = floor($datediff/(60*60*24));
-						$total_casual_days = $no_of_days + $total_casual_days;
-					}
-					if ($row->leave_category == 5) {
-						$date1 = strtotime($row->start_date);
-						$date2 = strtotime($row->end_date);
-						$datediff = $date2 - $date1;
-						$no_of_days = floor($datediff/(60*60*24));
-						$total_earning_days = $no_of_days + $total_earning_days;
-					}
-				}
-				$data['total_earning_days'] = $total_earning_days;
-				$data['total_casual_days'] = $total_casual_days;
-
+			$q = $this->userdashboardmodel->get_category_details($user_id);
+			foreach ($q as $row) {
+				$row->category_id = $this->userdashboardmodel->get_category_name($row->category_id)->category_name;
 			}
-			$data['q'] = $q; 
+			$data['q'] = $q;
 			$this->load->view('leave_balance',$data);
 		}
 
@@ -360,17 +326,16 @@
 				}
 			}
 
-			public function organization() {
-				$user_id = $this->session->userdata('logid');
-				$company_id = $this->userdashboardmodel->get_companyid($user_id);
-				$user_list = $this->userdashboardmodel->get_users($company_id);
-
-				foreach ($user_list as $row) {
-					$user = $row->id;
-					$this->get_under_me($user);
-					$supervisor_id = key($this->x);
-					
-					$node = $this->x;
+	public function organization() {
+		$user_id = $this->session->userdata('logid');
+		$company_id = $this->userdashboardmodel->get_companyid($user_id);
+		$user_list = $this->userdashboardmodel->get_users($company_id);
+				
+			foreach ($user_list as $row) {
+				$user = $row->id;
+				$this->get_under_me($user);
+				$supervisor_id = key($this->x);
+				$node = $this->x;
 					foreach ($node as $key => $row) {
 						$row_data = $row;
 						unset($node[$key]);
@@ -384,32 +349,32 @@
 						$target[] = $data_p;
 						unset($data_p);
 						$user_data = $this->userdashboardmodel->select_user_details($key);
-						$employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0'];
-
+						if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
+							$node[$key]['employee_id'] = $employee_data->employee_id;
+							$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+						}
 						$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 						$node[$key]['img'] = $user_data->img;
-						$node[$key]['employee_id'] = $employee_data->employee_id;
-						$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
-						
-					}
-					
-					foreach ($target as $row) {
-						if(isset($row['child'])){
-							foreach ($row['child'] as $child_list) {
-								$node[$child_list]['parent'] = $row['parent'];
+								
 							}
+							
+							foreach ($target as $row) {
+								if(isset($row['child'])){
+									foreach ($row['child'] as $child_list) {
+										$node[$child_list]['parent'] = $row['parent'];
+									}
+								}
+							}
+
+							$data['data'][] = $node;
+							unset($this->x);
+							unset($target);
 						}
-					}
+						$data['count']= count($data['data']);
+					
 
-					$data['data'][] = $node;
-					unset($this->x);
-					unset($target);
-				}
-				$data['count']= count($data['data']);
-			
-
-				$this->load->view('organization',$data);
-			}
+						$this->load->view('organization',$data);
+	}
 
 	public function team_leave() {
 		if (null!=($this->session->userdata('logid'))) {
@@ -418,7 +383,7 @@
 				$config = array(
 					'base_url' => 'http://localhost/ems/user_dashboard/team_leave/',
 					'per_page' => '10',
-					'total_rows' => $this->userdashboardmodel->num_row(),
+					'total_rows' => $this->useruserdashboardmodel->num_row(),
 					'full_tag_open' => '<ul class = "pagination">',
 					'full_tag_close' => '</ul>',
 					'first_tag_open' => '<li>',
@@ -467,24 +432,21 @@
 		if($approvation_status == 1) {
 			if($this->userdashboardmodel->action_request($id,$approvation_status)) {
 				$q = $this->userdashboardmodel->get_leave_req($id);
+				$user_id = $q->user_id;
 				$date1 = strtotime($q->start_date);
 				$date2 = strtotime($q->end_date);
 				$datediff = $date2 - $date1;
 				$no_of_days = floor($datediff/(60*60*24));
-				if ($q->leave_category == 4) {
-					$x = $this->userdashboardmodel->get_leave_balance_single_user($q->user_id);
-					$casual_leave = $x['0']->casual_leaves_allowed;
-					if ($casual_leave >= $no_of_days) {
-						$remaining_days = $casual_leave - $no_of_days;
-						//$this->userdashboardmodel->update_casual_leave($remaining_days,$q->user_id);
-					}
-				}
-				if ($q->leave_category == 5) {
-					$x = $this->userdashboardmodel->get_leave_balance_single_user($q->user_id);
-					$earning_leave = $x['0']->earning_leave_allowed;
-					if ($earning_leave >= $no_of_days) {
-						$remaining_days = $earning_leave - $no_of_days;
-						//$this->userdashboardmodel->update_earning_leave($remaining_days,$q->user_id);
+				$data = $this->userdashboardmodel->get_category_details($user_id);
+				foreach ($data as $row) {
+					$id = $row->category_id;
+					if ($id == $q->leave_category) {
+						$leave_balance = $row->balance;
+						$leaves_taken = $row->leaves_taken + $no_of_days;
+						if ($leave_balance >= $no_of_days) {
+							$remaining_days = $leave_balance - $no_of_days;
+							$this->userdashboardmodel->update_leave_balance($remaining_days,$id,$leaves_taken,$user_id);
+						}
 					}
 				}
 				redirect('user_dashboard/team_leave');

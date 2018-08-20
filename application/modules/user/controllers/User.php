@@ -239,19 +239,16 @@ class User extends CI_Controller
 			 );
 			$hashed = $post['hidhash'];
 
-		if($data = $this->loginmodel->user_reg($data,$hashed)) {
-			// echo "<pre>";
-			// print_r($data);
-			// die();
-			$array = array(
-				'user_id' => $data['user_id'],
-				'casual_leaves_allowed' => $data['leave']->default_casual_leave,
-				'earning_leave_allowed' => $data['leave']->default_earning_leave,
-				'casual_leave_id' => $data['leave']->default_casual_id,
-				'earning_leave_id' => $data['leave']->default_earning_id,
-				'company_id' => $data['company_id']
-			);
-			$this->loginmodel->insert_leave_allowance_data($array);
+		if($array = $this->loginmodel->user_reg($data,$hashed)) {
+			$user_id = $array['user_id'];
+			$company_id = $array['company_id'];
+			unset($array['user_id']);
+			unset($array['company_id']);
+			foreach ($array as $row) {
+					 $category_id = $row->id;
+					$opening_balance = $row->leave_default_value;
+					$this->loginmodel->insert_leave_allowance_data($user_id,$category_id,$company_id,$opening_balance);
+			}
 			redirect('user/email_verified');
 		}
 

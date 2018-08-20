@@ -25,24 +25,42 @@
                   <h4 class="card-title">Leave Categories</h4>
                	  <!-- <p class="card-category">Complete your profile</p> -->
                 </div>
-                <div class="card-body">
-                   <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group">
-                          <label class="bmd-label-floating">All Categories</label>
-                            <ul>
-                              <?php if(isset($q)){
-                                  foreach ($q as $row) {
-                                    echo "<li>".$row->category_name."</li>";
-                                  }
-                                }
-                                if(isset($data)){
-                                  echo $data;
-                                }
-                              ?>
-                            </ul>
+               <div class="card-body">
+                    <div class = "self-card-small-header" style="overflow-x:auto;" >
+                       <div class="content">
+                         <div class="container">
+                            <div class="container-fluid">
+                              <div class="row">
+                                  <table style="margin-top: 20px;" class="table table-bordered table-striped table-hover css-serial reult" id="myTable"> 
+                                    <thead  class="col-md-12 ">
+                                      <tr class="card-header card-header-info" style="background-color: #9c27b0; color: white; box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(156, 39, 176, 0.4);">
+                                        <th style="width:140px">Leave Category</th>
+                                        <th>Increment/Nature</th>
+                                        <th>Leave Default Value</th> 
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <?php if (isset($q)) { ?>
+                                        <tr>
+                                        <?php foreach ($q as $row) { ?>
+                                          <td><?= $row->category_name ?></td>
+                                          <td><?= $row->nature ?></td>
+                                          <td><?= $row->leave_default_value ?></td>  
+                                        </tr>
+                                       <?php  }
+                                      }
+                                      if (isset($data)) {
+                                        echo $data;
+                                      }
+                                       ?>
+                                    </tbody>
+                                  </table>
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                       </div>
+                      </div>
+                    </div>
                       <div class="col-md-6">
                          <div class="form-group">
                           <h4>Add Leave Categories</h4>
@@ -85,8 +103,6 @@
                                echo form_submit($btn);
                              ?>
                             <?= form_close(); ?>
-                          </div>
-                        </div>
                       </div>
                     </div>
                   </div>

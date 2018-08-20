@@ -184,9 +184,10 @@
 		}
 
 		public function get_leave_category($company_id) {
-			return $this->db->select(['category_name','company_id'])
+			return $this->db->select()
 						->where(['company_id'=>$company_id])
 						->get(LEAVE_CATEGORY)->result();
+						
 		} 
 
 		public function add_category($category,$company_id,$nature,$leave_default_value) {
@@ -347,8 +348,9 @@
 			 }	
 		}
 
-		public function get_leave_balance() {
+		public function get_leave_balance($category_id,$company_id) {
 			if($q = $this->db->select()
+								->where(['category_id'=>$category_id,'company_id'=>$company_id])
 								->get(LEAVE_ALLOWANCE)->result()) {
 
 				return $q;
@@ -388,9 +390,9 @@
 
 		}*/
 
-		public function upload_leave_data($user_id,$data) {
-			return $this->db->set(array('casual_leaves_allowed'=>$data['casual'],'earning_leave_allowed'=>$data['earning'],'years' =>$data['year']))
-					  		->where(['user_id'=>$user_id])
+		public function upload_leave_data($user_id,$category_id,$company_id,$casual,$year) {
+			return $this->db->set(array('user_id'=>$user_id,'category_id'=>$category_id,'company_id'=>$company_id,'opening_balance'=>$casual,'balance'=>$casual,'years' =>$year))
+					  		->where(['user_id'=>$user_id,'category_id'=>$category_id])
 					  		->update(LEAVE_ALLOWANCE);
 
 		}
@@ -432,6 +434,23 @@
 			else {
 				return false;
 			}
+		}
+
+		public function get_monthly_crone_job() {
+			if($q = $this->db->select()
+						->where(['nature'=>'month'])
+						->get(LEAVE_CATEGORY)->result()) {
+				return $q;
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function update_crone_job($category_id,$company_id,$accrued_balance,$balance) {
+			return $this->db->set(['accrued_balance'=>$accrued_balance,'balance'=>$balance])
+						->where(['category_id'=>$category_id,'company_id'=>$company_id])
+						->update(LEAVE_ALLOWANCE);
 		}
 
 	}

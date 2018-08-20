@@ -20,11 +20,13 @@
       <div class="content">
         <div class="container-fluid">
           <div class="row">
+          <?php if($error=$this->session->flashdata('Error')) ; ?>
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header card-header-success">
                   <h4 class="card-title" style="margin-left: 15px">Add Leave</h4>
                 </div>
+
                 <div class="card-body">
                  <?php echo form_open('user_dashboard/leave_data') ?>
                     <div class="row">
@@ -36,6 +38,7 @@
                                 } 
                                 ?>
                         </div>
+                        <?= $error ;?>
                       </div>
                   </div>
                     <div class="row">
@@ -99,7 +102,7 @@
                         'name' => 'submit',
                         'value' => 'Apply'
                         );
-                    echo form_submit($btn);?>                 
+                    echo form_submit($btn)?>                 
                   <? echo form_close(); ?>
                 </div>
               </div>
@@ -109,6 +112,7 @@
       </div>
     </div>
   </div>
+
   <!--   Core JS Files   -->
   <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>

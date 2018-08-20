@@ -45,32 +45,16 @@
                                       </tr>
                                     </thead>
                                     <tbody>
-                                    <?php //echo "<pre>"; print_r($q); die(); ?>
-                                    <?php foreach ($q as $row) { ?>
-                                        <tr>
-                                          <td>Casual Leave</td>
-                                          <td><?= '14days' ?></td>
-                                          <td><?= $row->casual_leaves_allowed.'days' ?></td>
-                                          <?php if (isset($total_casual_days)) { ?>
-                                            <td><?= $total_casual_days.'days' ?></td>
-                                          <?php } ?>
-                                           <?php if (isset($total_casual_days)) { ?>
-                                            <td><?= $row->casual_leaves_allowed-$total_casual_days.'days' ?></td>
-                                          <?php } ?>
-                                        </tr>
-                                        <tr>
-                                          <td>Privilege/Earning Leave</td>
-                                          <td><?= '2.5days' ?></td>
-                                          <td><?= $row->earning_leave_allowed.'days' ?></td>
-                                          <?php if (isset($total_earning_days)) { ?>
-                                            <td><?= $total_earning_days.'days' ?></td>
-                                          <?php } ?>
-                                           <?php if (isset($total_earning_days)) { ?>
-                                            <td><?= $row->earning_leave_allowed-$total_earning_days.'days' ?></td>
-                                          <?php } ?>
-
-                                        </tr>
-                                    <?php  } ?>
+                                      <tr>
+                                      <?php foreach ($q as $row) { ?>
+                                        <td><?= $row->category_id ?></td>
+                                        <td><?= $row->opening_balance.'days' ?></td>
+                                        <td><?= $row->accrued_balance.'days' ?></td>
+                                        <td><?= $row->leaves_taken.'days' ?></td>
+                                        <td><?= $row->balance.'days' ?></td>
+                                      </tr>
+                                     <?php }
+                                     ?>
                                     </tbody>
                                   </table>
                               </div>
