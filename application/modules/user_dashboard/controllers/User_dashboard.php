@@ -373,17 +373,19 @@
 							foreach ($row['child'] as $child_list) {
 								$node[$child_list]['parent'] = $row['parent'];
 							}
-
+							}
+						}
 							$data['data'][] = $node;
 							unset($this->x);
 							unset($target);
 						}
 						$data['count']= count($data['data']);
-					
+							
 
 						$this->load->view('organization',$data);
+	
 	}
-
+	
 	public function team_leave() {
 		if (null!=($this->session->userdata('logid'))) {
 				$user_id = $this->session->userdata('logid');
