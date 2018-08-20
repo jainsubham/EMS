@@ -30,7 +30,7 @@
                 <div class="card-body">
                  <h5>Select User : </h5>
                  <?=  form_open('dashboard/assign_manager') ;?>
-                      <select name="user_id" data-placeholder="Select Employee" class="chosen-select"  width="180px">
+                      <select name="user_id" data-placeholder="Select Employee"  multiple class="chosen-select"  width="180px">
                             <option> </option>
                             <?php print_r($report);  ?>
                         </select>
