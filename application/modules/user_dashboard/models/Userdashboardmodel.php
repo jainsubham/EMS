@@ -31,7 +31,7 @@
 		 			 ->where(['user_id' => $user_id,'date'=>$date])
 		 			 ->get(ATTENDANCE)->row()){
   	
-		 	return $q;
+		 			return $q;
 			 }else{
 			 	return false;
 			 }
