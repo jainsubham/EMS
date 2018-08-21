@@ -18,18 +18,11 @@
 			$q = $this->db->where(['name'=>$post['companyname']])
 								->get(COMPANY)->row();
 								$id = $q->id;
-								$data[] = $q->name;
-								
-
 			 $this->db->insert(USER,array('password' =>$encpass,'account_status' =>1,'email' =>$post['maill'],'account_level' =>1,'company_id' => $id,'first_name' =>$post['fname'],'last_name' =>$post['lname'],'contact_no' =>$post['contactno'])); 
 			 $uid = $this->db->where(['email' =>$post['maill']])
 			 					->get(USER)->row()->id;
-
-
-			 
+			 					
 			 		$mail_hash = md5(time());
-			 		
-
 			 $this->db->insert(VERIFY_HASH,array('user_id' =>$uid,'hash' =>$mail_hash));	
 			 return $mail_hash;
 		}	

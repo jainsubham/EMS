@@ -161,6 +161,18 @@
 		 	  }
 		}
 
+		public function fetch_employee_bank_details($user_id){
+				if($q= $this->db->select()
+							->where(['user_id'=>$user_id])
+							->get(BANK_DETAILS)->row()) {
+
+					return $q;
+				}
+				else {
+					return false;
+				}
+		}
+
 		public function get_designationname($designation_id) {
 		 	return $this->db->select('name')
 		 			 ->where(['id' => $designation_id])
@@ -198,7 +210,13 @@
 		} 
 
 		public function add_category($category,$company_id,$nature,$leave_default_value) {
-			return $this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id,'nature'=>$nature,'leave_default_value'=>$leave_default_value));
+			$this->db->insert(LEAVE_CATEGORY,array('category_name' => $category, 'company_id' => $company_id,'nature'=>$nature,'leave_default_value'=>$leave_default_value));
+			
+				$id = $this->db->select('id')
+							->where(['category_name' => $category, 'company_id' => $company_id])
+							->get(LEAVE_CATEGORY)->row()->id;
+							return $id;
+
 		}
 
 		public function announcement($company_id) {
@@ -443,9 +461,31 @@
 			}
 		}
 
+		public function get_all_admin_id($company_id){
+			return $this->db->select('id')
+						->where(['account_level'=>1,'company_id'=>$company_id])
+						->get(USER)->result();
+		}
+
+		public function insert_leave_allowance_data($user_id,$category_id,$company_id,$opening_balance) {
+			$this->db->insert(LEAVE_ALLOWANCE,array('user_id'=>$user_id,'category_id'=>$category_id,'company_id'=>$company_id,'opening_balance'=>$opening_balance,'balance' =>$opening_balance));
+			return true;
+		}
+
 		public function get_monthly_crone_job() {
 			if($q = $this->db->select()
 						->where(['nature'=>'month'])
+						->get(LEAVE_CATEGORY)->result()) {
+				return $q;
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function get_yearly_crone_job() {
+			if($q = $this->db->select()
+						->where(['nature'=>'year'])
 						->get(LEAVE_CATEGORY)->result()) {
 				return $q;
 			}

@@ -541,12 +541,13 @@ class Dashboard extends CI_Controller
 					$x['effective_to'] = $q[0]->effective_to;
 					$x['designation'] = $q[0]->designation;
 					$x['name']   = $this->dashboardmodel->get_designationname($x['designation']);
+
 					$x['team_name'] = $this->dashboardmodel->get_team_name_by_designation_id($x['designation']);
 					$data['x']= $x;
 					
+
 				}
 				else {
-					
 						 $q['employee_id'] = 'NULL';
 						 $q['joining_date'] = 'NULL';
 						 $q['confirmation_date'] = 'NULL';
@@ -561,6 +562,22 @@ class Dashboard extends CI_Controller
 
 
 			$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
+			//Bank Details
+			/*$bank_details = $this->dashboardmodel->fetch_employee_bank_details($user_id);
+			if ($bank_details) {
+				$x['payment_mode'] = $q->payment_mode;
+				$x['bank_name'] = $q->bank_name;
+				$x['bank_acc_no'] = $q->bank_acc_no;
+				$x['bank_ifsc_code'] = $q->bank_ifsc_code;
+				$data['x']= $x;	
+			}
+			else {
+				$q['payment_mode'] = 'NULL';
+				$q['bank_name'] = 'NULL';
+				$q['bank_acc_no'] = 'NULL';
+				$q['bank_ifsc_code'] = 'NULL';
+				$data['x'] = $q;
+			}*/
 			//Supervisor Detail
 			if($rep_sup_id = $this->dashboardmodel->get_reporting_supervisor_detail($user_id)) {
 				
@@ -574,7 +591,7 @@ class Dashboard extends CI_Controller
 				$data['x']['reporting_name']->first_name = 'NULL';
 				$data['x']['reporting_name']->last_name = '';
 			}
-			
+
 			$this->load->view('displayempdetails',$data);
 		}
     
@@ -848,7 +865,15 @@ class Dashboard extends CI_Controller
 		$nature = $this->input->post('year');
 		$leave_default_value = $this->input->post('default');
 		$company_id = $this->input->post('company_id');
-		if($this->dashboardmodel->add_category($category,$company_id,$nature,$leave_default_value)) {
+		$admin_id = $this->dashboardmodel->get_all_admin_id($company_id);
+
+		if($category_id = $this->dashboardmodel->add_category($category,$company_id,$nature,$leave_default_value)) {
+			if ($leave_default_value > 0) {
+				foreach ($admin_id as $row) {
+					$user_id = $row->id;
+					$this->dashboardmodel->insert_leave_allowance_data($user_id,$category_id,$company_id,$leave_default_value);
+				}
+			}
 			redirect('dashboard/leave');
 		}
 		else {
@@ -1198,7 +1223,6 @@ class Dashboard extends CI_Controller
 		$config['upload_path']          = './assets/csv/';
 		$config['allowed_types']        = 'csv';
 		$config['max_size']             = 10000;
-
 		$this->load->library('upload', $config);
 		$adminid = $this->session->userdata('adminid');
 		$companyid = $this->dashboardmodel->get_companyid($adminid);	
@@ -1209,7 +1233,6 @@ class Dashboard extends CI_Controller
 			$data = fopen($link,"r");
 			$x = array();
 			while($dataa = fgetcsv($data,"1000",",")){
-
 				$employee_id = $dataa['0'];
 				$casual = $dataa['1'];
 				$earning = $dataa['2'];
@@ -1230,9 +1253,9 @@ class Dashboard extends CI_Controller
 		}
 
 	}
-
 	public function monthly_crone_job() {
 		$q = $this->dashboardmodel->get_monthly_crone_job();
+		die('hello');	
 		foreach ($q as $row) {
 			$category_id = $row->id;
 			$company_id = $row->company_id;
@@ -1244,6 +1267,24 @@ class Dashboard extends CI_Controller
 				$accrued_balance = $balance1 + $leave_default_value;
 				$balance = $balance2 + $leave_default_value;
 				$this->dashboardmodel->update_crone_job($category_id,$company_id,$accrued_balance,$balance);	
+			}
+		}
+	}
+	public function yearly_crone_job() {
+		$q = $this->dashboardmodel->get_yearly_crone_job();
+		foreach ($q as $row) {
+			$category_id = $row->id;
+			$company_id = $row->company_id;
+			$leave_default_value = $row->leave_default_value;
+			$data = $this->dashboardmodel->get_leave_balance($category_id,$company_id);
+			foreach ($data as $leave) {
+				$balance1 = $leave->accrued_balance;
+				$balance2 = $leave->balance;
+				$accrued_balance = $balance1 + $leave_default_value;
+				$balance = $balance2 + $leave_default_value;
+				if($this->dashboardmodel->update_crone_job($category_id,$company_id,$accrued_balance,$balance)){
+					redirect('dashboard');
+				}	
 			}
 		}
 	}
