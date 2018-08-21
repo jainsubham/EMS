@@ -48,7 +48,7 @@
           <?php } ?>  
           </td>
 				<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
-        <td align="center"><?php echo $row['designationname'] ?></td>
+        <td align="center"><?php echo $row['designationname']." (".$row['teamname'].")"; ?></td>
 
 				<td align="center"><?php echo $row['email'] ?></td>
 				

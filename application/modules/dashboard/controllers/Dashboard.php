@@ -1,4 +1,4 @@
-F<?php
+<?php
 class Dashboard extends CI_Controller
 {
 	function __construct() {
@@ -444,6 +444,7 @@ class Dashboard extends CI_Controller
 				if($employee_data = $this->dashboardmodel->fetch_employee_data($key)['0']) {
 					$node[$key]['employee_id'] = $employee_data->employee_id;
 					$node[$key]['designation'] = $this->dashboardmodel->get_designationname($employee_data->designation);
+					$node[$key]['team_name'] = $this->dashboardmodel->get_team_name_by_designation_id($employee_data->designation);
 				}
 				$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 				$node[$key]['img'] = $user_data->img;
@@ -478,7 +479,7 @@ class Dashboard extends CI_Controller
 			}
 		}
 		$view['data'] = $data;
-		$this->load->view('EmpDetails',$view);
+				$this->load->view('EmpDetails',$view);
 	}
 
 	public function designations(){
@@ -540,6 +541,7 @@ class Dashboard extends CI_Controller
 					$x['effective_to'] = $q[0]->effective_to;
 					$x['designation'] = $q[0]->designation;
 					$x['name']   = $this->dashboardmodel->get_designationname($x['designation']);
+					$x['team_name'] = $this->dashboardmodel->get_team_name_by_designation_id($x['designation']);
 					$data['x']= $x;
 					
 				}
@@ -572,7 +574,7 @@ class Dashboard extends CI_Controller
 				$data['x']['reporting_name']->first_name = 'NULL';
 				$data['x']['reporting_name']->last_name = '';
 			}
-
+			
 			$this->load->view('displayempdetails',$data);
 		}
     
@@ -618,7 +620,7 @@ class Dashboard extends CI_Controller
 						$y = array();
 						$y['0" disabled="disabled'] = '--------Select Designation -------';
 						foreach ($m as $des) {
-								$y[$des->id] = $des->name; 
+								$y[$des->id] = $des->name." (".$des->tname.")"; 
 							}
 						$designation = $y;
 					$data['designations'] = $designation;

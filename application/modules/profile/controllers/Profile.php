@@ -26,8 +26,10 @@ class Profile extends CI_Controller
 			$designation_id = $employement_data->designation;
 			$designation = $this->profile->get_designation_name($designation_id);
 			$data['designation'] = $designation;
+			$data['team_name'] = $this->profile->get_team_name_by_designation_id($designation_id);
 		}else{
 			$data['designation'] = "Works ";
+			$data['team_name'] = " ";
 		}
 		$data['bank_details'] = $this->profile->get_bank_details($uid);
 		$data['companyname'] = $this->profile->get_companyname($companyid);

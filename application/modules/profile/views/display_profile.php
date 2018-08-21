@@ -172,6 +172,14 @@
           </div>
           <div class="row">
             <div class="col-md-6 self-text-labeling-right">
+               Team / Department : 
+            </div>
+            <div class="col-md-6">
+                <?= $team_name ?>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 self-text-labeling-right">
                Joining Date : 
             </div>
             <div class="col-md-6">
