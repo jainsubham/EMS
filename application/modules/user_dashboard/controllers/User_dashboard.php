@@ -375,8 +375,11 @@
 						$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
 						$node[$key]['img'] = $user_data->img;
 
-						$node[$key]['employee_id'] = $employee_data->employee_id;
-						$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+						if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
+							$node[$key]['employee_id'] = $employee_data->employee_id;
+							$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+							$node[$key]['team_name'] = $this->userdashboardmodel->get_team_name_by_designation_id($employee_data->designation);
+						}
 						$node[$key]['employee_under'] = $employee_under;
 						
 					}
@@ -580,7 +583,9 @@
 				foreach ($q as $row) {
 					 $uid  = $row->id;
 					if($z = $this->userdashboardmodel->empdetails($uid)){
+					 
 					 $data[]= $z;
+
 					}
 				}
 				$view['data'] = $data;

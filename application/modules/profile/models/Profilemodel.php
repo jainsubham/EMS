@@ -65,6 +65,15 @@ class Profilemodel extends CI_Model
 		 	return false;
 		 }	
 	}
+	
+	public function get_team_name_by_designation_id($designation_id){
+			return $this->db->select('t.name')
+							->from(DESIGNATIONS.' as d')
+							->where(['d.id'=>$designation_id])
+							->join(TEAM.' as t','d.team_id=t.id','LEFT')
+							->get()
+							->result()['0']->name;
+		}
 
 }
 ?>

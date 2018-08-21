@@ -81,7 +81,7 @@
     <?
             foreach ($node as $key => $element) {
     ?>
-        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation'] ?></div><div><? if($element['employee_under']!=0){ echo $element['employee_under']; } ?></div></div>'},'<? if(isset($element['parent'])){
+        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation']." (".$element['team_name'].")"; ?></div><div><? if($element['employee_under']!=0){ echo $element['employee_under']; } ?></div></div>'},'<? if(isset($element['parent'])){
            echo $element['parent']; 
            }
        ?>', ''],

@@ -91,7 +91,7 @@
             <div class="form-group">
               <label class="bmd-label-floating">Designation :</label>
               <?php if(isset($x['name'])){
-              echo $x['name']; 
+              echo $x['name']." (".$x['team_name'].")"; 
             }?>
             </div>
           </div>

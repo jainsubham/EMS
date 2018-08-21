@@ -58,31 +58,38 @@
 		}
 
 		public function empdetails($uid) {
-				  $q = $this->db->select(['first_name','last_name','img'])
-				   				->where(['id'=> $uid])
-				   				->get(USER)->result(); 
-				  $x = $this->db->select(['designation','employee_id'])
-				 	   			->where(['user_id' =>$uid])
-				 	   			->get(EMPLOYMENT_DETAILS)->result();
-				 	   		if($x) {	
-				 	   			$designationid = $x['0']->designation; 	   			
-				 				$designationname = $this->db->select('name')
-				 	   										->where(['id' =>$designationid])
-				 	   										->get(DESIGNATIONS)->result();
-				 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationname['0']->name ,'employee_id'=>$x['0']->employee_id,'user_id'=>$uid);
-				 	   		 }
-				 		else {
+		  $q = $this->db->select(['first_name','last_name','img'])
+		   				->where(['id'=> $uid])
+		   				->get(USER)->result(); 
+		  $x = $this->db->select(['designation','employee_id'])
+		 	   			->where(['user_id' =>$uid])
+		 	   			->get(EMPLOYMENT_DETAILS)->result();
+		 	   		if($x) {	
+		 	   			$designationid = $x['0']->designation; 	   			
+		 				$designationdata = $this->db->select('d.name,d.id,t.name as tname')
+		 	   										->from(DESIGNATIONS.' as d')
+		 	   										->where(['d.id' =>$designationid])
+		 	   										->join(TEAM.' as t','d.team_id=t.id','LEFT')
+		 	   										->get()
+		 	   										->result();
 
-				 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','user_id'=>$uid );
-				 	}
-				 	return $data;
+		 	   		 	$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>$designationdata['0']->name,'teamname'=>$designationdata['0']->tname ,'employee_id'=>$x['0']->employee_id,'user_id'=>$uid);
+		 	   		 }
+		 		else {
+
+		 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','user_id'=>$uid );
+		 	}
+		 	return $data;
 		}
 		
 
 		public function get_designations_list($companyid){
-			if($q = $this->db->select(['name','id'])
-							->where(['company_id'=>$companyid])
-							->get(DESIGNATIONS)->result()){
+			if($q = $this->db->select(['d.name','d.id','t.name as tname'])
+							->from(DESIGNATIONS.' as d')
+							->where(['d.company_id'=>$companyid])
+							->join(TEAM.' as t','d.team_id=t.id','LEFT')
+							->get()
+							->result()){
 				return $q;
 				}else{
 					return false;
@@ -504,6 +511,15 @@
 			return $this->db->set(['accrued_balance'=>$accrued_balance,'balance'=>$balance])
 						->where(['category_id'=>$category_id,'company_id'=>$company_id])
 						->update(LEAVE_ALLOWANCE);
+		}
+
+		public function get_team_name_by_designation_id($designation_id){
+			return $this->db->select('t.name')
+							->from(DESIGNATIONS.' as d')
+							->where(['d.id'=>$designation_id])
+							->join(TEAM.' as t','d.team_id=t.id','LEFT')
+							->get()
+							->result()['0']->name;
 		}
 
 	}
