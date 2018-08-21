@@ -47,7 +47,7 @@
                                     <tbody>
                                     <?php if ($q) {  ?> 
                                       <tr>
-                                      <?php if(NULL!=($q)){ foreach ($q as $row) { ?>
+                                      <?php  foreach ($q as $row) { ?>
                                         <td><?= $row->category_id ?></td>
                                         <td><?= $row->opening_balance.'days' ?></td>
                                         <td><?= $row->accrued_balance.'days' ?></td>
