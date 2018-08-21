@@ -17,6 +17,13 @@
 				$user_id = $this->session->userdata('logid');
 				if($user_name = $this->userdashboardmodel->select_user_details($user_id)->first_name){
 					$data['user_name'] = $user_name;
+					$q = $this->userdashboardmodel->get_category_details($user_id);
+					if($q){
+					foreach ($q as $row) {
+						$row->category_id = $this->userdashboardmodel->get_category_name($row->category_id)->category_name;
+					}
+					}
+					$data['leave_balance_data'] = $q;
 					$week['0']['date'] = date('Y-m-d');
 					$week['0']['day'] = date('l',strtotime($week['0']['date']));
 					$week['0']['display_date'] = date('(d M)',strtotime($week['0']['date']));
@@ -46,6 +53,7 @@
 						}
 					}
 					$data['attendance_record'] = $week;
+					
 					$this->load->view('user_header');
 					$this->load->view('user_dashboard',$data);
 				}

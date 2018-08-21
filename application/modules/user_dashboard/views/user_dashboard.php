@@ -51,27 +51,24 @@
                 </div>
               </div>
               <div >
+                <? if(NULL!=($leave_balance_data)){ ?>
                 <div class="card">
               <div class="card-header card-header-warning self-card-small-header" >
                     <h4 class="card-title">Leaves Balance</h4>
                   </div>
                   <div class="card-body self-card-body">
-                    <div>
-                    <span class="inline-flex-nd">
-                      <i class="material-icons">alarm_on</i>
-                      <p class="self-data-card-header">Casual Leaves</p>
-                      </span>
-                      <p class="self-data-card-des"> 10 Days</p>
-                    </div>
+                    <? foreach ($leave_balance_data as $row) { ?>
                     <div>
                     <span class="inline-flex-nd">
                       <i class="material-icons">event</i>
-                      <p class="self-data-card-header">Earned Leaves</p>
+                      <p class="self-data-card-header"><?= $row->category_id ?></p>
                       </span>
-                      <p class="self-data-card-des"> 2 Days</p>
+                      <p class="self-data-card-des"> <?= $row->balance ?> Days</p>
                     </div>
+                    <? } ?> 
                   </div>
                 </div>
+                <? } ?>
               </div>
             </container>
           <div class="col-lg-9">
