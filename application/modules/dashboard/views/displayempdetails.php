@@ -302,12 +302,12 @@
         </div>
       
         <div class="tab-pane" id="settings">
-           <?php echo form_open("profile/editempdetails"); ?>
+           <?php echo form_open("dashboard/editempdetails/".$x['user_id']); ?>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Payment Mode :</label>
-              <?php //echo $payment_mode ?>
+              <?php echo $bank['payment_mode'] ?>
             </div>
           </div>
         </div>
@@ -315,7 +315,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Bank_Name :</label>
-              <?php //echo $bank_name ?>
+              <?php echo $bank['bank_name'] ?>
             </div>
           </div>
       </div>
@@ -323,7 +323,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Bank_Acc_No :</label>
-              <?php //echo $bank_acc_no ?>
+              <?php echo $bank['bank_acc_no'] ?>
             </div>
           </div>
       </div>
@@ -331,7 +331,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label class="bmd-label-floating">Bank_IFSC_Code :</label>
-              <?php //echo $bank_ifsc_code ?>
+              <?php echo $bank['bank_ifsc_code'] ?>
             </div>
           </div>
       </div> 

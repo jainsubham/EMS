@@ -90,18 +90,6 @@
       </div>
       <div class="row">
           <div class="col-md-6 self-text-labeling-right">
-           Bank Address :
-        </div>
-        <div class="col-md-6">
-            <?php
-            if(isset($bank_details->bank_address)){
-                   echo $bank_details->bank_address; 
-                }
-                 ?>
-        </div>
-      </div>
-      <div class="row">
-          <div class="col-md-6 self-text-labeling-right">
            Payment mode :
         </div>
         <div class="col-md-6">

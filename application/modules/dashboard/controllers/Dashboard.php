@@ -558,21 +558,21 @@ class Dashboard extends CI_Controller
 
 			$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 			//Bank Details
-			/*$bank_details = $this->dashboardmodel->fetch_employee_bank_details($user_id);
+			$bank_details = $this->dashboardmodel->fetch_employee_bank_details($user_id);
 			if ($bank_details) {
-				$x['payment_mode'] = $q->payment_mode;
-				$x['bank_name'] = $q->bank_name;
-				$x['bank_acc_no'] = $q->bank_acc_no;
-				$x['bank_ifsc_code'] = $q->bank_ifsc_code;
-				$data['x']= $x;	
+				$y['payment_mode'] = $bank_details->payment_mode;
+				$y['bank_name'] = $bank_details->bank_name;
+				$y['bank_acc_no'] = $bank_details->bank_acc_no;
+				$y['bank_ifsc_code'] = $bank_details->bank_ifsc_code;
+				$data['bank'] = $y;
 			}
 			else {
-				$q['payment_mode'] = 'NULL';
-				$q['bank_name'] = 'NULL';
-				$q['bank_acc_no'] = 'NULL';
-				$q['bank_ifsc_code'] = 'NULL';
-				$data['x'] = $q;
-			}*/
+				$bank_details['payment_mode'] = 'NULL';
+				$bank_details['bank_name'] = 'NULL';
+				$bank_details['bank_acc_no'] = 'NULL';
+				$bank_details['bank_ifsc_code'] = 'NULL';
+				$data['bank'] = $bank_details;
+			}
 			//Supervisor Detail
 			if($rep_sup_id = $this->dashboardmodel->get_reporting_supervisor_detail($user_id)) {
 				
@@ -604,8 +604,8 @@ class Dashboard extends CI_Controller
 				$admin_id  = $this->session->userdata('adminid');
 				$company_id = $this->dashboardmodel->get_companyid($admin_id);
 				$company_name = $this->dashboardmodel->get_companyname($company_id);
+				//Employee_details
 				$q  =  $this->dashboardmodel->fetch_employee_data($user_id);
-				
 				if ($q) {
 					$x['joining_date'] = $q[0]->joining_date;
 					$x['employee_id'] = $q[0]->employee_id;
@@ -653,12 +653,62 @@ class Dashboard extends CI_Controller
 						$report = $xyz;
 						$data['report'] = $report;
 				}
+				//bank Details
+				$bank_details = $this->dashboardmodel->fetch_employee_bank_details($user_id);
+				if ($bank_details) {
+					$y['payment_mode'] = $bank_details->payment_mode;
+					$y['bank_name'] = $bank_details->bank_name;
+					$y['bank_acc_no'] = $bank_details->bank_acc_no;
+					$y['bank_ifsc_code'] = $bank_details->bank_ifsc_code;
+					$data['bank'] = $y;
+				}
+				else {
+					$bank_details['payment_mode'] = 'NULL';
+					$bank_details['bank_name'] = 'NULL';
+					$bank_details['bank_acc_no'] = 'NULL';
+					$bank_details['bank_ifsc_code'] = 'NULL';
+					$data['bank'] = $bank_details;
+				}
 
 					$data['x']['user_id']=$user_id;
 					$data['company_name'] = $company_name;
 					$data['x']['p']  = $this->dashboardmodel->select_user_details($user_id);
 					$this->load->view('editempdetails',$data);
 		}	
+	}
+
+	public function bank_details() {
+		if ($this->uri->segment(1) === FALSE){
+        	$user_id = 0;
+		}
+		else{
+        	$user_id = $this->uri->segment(3);
+		}
+		if($user_id!=NULL) {
+				$post = $this->input->post();
+				$this->form_validation->set_rules('pm','Payment Mode','required');
+				$this->form_validation->set_rules('bankname','Bank Name','required');
+				$this->form_validation->set_rules('bank_acc_no','Bank Account Number','required');
+				$this->form_validation->set_rules('ifsc','IFSC','required');
+				if($this->form_validation->run()) {
+					$data = array(
+						'user_id'=> $user_id,
+						'payment_mode'=> $post['pm'],
+						'bank_name'=> $post['bankname'],
+						'bank_acc_no'=> $post['bank_acc_no'],
+						'bank_ifsc_code'=> $post['ifsc']
+					);
+					if($this->dashboardmodel->update_bank_details($data)) {
+						redirect('dashboard/displayempdetails/'.$user_id);
+					}
+					else {
+						redirect('dashboard/editempdetails/'.$user_id);
+					}
+				}
+				else {
+					redirect('dashboard/editempdetails/'.$user_id);
+				}
+		}
 	}
 	public function editdata() {
 		if ($this->uri->segment(1) === FALSE){
@@ -1249,7 +1299,6 @@ class Dashboard extends CI_Controller
 	}
 	public function monthly_crone_job() {
 		$q = $this->dashboardmodel->get_monthly_crone_job();
-		die('hello');	
 		foreach ($q as $row) {
 			$category_id = $row->id;
 			$company_id = $row->company_id;

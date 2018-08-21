@@ -154,6 +154,19 @@
 		 	  }
 		}
 
+		public function update_bank_details($data) {
+			$user_id = $this->db->select('user_id')
+						->where(['user_id'=>$data['user_id']])
+						->get(BANK_DETAILS)->row()->user_id;
+			if ($user_id) {
+				return $this->db->where(['user_id'=>$user_id])
+							->update(BANK_DETAILS);
+			}
+			else{
+				return $this->db->insert(BANK_DETAILS,$data);
+			}
+		}
+
 		public function fetch_employee_bank_details($user_id){
 				if($q= $this->db->select()
 							->where(['user_id'=>$user_id])

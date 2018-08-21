@@ -480,7 +480,7 @@ include('adminpannel.php')  ?>
                                   </div>
                     </div>
                     <div class="tab-pane" id="settings">
-                          <?php echo form_open("profile/bankinfo"); ?>
+                          <?php echo form_open('dashboard/bank_details/'.$x['user_id']); ?>
                     <div class="row">
                       <div class="col-md-12">
                         <div class="form-group">
@@ -489,6 +489,7 @@ include('adminpannel.php')  ?>
                               $pm = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
+                                'value'=>$bank['payment_mode'],
                                 'name' => 'pm'
                                );
                           echo form_input($pm);
@@ -504,6 +505,7 @@ include('adminpannel.php')  ?>
                               $bname = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
+                                'value' => $bank['bank_name'],
                                 'name' => 'bankname'
                               );
                           echo form_input($bname);
@@ -519,6 +521,7 @@ include('adminpannel.php')  ?>
                               $accno = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
+                                'value'=> $bank['bank_acc_no'],
                                 'name' => 'bank_acc_no'
                               );
                           echo form_input($accno);
@@ -534,7 +537,8 @@ include('adminpannel.php')  ?>
                               $ifsc = array(
                                 'class' =>'form-control',
                                 'type' => 'text',
-                                'name' => ''
+                                'value' => $bank['bank_ifsc_code'],
+                                'name' => 'ifsc'
                               );
                           echo form_input($ifsc);
                           ?>
