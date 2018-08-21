@@ -190,8 +190,10 @@
 		public function leave_balance() {
 			$user_id = $this->session->userdata('logid');
 			$q = $this->userdashboardmodel->get_category_details($user_id);
+			if($q){
 			foreach ($q as $row) {
 				$row->category_id = $this->userdashboardmodel->get_category_name($row->category_id)->category_name;
+			}
 			}
 			$data['q'] = $q;
 			$this->load->view('leave_balance',$data);

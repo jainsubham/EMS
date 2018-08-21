@@ -46,14 +46,14 @@
                                     </thead>
                                     <tbody>
                                       <tr>
-                                      <?php foreach ($q as $row) { ?>
+                                      <?php if(NULL!=($q)){ foreach ($q as $row) { ?>
                                         <td><?= $row->category_id ?></td>
                                         <td><?= $row->opening_balance.'days' ?></td>
                                         <td><?= $row->accrued_balance.'days' ?></td>
                                         <td><?= $row->leaves_taken.'days' ?></td>
                                         <td><?= $row->balance.'days' ?></td>
                                       </tr>
-                                     <?php }
+                                     <?php } }
                                      ?>
                                     </tbody>
                                   </table>
