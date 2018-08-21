@@ -24,6 +24,9 @@
 						$temp_check_in = strtotime($q->check_in);
 						$temp_check_out = strtotime($q->check_out);
 						$week['0']['time'] = round(($temp_check_out-$temp_check_in)/3600);
+						$data['attendance_record'] = $week;
+					$this->load->view('user_header');
+					$this->load->view('user_dashboard',$data);
 						
 					}
 					else {
@@ -182,8 +185,10 @@
 		public function leave_balance() {
 			$user_id = $this->session->userdata('logid');
 			$q = $this->userdashboardmodel->get_category_details($user_id);
-			foreach ($q as $row) {
-				$row->category_id = $this->userdashboardmodel->get_category_name($row->category_id)->category_name;
+			if($q) {
+				foreach ($q as $row) {
+					$row->category_id = $this->userdashboardmodel->get_category_name($row->category_id)->category_name;
+				}
 			}
 			$data['q'] = $q;
 			$this->load->view('leave_balance',$data);
@@ -367,14 +372,13 @@
 						$node[$key]['employee_under'] = $employee_under;
 						
 					}
-					
 					foreach ($target as $row) {
 						if(isset($row['child'])){
 							foreach ($row['child'] as $child_list) {
 								$node[$child_list]['parent'] = $row['parent'];
 							}
-							}
 						}
+					}
 							$data['data'][] = $node;
 							unset($this->x);
 							unset($target);
@@ -393,7 +397,7 @@
 				$config = array(
 					'base_url' => 'http://localhost/ems/user_dashboard/team_leave/',
 					'per_page' => '10',
-					'total_rows' => $this->useruserdashboardmodel->num_row(),
+					'total_rows' => $this->userdashboardmodel->num_row(),
 					'full_tag_open' => '<ul class = "pagination">',
 					'full_tag_close' => '</ul>',
 					'first_tag_open' => '<li>',

@@ -45,6 +45,7 @@
                                       </tr>
                                     </thead>
                                     <tbody>
+                                    <?php if ($q) {  ?> 
                                       <tr>
                                       <?php foreach ($q as $row) { ?>
                                         <td><?= $row->category_id ?></td>
@@ -53,8 +54,8 @@
                                         <td><?= $row->leaves_taken.'days' ?></td>
                                         <td><?= $row->balance.'days' ?></td>
                                       </tr>
-                                     <?php }
-                                     ?>
+                                      <?php } 
+                                    } ?>
                                     </tbody>
                                   </table>
                               </div>
