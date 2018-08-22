@@ -134,9 +134,7 @@ class Dashboard extends CI_Controller
 
 			$name = $dataa['0'];
 			$emailto = $dataa['1'];
-			/*print_r($name);
-			print_r($emailto);
-			die();*/
+			
 			$tobehashed = $companyid.$emailto;
 			$hash = md5($tobehashed);
 			$invitelink = $invitelin."/".$hash;
@@ -144,11 +142,13 @@ class Dashboard extends CI_Controller
 			$msgbody = $part1.$name.$part2.$invitelink.$part3;
 			
 
-			$this->init_mail();
-			$this->sendmail($subject , $msgbody , $emailto);
+			//$this->init_mail();
+			//$this->sendmail($subject , $msgbody , $emailto);
 
 			if($this->dashboardmodel->send_invite($emailto,$companyid,$hash)){
-				echo $name." is invited"."<br>";
+				$name_data['name'] = $name;
+				$name_data['email'] = $emailto;
+				$data_p['success'][] = $name_data;
 			}
 
 
@@ -158,8 +158,10 @@ class Dashboard extends CI_Controller
 		}else{
 			$error = array('error' => $this->upload->display_errors());
 			
-			print_r($error);	
+			$data_p['error'] = $error;	
 		}
+		
+		$this->load->view('invited',$data_p);
 
 	}
 	public function single_invite() {
@@ -194,12 +196,15 @@ class Dashboard extends CI_Controller
 			$this->init_mail();
 			$this->sendmail($subject , $msg_body , $email_to);	
 			if($this->dashboardmodel->send_invite($email_to,$company_id,$hash)){
-				echo $name." is invited"."<br>";
+				$data['success']['0']['name'] = $name;
+				$data['success']['0']['email'] = $email_to; 
 			}
 			else {
 				$error = array('error' => $this->upload->display_errors());
-				print_r($error);
+				$data['error'] = $error;
 			}
+
+			$this->load->view('invited',$data);
 	}
 	
 	public function attendance() {
