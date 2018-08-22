@@ -77,7 +77,7 @@
 		 	   		 }
 		 		else {
 
-		 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','user_id'=>$uid );
+		 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','employee_id'=>' ','teamname'=>' ','user_id'=>$uid );
 		 	}
 		 	return $data;
 		}

@@ -46,7 +46,7 @@
           <?php } ?>  
           </td>
 				<td align="center"><?php echo $row['fname'].' '.$row['lname']  ;?></td>
-				<td align="center"><?php echo $row['designationname']." (".$row['teamname'].")"; ?></td>
+				<td align="center"><?php if($row['teamname']!=" "){ echo $row['designationname']." (".$row['teamname'].")"; } ?></td>
 				<?= form_open('dashboard/displayempdetails/'.$row['user_id']) ;?>			
 				<td align="center">
 					<?php
