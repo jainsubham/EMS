@@ -142,8 +142,8 @@ class Dashboard extends CI_Controller
 			$msgbody = $part1.$name.$part2.$invitelink.$part3;
 			
 
-			//$this->init_mail();
-			//$this->sendmail($subject , $msgbody , $emailto);
+			$this->init_mail();
+			$this->sendmail($subject , $msgbody , $emailto);
 
 			if($this->dashboardmodel->send_invite($emailto,$companyid,$hash)){
 				$name_data['name'] = $name;
