@@ -50,7 +50,7 @@
         </thead>
         <tbody>
             <? foreach ($data as $row) { ?>
-
+            <? if($row['employee_id']!=""){ ?>
             <tr class="to-target" data-href="<?= base_url('dashboard/get_monthly_attendance/'.$row['user_id'].'/'.date('Y-m')) ?>">
                 <td><?= $row['employee_id'] ?></td>
                 <td><?= $row['name'] ?></td>
@@ -73,7 +73,7 @@
                          } ?>
                     </tr>
                
-                    <?    }  ?>
+                    <?  }  }  ?>
         </tbody>
      
       </table>
