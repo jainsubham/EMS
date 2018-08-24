@@ -29,14 +29,14 @@
                 <div class="card-body">
 					
                    <h4>Select xls file to upload</h4>	
-                  <p class="card-description">Upload  the xlsx file in the predefined format : <br>
+                  <p class="card-description">Upload  the CSV file in the predefined format : <br>
                     -> Employee1: employee_id, Name, In_Time, Out_Time<br>
                     -> Employee2: employee_id, Name, In_Time, Out_Time<br>
                   </p>
                         <div class="form-group">
                           <br>
                           
-                        <?= form_open_multipart('dashboard/xls_upload'); ?>
+                        <?= form_open_multipart('dashboard/attendance_upload'); ?>
                    
                         <?= form_upload('file'); ?>
                             <?

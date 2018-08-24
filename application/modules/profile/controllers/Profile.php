@@ -10,7 +10,6 @@ class Profile extends CI_Controller
 		$this->load->database();
 		$this->load->library(array('session','form_validation'));
 		$this->load->helper(array('form','url'));
-
 	}
 	public function index() {
 		if($this->session->userdata('adminid')){

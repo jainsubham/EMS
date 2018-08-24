@@ -188,10 +188,10 @@
           echo form_dropdown('PDisability',$parentdis,'select'); ?>
           <?php $children = array(
                    'select' => 'Children???',
+                    '0' => '0',
                     '1' => '1',
                     '2' => '2',
-                    '3' => '3',
-
+                    '3' => '3'
                     );
                   
           echo form_dropdown('Children',$children,'select'); ?>

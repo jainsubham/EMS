@@ -102,3 +102,4 @@ define('LEAVE_CATEGORY','leave_setting');
 define('TEAM','team');
 define('TEAM_ALLOTED','team_alloted');
 define('ANNOUNCEMENT','announcements');
+define('REGULARIZE_ATTENDANCE','regularize_attendance');

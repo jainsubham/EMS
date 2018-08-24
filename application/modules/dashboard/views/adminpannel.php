@@ -72,6 +72,7 @@
                <a class="nav-link" href="<?= base_url('dashboard/add_leave_category') ?>">Leave Category</a>
                <a class="nav-link" href="<?= base_url('dashboard/leave_balance') ?>">Leave Balance</a>
                <a class="nav-link" href="<?= base_url('dashboard/leave_request') ?>">Leave Request</a>
+               <a class="nav-link" href="<?= base_url('dashboard/regularize_attendance') ?>">Regularize Attendance</a>
             </div>
           </div>
           <li class="nav-item ">

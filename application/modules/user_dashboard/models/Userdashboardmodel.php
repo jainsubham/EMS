@@ -36,17 +36,6 @@
 			 	return false;
 			 }
 		}
-		public function get_company_id( $user_id ){
-
-			$q = $this->db->where(['id'=>$user_id])
-							->get(USER);
-			if( $q->num_rows()==1){
-				return $q->row()->company_id;
-			}
-			else{
-				return False;
-			}
-		}
 		public function get_category_list($company_id) {
 			if($q = $this->db->where(['company_id' => $company_id])
 							->get(LEAVE_CATEGORY)->result()) {
@@ -273,6 +262,21 @@
 							->join(TEAM.' as t','d.team_id=t.id','LEFT')
 							->get()
 							->result()['0']->name;
+		}
+
+		public function get_team_id_by_user_id($user_id) {
+			if($q = $this->db->select('team_id')
+						->where(['user_id'=>$user_id])
+						->get(TEAM_ALLOTED)->row()) {
+				return $q->team_id;
+			}
+			else {
+				return false;
+			}
+		}
+
+		public function insert_regularize_attendance_data($data) {
+			$this->db->insert(REGULARIZE_ATTENDANCE,$data);
 		}
 	}
 ?> 

@@ -272,7 +272,64 @@ class Dashboard extends CI_Controller
 			$this->load->view('upload_attendance');
 
 	}
-	public function xls_upload() {
+
+	public function attendance_upload() {
+		$config['upload_path']          = './assets/csv/';
+		$config['allowed_types']        = 'csv';
+		$config['max_size']             = 10000;
+		$this->load->library('upload', $config);
+		$adminid = $this->session->userdata('adminid');
+		$company_id = $this->dashboardmodel->get_companyid($adminid);	
+		if ( $this->upload->do_upload('file')){
+			$uploaddata = $this->upload->data();
+			$filename = $uploaddata['file_name'];
+			$link = base_url('assets/csv/'.$filename);
+			$data = fopen($link,"r");
+			echo "<pre>";
+			while($q[] = fgetcsv($data,"10000","," )) {
+			}
+			$length = count($q);
+			unset($q['0']);
+			unset($q['1']);
+			unset($q['2']);
+			unset($q[$length-1]);
+			unset($q[$length-2]);
+			unset($q[$length-3]);
+			$var = $q['3']['1'];
+			$column_field = 'VAT';
+			unset($q['3']);
+			unset($q['4']);
+			$x = str_replace('/', '-', $var);
+			$date = date('Y-m-d', strtotime($x));
+			foreach ($q as $row) {
+				$in_time = $row;
+				$out_datetime = $row['4'];
+				$out_time = explode(" ", $out_datetime);
+				$temp_id =  $column_field.$row['1'];
+				if( $user_id = $this->dashboardmodel->validate_employee($temp_id)){
+					$dataa = array(
+						'date' => $date,
+						'check_in' => $row['6'],
+						'check_out' => $row['7'],
+						'employee_id' => $column_field.$row['1'],
+						'status' => 'P',
+						'user_id'=>$user_id,
+						'company_id' => $company_id
+					);
+					$this->dashboardmodel->attendance($dataa);
+				}
+			}
+			unlink('assets/csv/'.$filename);
+			redirect('dashboard');				
+		}
+		else {
+			redirect('dashboard/upload_attendance');				
+				
+		}
+	}
+
+
+	/*public function xls_upload() {
 			$config['upload_path'] = './assets/xls/';
 			$config['allowed_types'] = 'xls';
 			$config['max_size']  = 2500000;
@@ -288,6 +345,17 @@ class Dashboard extends CI_Controller
 				//error_reporting(E_ALL ^ E_NOTICE);
 				$data_excel = array();
 				$array_data = $sheets['cells'];
+				echo "<pre>";
+				print_r($array_data);	
+				die();
+				date_default_timezone_set("Asia/Kolkata");
+				$time = var_dump($array_data['10']['7']);
+				$micro_time=sprintf("%06d",($time - floor($time)) * 1000000);
+				$date=new DateTime( date('Y-m-d H:i:s'.$micro_time,$time));
+				echo"<pre>";
+				print_r($date);
+				print $date->format("Y-m-d H:i:s");
+				die();
 				$column_field = $array_data['1']['1'];
 				unset($array_data['1']);
 				$admin_id = $this->session->userdata('adminid');
@@ -317,7 +385,7 @@ class Dashboard extends CI_Controller
 			else {
 				redirect('dashboard/upload_attendance');
 		}
-	}
+	}*/
 	public function add_announcement() {
 		$this->load->view('add_announcement');
 	}
@@ -1282,7 +1350,7 @@ class Dashboard extends CI_Controller
 			$link = base_url('assets/csv/'.$filename);
 			$data = fopen($link,"r");
 			$x = array();
-			while($dataa = fgetcsv($data,"1000",",")){
+			while($dataa = fgetcsv($data,"10000",",")){
 				$employee_id = $dataa['0'];
 				$casual = $dataa['1'];
 				$earning = $dataa['2'];
@@ -1336,6 +1404,9 @@ class Dashboard extends CI_Controller
 				}	
 			}
 		}
+	}
+	public function regularize_attendance() {
+		$this->load->view('regularize_attendance');
 	}
 	
 }

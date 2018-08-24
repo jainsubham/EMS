@@ -36,7 +36,9 @@
                     <div>
                     <span class="inline-flex-nd">
                       <i class="material-icons">assignment</i>
-                      <p class="self-data-card-header">Regularize Attendence</p>
+                      <a href="<?= base_url('user_dashboard/regularize_attendance'); ?>">
+                      <p class="self-data-card-header">RegularizeAttendence</p>
+                      </a>
                       </span>
                       <p class="self-data-card-des"> Add a regularization request</p>
                     </div>

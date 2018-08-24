@@ -31,9 +31,9 @@
 						$temp_check_in = strtotime($q->check_in);
 						$temp_check_out = strtotime($q->check_out);
 						$week['0']['time'] = round(($temp_check_out-$temp_check_in)/3600);
-						$data['attendance_record'] = $week;
+						/*$data['attendance_record'] = $week;
 					$this->load->view('user_header');
-					$this->load->view('user_dashboard',$data);
+					$this->load->view('user_dashboard',$data);*/
 						
 					}
 					else {
@@ -116,7 +116,7 @@
 		}
 		public function apply_leave() {
 			$user_id = $this->session->userdata('logid');
-			$company_id = $this->userdashboardmodel->get_company_id($user_id);
+			$company_id = $this->userdashboardmodel->get_companyid($user_id);
 			if($q = $this->userdashboardmodel->get_category_list($company_id)){
 				$x = array();
 				$x['0" disabled="disabled'] = '--------Select Leave Category -------';
@@ -592,6 +592,66 @@
 
 				$this->load->view('employee_directory',$view);
 			}
+	}
+
+	public function regularize_attendance() {
+		$user_id = $this->session->userdata('logid');
+		$company_id = $this->userdashboardmodel->get_companyid($user_id);
+		$q = $this->userdashboardmodel->get_userid($company_id);
+		$x = array();
+		foreach ($q as $row) {
+			$user_id = $row->id;
+			$q = $this->userdashboardmodel->select_user_details($user_id);
+			$id = $this->userdashboardmodel->get_employee_id($user_id);
+			if($team_id = $this->userdashboardmodel->get_team_id_by_user_id($user_id)){
+				$team_name = $this->userdashboardmodel->get_team_name($team_id);
+				$x[] = "<option value='".$user_id."'>".$id."-".$q->first_name." ".$q->last_name.'('.$team_name.')'."</option>";	
+			}
+		}
+		$data['report'] = $x;
+		$this->load->view('regularize_attendance',$data);
+	}
+
+	public function regularize_attendance_data() {
+		$post = $this->input->post();
+		$this->form_validation->set_rules('user_id','Name','required');
+		$this->form_validation->set_rules('date','Date','required');
+		$this->form_validation->set_rules('comment','Comment','required');
+		if ($post['category'] == 'Check In & Check Out') {
+			/*$this->form_validation->set_rules('check_in','Cheack In','required');
+			$this->form_validation->set_rules('check_out','Cheack out','required');*/
+			if ($this->form_validation->run()) {
+				$data = array(
+					'user_id' => $post['user_id'],
+					'date'   =>  $post['date'],
+					'category'=>$post['category'],
+					'check_in' =>$post['check_in'],
+					'check_out' =>$post['check_out'],
+					'comment'  => $post['comment']
+				);
+				$this->userdashboardmodel->insert_regularize_attendance_data($data);
+			}
+			else {
+				die('hello');
+				redirect('user_dashboard/regularize_attendance');
+			}	
+		}
+		else {
+			if ($this->form_validation->run()) {
+				$data = array(
+					'user_id' => $post['user_id'],
+					'date'   =>  $post['date'],
+					'category'=>$post['category'],
+					'comment'  => $post['comment']
+				);
+				$this->userdashboardmodel->insert_regularize_attendance_data($data);
+			}
+			else {
+				die('hello');
+				redirect('user_dashboard/regularize_attendance');
+			}	
+		}
+		
 	}
 }
 
