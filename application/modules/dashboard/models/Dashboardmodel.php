@@ -77,7 +77,7 @@
 		 	   		 }
 		 		else {
 
-		 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','user_id'=>$uid );
+		 			$data = array('fname' =>$q['0']->first_name,'lname'=>$q['0']->last_name,'img'=>$q['0']->img ,'designationname'=>' ','employee_id'=>' ','teamname'=>' ','user_id'=>$uid );
 		 	}
 		 	return $data;
 		}
@@ -520,6 +520,17 @@
 							->join(TEAM.' as t','d.team_id=t.id','LEFT')
 							->get()
 							->result()['0']->name;
+		}
+
+		public function get_leaves_of_this_month($user_id,$this_month){
+			if($q = $this->db->select('id,start_date,end_date')
+						->where(['MONTH(start_date) = $this_month or MONTH(end_date) = $this_month','user_id'=>$user_id])
+						->get(LEAVE_REQ)->result()) {
+				return $q;
+			}
+			else {
+				return false;
+			}
 		}
 
 	}

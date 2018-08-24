@@ -104,6 +104,15 @@
                       </div>
 
                   </div>
+                  <div class=" row col-md-12">
+                      <div class="col-md-6">
+                        <p class="card-description">Total Working Hours - <b><?= $total_working_hour_monthly ?> hours</b></p>
+                      </div>
+                      <div class="col-md-6">
+                        <p class="card-description">Average Working Hours - <b><?= $average_working_hours ?> hours</b></p>
+                      </div>
+
+                  </div>
 
                   </div>
               </div>

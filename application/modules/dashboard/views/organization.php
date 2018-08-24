@@ -16,6 +16,24 @@
     line-height: 0;
     margin-bottom: 15px;
   }
+  .google-visualization-orgchart-node{
+    width: 230px;
+    position: relative;
+  }
+  .empCount{
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    color: #ffffff;
+    border-radius: 50%;
+    display: block;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: 600;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
 </style>
 
  <div class="main-panel">
@@ -81,7 +99,7 @@
     <?
             foreach ($node as $key => $element) {
     ?>
-        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation']." (".$element['team_name'].")"; ?></div><div><? if($element['employee_under']!=0){ echo $element['employee_under']; } ?></div></div>'},'<? if(isset($element['parent'])){
+        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation']." (".$element['team_name'].")"; ?></div><? if($element['employee_under']!=0){ ?><span class="empCount" ><? echo $element['employee_under']; ?></span><? } ?></div>'},'<? if(isset($element['parent'])){
            echo $element['parent']; 
            }
        ?>', ''],
