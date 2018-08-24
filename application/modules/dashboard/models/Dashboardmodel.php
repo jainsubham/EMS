@@ -522,5 +522,16 @@
 							->result()['0']->name;
 		}
 
+		public function get_leaves_of_this_month($user_id,$this_month){
+			if($q = $this->db->select('id,start_date,end_date')
+						->where(['MONTH(start_date) = $this_month or MONTH(end_date) = $this_month','user_id'=>$user_id])
+						->get(LEAVE_REQ)->result()) {
+				return $q;
+			}
+			else {
+				return false;
+			}
+		}
+
 	}
 ?> 

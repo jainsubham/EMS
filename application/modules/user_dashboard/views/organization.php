@@ -16,6 +16,24 @@
     line-height: 0;
     margin-bottom: 15px;
   }
+  .google-visualization-orgchart-node{
+    width: 230px;
+    position: relative;
+  }
+  .empCount{
+    width: 20px;
+    height: 20px;
+    background-color: green;
+    color: #ffffff;
+    border-radius: 50%;
+    display: block;
+    line-height: 18px;
+    font-size: 12px;
+    font-weight: 600;
+    position: absolute;
+    top: -8px;
+    right: -8px;
+  }
 </style>
 
  <div class="main-panel">

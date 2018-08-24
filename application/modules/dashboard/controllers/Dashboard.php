@@ -1048,6 +1048,28 @@ class Dashboard extends CI_Controller
 		if ($timestamp === false) {
 		  $timestamp = time();
 		}
+		$this_month = date('m',strtotime($ym));
+		
+		$leave_data = $this->dashboardmodel->get_leaves_of_this_month($user_id,$this_month);
+		if(NULL!=$leave_data){
+			foreach ($leave_data as $row_leave_req) {
+				if($row_leave_req->start_date==$row_leave_req->end_date){
+					$date_leaves_taken[] = $row_leave_req->start_date;
+				}
+				$period = new DatePeriod(
+			     	new DateTime($row_leave_req->start_date),
+			     	new DateInterval('P1D'),
+			     	new DateTime($row_leave_req->end_date)
+				);
+				foreach ($period as $single_date) {
+				   if($ym== $single_date->format('Y-m')){
+				   		$date_leaves_taken[] = $single_date->format('Y-m-d');       
+					}
+				}
+			}
+		}
+		
+
 
 		if($user_details = $this->dashboardmodel->select_user_details($user_id)){
 			$data['employee_name'] = $user_details->first_name." ".$user_details->last_name;
@@ -1063,6 +1085,9 @@ class Dashboard extends CI_Controller
 		}
 		$joining_date = $employee_data->joining_date;
 		$data['employee_id'] = $employee_data->employee_id;
+		if(!$data['employee_id']){
+			redirect('dashboard/attendance');
+		}
 		$data['designation'] =  $this->dashboardmodel->get_designationname($employee_data->designation);
  		$team_id = $this->dashboardmodel->get_team_id($employee_data->designation);
  		$data['team_name'] = $this->dashboardmodel->get_team_name($team_id);
@@ -1083,6 +1108,7 @@ class Dashboard extends CI_Controller
 		$present_days = 0;
 		$sunday_count = 0;
 		$not_avail_count = 0;
+		$total_leaves_count = 0;
 
 		for ( $day = 1; $day <= $day_count; $day++, $str++) {
 
@@ -1095,20 +1121,30 @@ class Dashboard extends CI_Controller
 
 		  if(date('l',strtotime($date))=="Sunday"){
 		  	$daystatus = "btn btn-info self-calendar-btn";
-		  	$attendance_record[$day]['time'] = 0;
+		  	$attendance_record[$day]['time'] = $daily_time[$day] = 0;
 		  	$sunday_count++;
 		  }else{
 		  	if($attendance_data = $this->dashboardmodel->get_attendance_record($user_id,$date)){
 		  		$temp_check_in = strtotime($attendance_data->check_in);
 				$temp_check_out = strtotime($attendance_data->check_out);
-				$attendance_record[$day]['time'] = round(($temp_check_out-$temp_check_in)/3600);
+				$attendance_record[$day]['time'] = $daily_time[$day] = round(($temp_check_out-$temp_check_in)/3600);
 
 		  		$daystatus = "btn btn-success self-calendar-btn";
 		  		$present_days++;
 		  	}else{
-		  		$attendance_record[$day]['time'] = 0;
+		  		$attendance_record[$day]['time'] = $daily_time[$day] = 0;
 		  		$daystatus = "btn btn-danger self-calendar-btn";
+		  		if(isset($date_leaves_taken)){
+			  		foreach($date_leaves_taken as $row_single_date){
+			  			if($date==$row_single_date){
+							$attendance_record[$day]['time'] = 0;
+			  				$daystatus = "btn btn-warning self-calendar-btn";		
+			  				$total_leaves_count++;  				
+			  			}
+			  		}
+		  		}
 		  	}
+
 		  }
 
 
@@ -1141,11 +1177,18 @@ class Dashboard extends CI_Controller
 		}
 
 		$data['present_days'] = $present_days;
-		$data['absent_days'] = $day_count-($present_days+$not_avail_count+$sunday_count+1);
+		$data['absent_days'] = $day_count-($present_days+$not_avail_count+$total_leaves_count+$sunday_count+1);
 		$data['joining_date'] = date('d M, Y',strtotime($joining_date));
 		$data['day_count'] = date('d',time());
 		$data['weeks'] = $weeks;
 		$data['attendance_record'] = $attendance_record;
+		$data['total_working_hour_monthly'] = array_sum($daily_time);
+		if($present_days>0){
+			$temp_average_count = $data['total_working_hour_monthly']/$present_days;
+			$data['average_working_hours'] = number_format((float)$temp_average_count, 2, '.', '');
+		}else{
+			$data['average_working_hours'] = "0";
+		}
 
 		$this->load->view('monthly_attendance',$data);
 	}
