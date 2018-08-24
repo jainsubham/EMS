@@ -343,62 +343,57 @@
 		$user_id = $this->session->userdata('logid');
 		$company_id = $this->userdashboardmodel->get_companyid($user_id);
 		$user_list = $this->userdashboardmodel->get_users($company_id);
-				
-			foreach ($user_list as $row) {
-				$user = $row->id;
-				$this->get_under_me($user);
-				$supervisor_id = key($this->x);
-				$node = $this->x;
-					foreach ($node as $key => $row) {
-						$row_data = $row;
-						unset($node[$key]);
-						$data_p['parent'] = $key;
-						if(isset($row_data)){
-							foreach ($row_data as $user_list) {
-								$id =  $user_list->user_id;
-								$data_p['child'][] = $id;
-							}
-						}
-						$target[] = $data_p;
-						if(isset($data_p['child'])){
+		
+		foreach ($user_list as $row) {
+			$user = $row->id;
+			$this->get_under_me($user);
+			$supervisor_id = key($this->x);
+			$node = $this->x;
+			foreach ($node as $key => $row) {
+				$row_data = $row;
+				unset($node[$key]);
+				$data_p['parent'] = $key;
+		
+				if(isset($row_data)){
+					foreach ($row_data as $user_list) {
+						$id =  $user_list->user_id;
+						$data_p['child'][] = $id;
+					}
+				}
+				$target[] = $data_p;
+				if(isset($data_p['child'])){
 					
-							$employee_under = count($data_p['child']);
-						}else{
-							$employee_under = 0;
-						}
-						unset($data_p);
-						$user_data = $this->userdashboardmodel->select_user_details($key);
-						if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
-							$node[$key]['employee_id'] = $employee_data->employee_id;
-							$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
-						}
-						$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
-						$node[$key]['img'] = $user_data->img;
-
-						if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
-							$node[$key]['employee_id'] = $employee_data->employee_id;
-							$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
-							$node[$key]['team_name'] = $this->userdashboardmodel->get_team_name_by_designation_id($employee_data->designation);
-						}
-						$node[$key]['employee_under'] = $employee_under;
-						
+					$employee_under = count($data_p['child']);
+				}else{
+					$employee_under = 0;
+				}
+				unset($data_p);
+				$user_data = $this->userdashboardmodel->select_user_details($key);
+				if($employee_data = $this->userdashboardmodel->fetch_employee_data($key)['0']) {
+					$node[$key]['employee_id'] = $employee_data->employee_id;
+					$node[$key]['designation'] = $this->userdashboardmodel->get_designationname($employee_data->designation);
+					$node[$key]['team_name'] = $this->userdashboardmodel->get_team_name_by_designation_id($employee_data->designation);
+				}
+				$node[$key]['name'] = $user_data->first_name." ".$user_data->last_name;
+				$node[$key]['img'] = $user_data->img;
+				$node[$key]['employee_under'] = $employee_under;
+			}
+			
+			foreach ($target as $row) {
+				if(isset($row['child'])){
+					foreach ($row['child'] as $child_list) {
+						$node[$child_list]['parent'] = $row['parent'];
 					}
-					foreach ($target as $row) {
-						if(isset($row['child'])){
-							foreach ($row['child'] as $child_list) {
-								$node[$child_list]['parent'] = $row['parent'];
-							}
-						}
-					}
-							$data['data'][] = $node;
-							unset($this->x);
-							unset($target);
-						}
-						$data['count']= count($data['data']);
-							
+				}
+			}
 
-						$this->load->view('organization',$data);
-	
+			$data['data'][] = $node;
+			unset($this->x);
+			unset($target);
+		}
+		$data['count']= count($data['data']);
+
+		$this->load->view('organization',$data);
 	}
 	
 	public function team_leave() {
@@ -616,40 +611,42 @@
 		$post = $this->input->post();
 		$this->form_validation->set_rules('user_id','Name','required');
 		$this->form_validation->set_rules('date','Date','required');
-		$this->form_validation->set_rules('comment','Comment','required');
+		if ($date <date('Y-m-d',time()) ) {
+			redirect('user_dashboard/regularize_attendance');
+		}
 		if ($post['category'] == 'Check In & Check Out') {
-			/*$this->form_validation->set_rules('check_in','Cheack In','required');
-			$this->form_validation->set_rules('check_out','Cheack out','required');*/
 			if ($this->form_validation->run()) {
-				$data = array(
-					'user_id' => $post['user_id'],
-					'date'   =>  $post['date'],
-					'category'=>$post['category'],
-					'check_in' =>$post['check_in'],
-					'check_out' =>$post['check_out'],
-					'comment'  => $post['comment']
-				);
-				$this->userdashboardmodel->insert_regularize_attendance_data($data);
+					$data = array(
+						'user_id' => $post['user_id'],
+						'category' =>$post['category'],
+						'date' => $post['date'],
+						'check_in' => $post['check_in'],
+						'check_out'=> $post['check_out'],
+						'comment' => $post['comment']
+					);
+					if($this->userdashboardmodel->insert_regularize_attendance_data($data)) { ?>
+							<script type="text/javascript">
+								alert('Request send successfully');
+								window.location('user_dashboard');
+							</script>
+					<?php }
 			}
 			else {
-				die('hello');
-				redirect('user_dashboard/regularize_attendance');
-			}	
+			redirect('user_dashboard/regularize_attendance');
+			}
 		}
 		else {
 			if ($this->form_validation->run()) {
 				$data = array(
-					'user_id' => $post['user_id'],
-					'date'   =>  $post['date'],
-					'category'=>$post['category'],
-					'comment'  => $post['comment']
-				);
-				$this->userdashboardmodel->insert_regularize_attendance_data($data);
+						'user_id' => $post['user_id'],
+						'category' =>$post['category'],
+						'date' => $post['date'],
+						'comment' => $post['comment']
+					);
 			}
 			else {
-				die('hello');
-				redirect('user_dashboard/regularize_attendance');
-			}	
+			redirect('user_dashboard/regularize_attendance');
+			}
 		}
 		
 	}

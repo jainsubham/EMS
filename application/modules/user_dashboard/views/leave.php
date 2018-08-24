@@ -21,7 +21,7 @@
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
 </style>
-   <div class="main-panel">
+  <div class="main-panel">
         <nav class="navbar navbar-expand-lg navbar-transparent navbar-absolute fixed-top ">
           <div class="container-fluid">
           	<div class="navbar-wrapper">
@@ -41,16 +41,16 @@
           </div>
         </nav>
       <!-- End Navbar -->
-      <div class="content">
-        <div class="container-fluid">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="card">
-                <div class="card-header card-header-success">
-                  <h4 class="card-title">My Leave Application</h4>
-                </div>
-                <div class="card-body">
-                  <div class="container-fluid">
+    <div class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-success">
+                <h4 class="card-title">My Leave Application</h4>
+              </div>
+              <div class="card-body">
+                <div class="container-fluid">
                   <div class="row">
                     <table style="margin-top: -10px;" class="table table-bordered table-striped table-hover css-serial reult" id="myTable"> 
                       <thead  class="col-md-12 ">
@@ -66,8 +66,8 @@
                       </thead>
                       <tbody>
                       <tr>
-					<?php if($q) { ?>
-                      	<?php foreach ($q as $row) { ?>
+					             <?php if($q) { ?>
+                      	 <?php foreach ($q as $row) { ?>
                       		<td><?= $row->leave_category;?></td>
                       		<td><?= $row->start_date ?></td>
                       		<td><?= $row->end_date ?></td>
@@ -76,47 +76,49 @@
                       				<td><?php echo "Yes"; ?></td>
                       		<?php } 
                       			else{ ?>
-									<td><?php echo "No" ;?></td>
-                      			<?php }
-                      		?>
-                      		<?php
-                      			if ($row->half_day == 1) {
-								$date1 = strtotime($row->start_date);
-							    $date2 = strtotime($row->end_date);
-							    $datediff = $date2 - $date1;
-							    $no_of_days =  floor($datediff / (60 * 60 * 24));
-							    $total = $no_of_days + 0.5; ?>
-							    <td><?= $total.'days' ?></td>
-							<?php	}
-                      			else {
-                      				$date1 = strtotime($row->start_date);
-							        $date2 = strtotime($row->end_date);
-							        $datediff = $date2 - $date1;
-							        $no_of_days =  floor($datediff / (60 * 60 * 24)); ?>
-							        <td><?= $no_of_days.'days' ;?></td>
-                      		<?php 	}
-                      	?>
-                      	<?php
-                      		if ($row->approvation_status == 1) {
-                      		   $approved = '<button class="btn btn-success self-button-padding">Approved</button>'; ?>
-                      			<td><?= $approved ;?></td>
-                      		<?php }
-                      		else { 
-                    		   $pending = '<button class="btn btn-danger self-button-padding">Pending</button>'; 
-                      			?>
-									<td><?= $pending ?></td>
-                      		<?php }
-                      	 ?>	
-                      	</tr>
+          									<td><?php echo "No" ;?></td>
+                                			<?php }?>
+                          <?php
+                            if ($row->half_day == 1) {
+          								    $date1 = strtotime($row->start_date);
+              							  $date2 = strtotime($row->end_date);
+              							  $datediff = $date2 - $date1;
+              							  $no_of_days =  floor($datediff / (60 * 60 * 24));
+              							  $total = $no_of_days + 0.5; ?>
+              							  <td><?= $total.'days' ?></td>
+          							  <?php	}
+                            else {
+                              $date1 = strtotime($row->start_date);
+          							      $date2 = strtotime($row->end_date);
+          							      $datediff = $date2 - $date1;
+          							      $no_of_days =  floor($datediff / (60 * 60 * 24)); ?>
+          							      <td><?= $no_of_days.'days' ;?></td>
+                              <?php 	}?>
+                          <?php
+                            if ($row->approvation_status == 1) {
+                                $approved = '<button class="btn btn-success self-button-padding">Approved</button>'; ?>
+                                	<td><?= $approved ;?></td>
+                                	<?php }
+                            else { 
+                              $pending = '<button class="btn btn-danger self-button-padding">Pending</button>'; 
+                            ?>
+          									<td><?= $pending ?></td>
+                                		<?php } ?>	
+                      </tr>
                       <?php	} 
-                  	}
-                      ?>
+                    	}   ?>
                       </tbody>
                     </table>
                     <?php echo $this->pagination->create_links(); ?>
                   </div>
               </div>
-            </div>    
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>
+            </div>   
   <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>

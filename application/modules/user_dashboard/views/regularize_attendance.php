@@ -139,16 +139,17 @@
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="<?= base_url('assets/js/bootstrap-clockpicker.js');?>"></script>
-  <script src="<?= base_url('assets/js/bootstrap-clockpicker.min.js');?>"></script>
-  <script src="<?= base_url('assets/js/jquery-clockpicker.js');?>"></script>
-  <script src="<?= base_url('assets/js/jquery-clockpicker.min.js');?>"></script>
+ 
 
   <script src="<?= base_url('assets/js/core/jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/chosen.jquery.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/popper.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/core/bootstrap-material-design.min.js'); ?>" type="text/javascript"></script>
   <script src="<?= base_url('assets/js/plugins/perfect-scrollbar.jquery.min.js');?>"></script>
+   <script src="<?= base_url('assets/js/bootstrap-clockpicker.js');?>"></script>
+  <script src="<?= base_url('assets/js/bootstrap-clockpicker.min.js');?>"></script>
+  <script src="<?= base_url('assets/js/jquery-clockpicker.js');?>"></script>
+  <script src="<?= base_url('assets/js/jquery-clockpicker.min.js');?>"></script>
   <!--  Google Maps Plugin    -->
   
   <!-- Chartist JS -->

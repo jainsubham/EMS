@@ -61,22 +61,22 @@
                 <div class="card">
                   <div class="card-header card-header-info">
                    <h4 class="card-title">Graphical presentation of structure of your Organization </h4>
-               	  <!-- <p class="card-category">Complete your profile</p> -->
+                  <!-- <p class="card-category">Complete your profile</p> -->
                   </div>
                 <div class="card-body">
                     <? 
-		    		    for($i=1;$i<=$count;$i++){
+                for($i=1;$i<=$count;$i++){
                             echo '<div class="chart" id="org_struct_'.$i.'"></div>';
-		    	         }
+                   }
                      ?>
 
                 </div>
-			</div>
-		</div>
-	</div>
-	</div>
-	</div>
-	</div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
 </div>
 
     

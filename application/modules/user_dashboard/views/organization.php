@@ -1,4 +1,4 @@
-<?php include('user_header.php');?>
+<?php include('user_header.php') ;?>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <style type="text/css">
   td{
@@ -61,22 +61,22 @@
                 <div class="card">
                   <div class="card-header card-header-info">
                    <h4 class="card-title">Graphical presentation of structure of your Organization </h4>
-               	  <!-- <p class="card-category">Complete your profile</p> -->
+                  <!-- <p class="card-category">Complete your profile</p> -->
                   </div>
                 <div class="card-body">
                     <? 
-		    		    for($i=1;$i<=$count;$i++){
+                for($i=1;$i<=$count;$i++){
                             echo '<div class="chart" id="org_struct_'.$i.'"></div>';
-		    	         }
+                   }
                      ?>
 
                 </div>
-			</div>
-		</div>
-	</div>
-	</div>
-	</div>
-	</div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+  </div>
 </div>
 
     
@@ -99,7 +99,7 @@
     <?
             foreach ($node as $key => $element) {
     ?>
-        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation']." (".$element['team_name'].")"; ?></div><div><? if($element['employee_under']!=0){ echo $element['employee_under']; } ?></div></div>'},'<? if(isset($element['parent'])){
+        [{v:'<?= $key ?>', f:'<div><img class="profileImageTree" src="<?= base_url('/assets/img/user/'.$element['img']) ?>" width="60px"><strong class="profileName"><?= $element['name'] ?></strong><div class="jobTitle"> <?= $element['employee_id'] ?> - <?= $element['designation']." (".$element['team_name'].")"; ?></div><? if($element['employee_under']!=0){ ?><span class="empCount" ><? echo $element['employee_under']; ?></span><? } ?></div>'},'<? if(isset($element['parent'])){
            echo $element['parent']; 
            }
        ?>', ''],
